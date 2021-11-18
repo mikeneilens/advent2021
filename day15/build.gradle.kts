@@ -11,7 +11,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
 }
 
