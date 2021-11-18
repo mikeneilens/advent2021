@@ -5,60 +5,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3551c201-5ab0-478f-aaf2-89a8f691288c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/6.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/libraries-with-intellij-classes.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/sbt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/src/main/kotlin/Main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../day01/src/test/kotlin/MainTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/dependencies-accessors/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/fileChanges/last-build.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.1/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/kotlin/day0210SNAPSHOTjar-classes.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/tmp/jar/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/MainTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day03/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day03/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day03/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day03/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day04/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day04/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day04/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day04/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day05/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day05/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day05/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day05/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day06/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day06/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day06/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day06/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day07/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day07/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day07/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day07/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day08/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day08/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day08/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day08/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day09/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day09/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day09/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day09/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day10/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day10/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day10/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day10/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day11/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day11/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day11/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day11/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day12/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day12/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day12/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day12/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day13/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day13/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day13/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day13/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day14/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day14/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day14/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day14/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day15/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day15/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day15/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day15/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day16/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day16/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day16/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day16/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day17/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day17/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day17/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day17/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day18/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day18/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day18/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day18/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day19/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day19/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day19/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day19/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day20/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day20/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day20/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day20/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day21/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day21/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day21/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day21/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day22/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day22/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day22/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day22/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day23/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day23/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day23/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day23/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day24/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day24/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day24/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day24/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day25/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day25/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day25/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,9 +65,6 @@
   </component>
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
-  </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="isMigrated" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
