@@ -46,4 +46,20 @@ class MainTest {
     fun `part one`() {
         assertEquals(1676, partOne(puzzleInput))
     }
+    @Test
+    fun `convert list to sliding window`() {
+        val expectedResult = listOf(
+            607,618,618,617,647,716,769,792
+        )
+        assertEquals(expectedResult, sampleData.convertListToSlidingWindow())
+    }
+    @Test
+    fun `find increases for part two using sample data`() {
+        assertEquals(5, partTwo(sampleData))
+    }
+    @Test
+    fun `part two`() {
+        assertEquals(1706, partTwo(puzzleInput))
+    }
 }
+

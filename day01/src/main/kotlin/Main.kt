@@ -9,3 +9,7 @@ fun compareCurrentToPrevious(accumulatedResult:AccumulatedResult, current:Int):A
 fun partOne(listOfDepths:List<Int>):Int {
     return listOfDepths.fold(AccumulatedResult(0, 0), ::compareCurrentToPrevious).noOfIncreases
 }
+
+fun List<Int>.convertListToSlidingWindow():List<Int> = windowed(3,1).map{it.sum()}
+
+fun partTwo(listOfDepths:List<Int>):Int = partOne(listOfDepths.convertListToSlidingWindow())
