@@ -23,7 +23,7 @@ class MainTest {
         assertEquals(expectedResult, compareCurrentToPrevious(AccumulatedResult(previous, increases), current))
     }
     @Test
-    fun`current value not being bigger than previous doesnt change the increases count`() {
+    fun`current value not being bigger than previous does not change the increases count`() {
         val current = 10
         val previous = 10
         val increases = 2
@@ -31,7 +31,7 @@ class MainTest {
         assertEquals(expectedResult, compareCurrentToPrevious(AccumulatedResult(previous, increases), current))
     }
     @Test
-    fun`comparing current to previous when there is no inrease`() {
+    fun`comparing current to previous when there is no increase`() {
         val current = 10
         val previous = 10
         val increases = 3
@@ -39,7 +39,7 @@ class MainTest {
         assertEquals(expectedResult, compareCurrentToPrevious(AccumulatedResult(previous, increases), current))
     }
     @Test
-    fun `find increases wtih sample data`() {
+    fun `find increases with sample data`() {
         assertEquals(7, partOne(sampleData))
     }
     @Test
