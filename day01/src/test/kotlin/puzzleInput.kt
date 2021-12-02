@@ -1999,4 +1999,4 @@ val puzzleInput = """
     8750
     8753
     8755
-""".trimIndent().split("\n").map{it.toInt()}
+""".trimIndent().split("\n").map(String::toInt)

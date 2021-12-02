@@ -10,7 +10,7 @@ val sampleData = """199
 240
 269
 260
-263""".trim().split("\n").map{it.toInt()}
+263""".trim().split("\n").map(String::toInt)
 
 class MainTest {
 
