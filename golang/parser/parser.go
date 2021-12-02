@@ -17,3 +17,13 @@ func ParseIntoListOfInts(data string) []int {
 	}
 	return result
 }
+
+func ParseIntoListOfWords(data string) [][]string {
+	values := strings.Split(data, "\n")
+	var result = make([][]string, len(values))
+	for ndx, value := range values {
+		words := strings.Split(value, " ")
+		result[ndx] = words
+	}
+	return result
+}
