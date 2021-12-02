@@ -15,9 +15,9 @@ func createListOfCommands(data string, functionCreator func(commandText string, 
 	listOfWords := parser.ParseIntoListOfWords(data)
 	var result = make([]func(*submarine), len(listOfWords))
 
-	for ndx, record := range listOfWords {
-		command := record[0]
-		qty, _ := strconv.Atoi(record[1])
+	for ndx, words := range listOfWords {
+		command := words[0]
+		qty, _ := strconv.Atoi(words[1])
 		result[ndx] = functionCreator(command, qty)
 	}
 	return result
