@@ -4,9 +4,9 @@ import "testing"
 
 func Test_createListOfCommands_forForward(t *testing.T) {
 	var data = `forward 5`
-	parsedData := createListOfCommands(data)
+	commands := createListOfCommands(data)
 	sub := submarine{1, 2, 3}
-	parsedData[0](&sub)
+	commands[0](&sub)
 	if sub.x != 6 || sub.y != 2 || sub.aim != 3 {
 		t.Fatalf(`ParseData('forward 5') on (1,2,3) expected (6,2,3), but returned (%v,%v,%v) `, sub.x, sub.y, sub.aim)
 	}
@@ -14,9 +14,9 @@ func Test_createListOfCommands_forForward(t *testing.T) {
 
 func Test_createListOfCommands_forDown(t *testing.T) {
 	var data = `down 7`
-	parsedData := createListOfCommands(data)
+	commands := createListOfCommands(data)
 	sub := submarine{1, 2, 3}
-	parsedData[0](&sub)
+	commands[0](&sub)
 	if sub.x != 1 || sub.y != 9 || sub.aim != 3 {
 		t.Fatalf(`ParseData('down 7') on (1,2,3) expected (1,9,3), but returned (%v,%v,%v) `, sub.x, sub.y, sub.aim)
 	}
@@ -24,9 +24,9 @@ func Test_createListOfCommands_forDown(t *testing.T) {
 
 func Test_createListOfCommands_forUp(t *testing.T) {
 	var data = `up 7`
-	parsedData := createListOfCommands(data)
+	commands := createListOfCommands(data)
 	sub := submarine{1, 2, 3}
-	parsedData[0](&sub)
+	commands[0](&sub)
 	if sub.x != 1 || sub.y != -5 || sub.aim != 3 {
 		t.Fatalf(`ParseData('up 7') on (1,2,3) expected (1,-5,3), but returned (%v,%v,%v) `, sub.x, sub.y, sub.aim)
 	}
