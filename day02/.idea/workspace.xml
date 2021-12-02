@@ -74,22 +74,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.part forward when aim is 5" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.part one using puzzle input" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="day02.test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="METHOD_NAME" value="part forward when aim is 5" />
+      <option name="METHOD_NAME" value="part one using puzzle input" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.part two move up" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.part two move down" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="day02.test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="METHOD_NAME" value="part two move up" />
+      <option name="METHOD_NAME" value="part two move down" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest.part two move foward when aim is zero" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="METHOD_NAME" value="part two move foward when aim is zero" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -101,17 +112,6 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
       <option name="METHOD_NAME" value="part two using puzzle input" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainTest.part two using sample data" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="day02.test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="METHOD_NAME" value="part two using sample data" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -146,10 +146,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.MainTest" />
+        <item itemvalue="JUnit.MainTest.part two move down" />
+        <item itemvalue="JUnit.MainTest.part two move foward when aim is zero" />
         <item itemvalue="JUnit.MainTest.part two using puzzle input" />
-        <item itemvalue="JUnit.MainTest.part two using sample data" />
-        <item itemvalue="JUnit.MainTest.part forward when aim is 5" />
-        <item itemvalue="JUnit.MainTest.part two move up" />
+        <item itemvalue="JUnit.MainTest.part one using puzzle input" />
       </list>
     </recent_temporary>
   </component>

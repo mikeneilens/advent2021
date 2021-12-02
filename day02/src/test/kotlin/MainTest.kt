@@ -13,15 +13,18 @@ val sampleData = """
 class MainTest {
     @Test
     fun `moving forward 1`() {
-        assertEquals(Instruction.Forward(1),Instruction.create("forward 1"))
+        val status = Submarine(1,2,3)
+        assertEquals(Submarine(2,2,3),createInstruction("forward 1").execute(status))
     }
     @Test
     fun `moving up 1`() {
-        assertEquals(Instruction.Up(1),Instruction.create("up 1"))
+        val status = Submarine(1,2,3)
+        assertEquals(Submarine(1,1,3),createInstruction("up 1").execute(status))
     }
     @Test
     fun `moving down 1`() {
-        assertEquals(Instruction.Down(1),Instruction.create("down 1"))
+        val status = Submarine(1,2,3)
+        assertEquals(Submarine(1,3,3),createInstruction("down 1").execute(status))
     }
     @Test
     fun `part one using sample data`() {
@@ -31,29 +34,29 @@ class MainTest {
     fun `part one using puzzle input`() {
         assertEquals(1383564, partOne(puzzleInput))
     }
+
     @Test
     fun `part two move foward when aim is zero`() {
-        val instruction = Instruction.create("forward 5")
-        assertEquals(Status(5,0,0),executeInstrution(Status(),instruction))
+        val instruction = createInstruction("forward 5")
+        assertEquals(Submarine(5,0,0),instruction.executeP2(Submarine()))
     }
     @Test
     fun `part two move down`() {
-        val instruction = Instruction.create("down 5")
-        val status = Status(5,0,0)
-        assertEquals(Status(5,0,5),executeInstrution(status,instruction))
+        val instruction = createInstruction("down 5")
+        val status = Submarine(5,0,0)
+        assertEquals(Submarine(5,0,5),instruction.executeP2(status))
     }
     @Test
     fun `part forward when aim is 5`() {
-        val instruction = Instruction.create("forward 8")
-        val status = Status(5,0,5)
-        assertEquals(Status(13,40,5),executeInstrution(status,instruction))
+        val instruction = createInstruction("forward 8")
+        val status = Submarine(5,0,5)
+        assertEquals(Submarine(13,40,5),instruction.executeP2(status))
     }
-
     @Test
     fun `part two move up`() {
-        val instruction = Instruction.create("up 3")
-        val status = Status(13,40,5)
-        assertEquals(Status(13,40,2),executeInstrution(status,instruction))
+        val instruction = createInstruction("up 3")
+        val status = Submarine(13,40,5)
+        assertEquals(Submarine(13,40,2),instruction.executeP2(status))
     }
     @Test
     fun `part two using sample data`() {
