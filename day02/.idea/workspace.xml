@@ -5,33 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3551c201-5ab0-478f-aaf2-89a8f691288c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/kotlin/PuzzleInput.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day01/src/test/kotlin/MainTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../day01/src/test/kotlin/MainTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../day01/src/test/kotlin/puzzleInput.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../day01/src/test/kotlin/puzzleInput.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day03/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day03/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day04/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day04/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day05/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day05/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day06/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day06/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day07/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day07/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day08/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day08/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day09/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day09/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day10/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day10/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day11/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day11/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day12/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day12/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day13/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day13/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day14/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day14/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day15/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day15/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day16/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day16/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day17/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day17/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day18/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day18/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day19/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day19/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day20/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day20/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day21/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day21/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day22/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day22/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day23/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day23/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day24/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day24/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day25/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../day25/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/MainTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/MainTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,12 +47,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.MainTest">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -86,26 +65,59 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;MainTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest.part forward when aim is 5" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="METHOD_NAME" value="part forward when aim is 5" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest.part two move up" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="METHOD_NAME" value="part two move up" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest.part two using puzzle input" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="METHOD_NAME" value="part two using puzzle input" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest.part two using sample data" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="METHOD_NAME" value="part two using sample data" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
@@ -134,7 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.MainTest" />
+        <item itemvalue="JUnit.MainTest" />
+        <item itemvalue="JUnit.MainTest.part two using puzzle input" />
+        <item itemvalue="JUnit.MainTest.part two using sample data" />
+        <item itemvalue="JUnit.MainTest.part forward when aim is 5" />
+        <item itemvalue="JUnit.MainTest.part two move up" />
       </list>
     </recent_temporary>
   </component>
