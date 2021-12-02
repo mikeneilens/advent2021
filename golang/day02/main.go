@@ -5,49 +5,56 @@ import (
 	"strconv"
 )
 
-func createListOfCommands(data string) []func(int, int, int) (int, int, int) {
+type submarine struct {
+	x   int
+	y   int
+	aim int
+}
+
+func createListOfCommands(data string) []func(*submarine) {
 	listOfWords := parser.ParseIntoListOfWords(data)
-	var result = make([]func(int, int, int) (int, int, int), len(listOfWords))
+	var result = make([]func(*submarine), len(listOfWords))
+
 	for ndx, record := range listOfWords {
 		command := record[0]
 		qty, _ := strconv.Atoi(record[1])
 		switch command {
 		case "forward":
-			result[ndx] = func(x int, y int, aim int) (int, int, int) { return x + qty, y, aim }
+			result[ndx] = func(sub *submarine) { sub.x += qty }
 		case "up":
-			result[ndx] = func(x int, y int, aim int) (int, int, int) { return x, y - qty, aim }
+			result[ndx] = func(sub *submarine) { sub.y -= qty }
 		case "down":
-			result[ndx] = func(x int, y int, aim int) (int, int, int) { return x, y + qty, aim }
+			result[ndx] = func(sub *submarine) { sub.y += qty }
 		}
 	}
 	return result
 }
 
-func day02(data string, listOfCommandsCreator func(string) []func(int, int, int) (int, int, int)) int {
-	var x, y, aim int
-
-	instructions := listOfCommandsCreator(data)
-
-	for _, instruction := range instructions {
-		x, y, aim = instruction(x, y, aim)
-	}
-	return x * y
-}
-
-func CreateListOfCommandsP2(data string) []func(int, int, int) (int, int, int) {
+func CreateListOfCommandsP2(data string) []func(*submarine) {
 	listOfWords := parser.ParseIntoListOfWords(data)
-	var result = make([]func(int, int, int) (int, int, int), len(listOfWords))
+	var result = make([]func(*submarine), len(listOfWords))
 	for ndx, record := range listOfWords {
 		command := record[0]
 		qty, _ := strconv.Atoi(record[1])
 		switch command {
 		case "forward":
-			result[ndx] = func(x int, y int, aim int) (int, int, int) { return x + qty, y + aim*qty, aim }
+			result[ndx] = func(sub *submarine) { sub.x += qty; sub.y += sub.aim * qty }
 		case "up":
-			result[ndx] = func(x int, y int, aim int) (int, int, int) { return x, y, aim - qty }
+			result[ndx] = func(sub *submarine) { sub.aim -= qty }
 		case "down":
-			result[ndx] = func(x int, y int, aim int) (int, int, int) { return x, y, aim + qty }
+			result[ndx] = func(sub *submarine) { sub.aim += qty }
 		}
 	}
 	return result
+}
+
+func day02(data string, listOfCommandsCreator func(string) []func(*submarine)) int {
+	var sub = submarine{0, 0, 0}
+
+	commands := listOfCommandsCreator(data)
+
+	for _, command := range commands {
+		command(&sub)
+	}
+	return sub.x * sub.y
 }
