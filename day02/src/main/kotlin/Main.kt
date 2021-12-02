@@ -40,9 +40,8 @@ fun partTwo(data:List<String>):Int {
     return orders.fold(Status(),::executeOrder2).position.total()
 }
 
-fun executeOrder2(current:Status, order:Order):Status =
-    when (order.instruction) {
+fun executeOrder2(current:Status, order:Order):Status = when (order.instruction) {
         Instruction.Forward -> Status(Vector(current.position.x + order.qty ,current.position.y + current.aim * order.qty), current.aim)
         Instruction.Down -> Status(current.position, current.aim + order.qty)
         Instruction.Up -> Status(current.position, current.aim - order.qty)
-    }
+}
