@@ -13,15 +13,15 @@ val sampleData = """
 class MainTest {
     @Test
     fun `moving forward 1`() {
-        assertEquals(Order(Instruction.Forward,1),"forward 1".toOrder())
+        assertEquals(Instruction.Forward(1),Instruction.create("forward 1"))
     }
     @Test
     fun `moving up 1`() {
-        assertEquals(Order(Instruction.Up,1),"up 1".toOrder())
+        assertEquals(Instruction.Up(1),Instruction.create("up 1"))
     }
     @Test
     fun `moving down 1`() {
-        assertEquals(Order(Instruction.Down,1),"down 1".toOrder())
+        assertEquals(Instruction.Down(1),Instruction.create("down 1"))
     }
     @Test
     fun `part one using sample data`() {
@@ -33,27 +33,27 @@ class MainTest {
     }
     @Test
     fun `part two move foward when aim is zero`() {
-        val order = "forward 5".toOrder()
-        assertEquals(Status(Vector(5,0),0),executeOrder2(Status(),order))
+        val instruction = Instruction.create("forward 5")
+        assertEquals(Status(5,0,0),executeInstrution(Status(),instruction))
     }
     @Test
     fun `part two move down`() {
-        val order = "down 5".toOrder()
-        val status = Status(Vector(5,0),0)
-        assertEquals(Status(Vector(5,0),5),executeOrder2(status,order))
+        val instruction = Instruction.create("down 5")
+        val status = Status(5,0,0)
+        assertEquals(Status(5,0,5),executeInstrution(status,instruction))
     }
     @Test
     fun `part forward when aim is 5`() {
-        val order = "forward 8".toOrder()
-        val status = Status(Vector(5,0),5)
-        assertEquals(Status(Vector(13,40),5),executeOrder2(status,order))
+        val instruction = Instruction.create("forward 8")
+        val status = Status(5,0,5)
+        assertEquals(Status(13,40,5),executeInstrution(status,instruction))
     }
 
     @Test
     fun `part two move up`() {
-        val order = "up 3".toOrder()
-        val status = Status(Vector(13,40),5)
-        assertEquals(Status(Vector(13,40),2),executeOrder2(status,order))
+        val instruction = Instruction.create("up 3")
+        val status = Status(13,40,5)
+        assertEquals(Status(13,40,2),executeInstrution(status,instruction))
     }
     @Test
     fun `part two using sample data`() {

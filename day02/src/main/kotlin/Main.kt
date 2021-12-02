@@ -1,47 +1,47 @@
-data class Vector (val x:Int=0, val y:Int=0) {
-    fun total() =  x * y
-}
 
-enum class Instruction{
-    Forward, Up, Down;
+sealed class Instruction(val qty:Int) {
+    class Forward(qty:Int):Instruction(qty)
+    class Up(qty:Int):Instruction(qty)
+    class Down(qty:Int):Instruction(qty)
+
     companion object {
-        fun from(s:String):Instruction {
-            return when (s) {
-                "forward" -> Forward
-                "up" -> Up
-                "down" -> Down
-                else -> Down
+        fun create(s:String):Instruction {
+            return when (s.command) {
+                "forward" -> Forward(s.qty)
+                "up" -> Up(s.qty)
+                "down" -> Down(s.qty)
+                else -> Down(0)
             }
         }
     }
+    override fun equals(other: Any?) = other is Instruction && this.qty == other.qty  &&  this.javaClass == other.javaClass
 }
 
-data class Order(val instruction:Instruction, val qty:Int )
+val String.command get() = split(" ").first()
+val String.qty get() = split(" ").last().toInt()
 
-data class Status(val position:Vector=Vector(),val aim:Int=0)
-
-fun String.toOrder():Order {
-    val parts = split(" ")
-    return Order(Instruction.from(parts[0]),parts[1].toInt())
+data class Status(val x:Int = 0, val y:Int=0, val aim:Int=0) {
+    fun total() = x * y
 }
 
-fun partOne(data:List<String>):Int {
-    val orders = data.map(String::toOrder)
-    return orders.fold(Status(),::executeOrder).position.total()
-}
-fun executeOrder(current:Status, order:Order) = when(order.instruction) {
-    Instruction.Forward -> Status(Vector(current.position.x + order.qty, current.position.y),current.aim)
-    Instruction.Up -> Status(Vector(current.position.x, current.position.y - order.qty),current.aim)
-    Instruction.Down -> Status(Vector(current.position.x, current.position.y + order.qty),current.aim)
+fun partOne(data:List<String>) =
+     data.map(Instruction::create)
+         .fold(Status(),::executeInstruction)
+         .total()
+
+fun executeInstruction(current:Status, instruction:Instruction) = when(instruction) {
+    is Instruction.Forward -> Status(x = current.x + instruction.qty, y = current.y, aim = current.aim)
+    is Instruction.Up -> Status(x = current.x, y = current.y - instruction.qty, aim = current.aim)
+    is Instruction.Down -> Status(x = current.x, y = current.y + instruction.qty ,aim = current.aim)
 }
 
-fun partTwo(data:List<String>):Int {
-    val orders = data.map(String::toOrder)
-    return orders.fold(Status(),::executeOrder2).position.total()
-}
+fun partTwo(data:List<String>) =
+    data.map(Instruction::create)
+        .fold(Status(),::executeInstrution)
+        .total()
 
-fun executeOrder2(current:Status, order:Order):Status = when (order.instruction) {
-        Instruction.Forward -> Status(Vector(current.position.x + order.qty ,current.position.y + current.aim * order.qty), current.aim)
-        Instruction.Down -> Status(current.position, current.aim + order.qty)
-        Instruction.Up -> Status(current.position, current.aim - order.qty)
+fun executeInstrution(current:Status, instruction:Instruction):Status = when (instruction) {
+    is Instruction.Forward -> Status(x = current.x + instruction.qty ,y = current.y + current.aim * instruction.qty, aim = current.aim)
+    is Instruction.Down -> Status(x = current.x, y = current.y, current.aim + instruction.qty)
+    is Instruction.Up -> Status(x = current.x, y = current.y, aim = current.aim - instruction.qty)
 }
