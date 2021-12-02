@@ -1,10 +1,4 @@
 data class Vector (val x:Int=0, val y:Int=0) {
-    operator fun plus(other:Vector) = Vector(x + other.x, y + other.y)
-    operator fun plus(order:Order) = when(order.instruction) {
-        Instruction.Forward -> Vector(x + order.qty, y)
-        Instruction.Up -> Vector(x, y - order.qty)
-        Instruction.Down -> Vector(x, y + order.qty)
-    }
     fun total() =  x * y
 }
 
@@ -21,7 +15,9 @@ enum class Instruction{
         }
     }
 }
+
 data class Order(val instruction:Instruction, val qty:Int )
+
 data class Status(val position:Vector=Vector(),val aim:Int=0)
 
 fun String.toOrder():Order {
@@ -33,7 +29,11 @@ fun partOne(data:List<String>):Int {
     val orders = data.map(String::toOrder)
     return orders.fold(Status(),::executeOrder).position.total()
 }
-fun executeOrder(current:Status, order:Order) = Status(current.position + order,current.aim)
+fun executeOrder(current:Status, order:Order) = when(order.instruction) {
+    Instruction.Forward -> Status(Vector(current.position.x + order.qty, current.position.y),current.aim)
+    Instruction.Up -> Status(Vector(current.position.x, current.position.y - order.qty),current.aim)
+    Instruction.Down -> Status(Vector(current.position.x, current.position.y + order.qty),current.aim)
+}
 
 fun partTwo(data:List<String>):Int {
     val orders = data.map(String::toOrder)
