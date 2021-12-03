@@ -2,7 +2,7 @@
 typealias BinaryString = String
 
 fun List<BinaryString>.mostCommonBitInColumn(column: Int) =
-    if (map{it[column]}.count{it=='0'} > size /2) '0' else '1'
+    if (count{it[column]=='0'} > size /2) '0' else '1'
 
 fun gamma(list:List<BinaryString>) =
     (0 until list[0].length).map { ndx -> list.mostCommonBitInColumn(ndx) }.joinToString("")
