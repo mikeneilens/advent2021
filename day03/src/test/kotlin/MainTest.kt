@@ -18,23 +18,23 @@ class MainTest {
     """.trimIndent().split("\n")
     @Test
     fun `most common value in first column of sample data is 1`() {
-        assertEquals(1,mostCommonInColumn(sampleData,0))
+        assertEquals('1',mostCommonBitInColumn(sampleData,0))
     }
     @Test
     fun `most common value in 2nd column of sample data is 0`() {
-        assertEquals(0,mostCommonInColumn(sampleData,1))
+        assertEquals('0',mostCommonBitInColumn(sampleData,1))
     }
     @Test
     fun `10110 as int is 22`() {
-        assertEquals(22,binToInt("10110"))
+        assertEquals(22, "10110".binToInt())
     }
     @Test
     fun `gamma of sample data is 10110`() {
-        assertEquals(22,gamma(sampleData))
+        assertEquals("10110",gamma(sampleData))
     }
     @Test
-    fun `epsilon of sample data is 01001`() {
-        assertEquals(9,epsilon(sampleData,22))
+    fun `invert of 10110 is 01001`() {
+        assertEquals("01001",invert("10110"))
     }
     @Test
     fun `partOne using sample data is 198 `() {
