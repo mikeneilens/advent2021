@@ -25,10 +25,6 @@ class MainTest {
         assertEquals('0', sampleData.mostCommonBitInColumn(1))
     }
     @Test
-    fun `10110 as int is 22`() {
-        assertEquals(22, "10110".binToInt())
-    }
-    @Test
     fun `gamma of sample data is 10110`() {
         assertEquals("10110",gamma(sampleData))
     }

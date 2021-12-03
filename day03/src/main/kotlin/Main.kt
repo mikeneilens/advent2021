@@ -12,10 +12,8 @@ fun invert(binaryString:BinaryString) = binaryString.map{if (it == '1') '0' else
 fun partOne(list: List<BinaryString>):Int {
     val gamma = gamma(list)
     val epsilon = invert(gamma)
-    return gamma.binToInt() * epsilon.binToInt()
+    return gamma.toInt(2) * epsilon.toInt(2)
 }
-
-fun String.binToInt() = fold(0){ a, v -> 2 * a + v.digitToInt()}
 
 enum class Rating(val bit:Char) {Oxygen('1'), Scrubber('0')}
 
@@ -30,4 +28,4 @@ fun calcRating(list:List<BinaryString>, rating:Rating, ndx:Int = 0):String =
         calcRating(filteredList, rating, ndx + 1)
     }
 
-fun partTwo(list:List<BinaryString>) = scrubberRating(list).binToInt() * oxyGenRating(list).binToInt()
+fun partTwo(list:List<BinaryString>) = scrubberRating(list).toInt(2) * oxyGenRating(list).toInt(2)

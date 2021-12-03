@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3551c201-5ab0-478f-aaf2-89a8f691288c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../day01/src/test/kotlin/MainTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../day01/src/test/kotlin/MainTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../day01/src/test/kotlin/puzzleInput.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../day01/src/test/kotlin/puzzleInput.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../golang/day02/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../golang/day02/main.go" afterDir="false" />
-    </list>
+    <list default="true" id="3551c201-5ab0-478f-aaf2-89a8f691288c" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
