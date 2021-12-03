@@ -1,13 +1,15 @@
 
-fun List<String>.mostCommonBitInColumn(column: Int) =
+typealias BinaryString = String
+
+fun List<BinaryString>.mostCommonBitInColumn(column: Int) =
     if (map{it[column]}.count{it=='0'} > size /2) '0' else '1'
 
-fun gamma(list:List<String>):String =
+fun gamma(list:List<BinaryString>) =
     (0 until list[0].length).map { ndx -> list.mostCommonBitInColumn(ndx) }.joinToString("")
 
-fun invert(binaryString:String):String = binaryString.map{if (it == '1') '0' else '1'}.joinToString("")
+fun invert(binaryString:BinaryString) = binaryString.map{if (it == '1') '0' else '1'}.joinToString("")
 
-fun partOne(list: List<String>):Int {
+fun partOne(list: List<BinaryString>):Int {
     val gamma = gamma(list)
     val epsilon = invert(gamma)
     return gamma.binToInt() * epsilon.binToInt()
@@ -17,15 +19,15 @@ fun String.binToInt() = fold(0){ a, v -> 2 * a + v.digitToInt()}
 
 enum class Rating(val bit:Char) {Oxygen('1'), Scrubber('0')}
 
-fun oxyGenRating(list:List<String>) = calcRating(list, Rating.Oxygen)
+fun oxyGenRating(list:List<BinaryString>) = calcRating(list, Rating.Oxygen)
 
-fun scrubberRating(list:List<String>)= calcRating(list, Rating.Scrubber)
+fun scrubberRating(list:List<BinaryString>)= calcRating(list, Rating.Scrubber)
 
-fun calcRating(list:List<String>, rating:Rating, ndx:Int = 0):String =
+fun calcRating(list:List<BinaryString>, rating:Rating, ndx:Int = 0):String =
     if (list.size == 1) list.first()
     else {
         val filteredList = if (list.mostCommonBitInColumn(ndx) == rating.bit) list.filter { it[ndx] == '1' } else list.filter { it[ndx] == '0' }
         calcRating(filteredList, rating, ndx + 1)
     }
 
-fun partTwo(list:List<String>):Int = scrubberRating(list).binToInt() * oxyGenRating(list).binToInt()
+fun partTwo(list:List<BinaryString>) = scrubberRating(list).binToInt() * oxyGenRating(list).binToInt()
