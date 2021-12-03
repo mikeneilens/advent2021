@@ -18,11 +18,11 @@ class MainTest {
     """.trimIndent().split("\n")
     @Test
     fun `most common value in first column of sample data is 1`() {
-        assertEquals('1',mostCommonBitInColumn(sampleData,0))
+        assertEquals('1', sampleData.mostCommonBitInColumn(0))
     }
     @Test
     fun `most common value in 2nd column of sample data is 0`() {
-        assertEquals('0',mostCommonBitInColumn(sampleData,1))
+        assertEquals('0', sampleData.mostCommonBitInColumn(1))
     }
     @Test
     fun `10110 as int is 22`() {
