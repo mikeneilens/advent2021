@@ -23,7 +23,7 @@ func createListOfCommands(data string, functionCreator func(commandText string, 
 	return result
 }
 
-func part1FunctionCreator(command string, qty int) func(*submarine) {
+func part1CommandCreator(command string, qty int) func(*submarine) {
 	switch command {
 	case "forward":
 		return func(sub *submarine) { sub.x += qty }
@@ -36,7 +36,7 @@ func part1FunctionCreator(command string, qty int) func(*submarine) {
 	}
 }
 
-func part2FunctionCreator(command string, qty int) func(*submarine) {
+func part2CommandCreator(command string, qty int) func(*submarine) {
 	switch command {
 	case "forward":
 		return func(sub *submarine) { sub.x += qty; sub.y += sub.aim * qty }
