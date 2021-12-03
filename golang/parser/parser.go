@@ -13,7 +13,15 @@ func ParseIntoListOfInts(data string) []int {
 	for ndx, value := range values {
 		intValue, _ := strconv.Atoi(value)
 		result[ndx] = intValue
-		result[ndx] = intValue
+	}
+	return result
+}
+func ParseIntoListOfBinary(data string) []int {
+	values := strings.Split(data, "\n")
+	var result = make([]int, len(values))
+	for ndx, value := range values {
+		intValue, _ := strconv.ParseInt(value, 2, 64)
+		result[ndx] = int(intValue)
 	}
 	return result
 }

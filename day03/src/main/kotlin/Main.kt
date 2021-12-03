@@ -21,7 +21,7 @@ fun oxyGenRating(list:List<BinaryString>) = calcRating(list, Rating.Oxygen)
 
 fun scrubberRating(list:List<BinaryString>)= calcRating(list, Rating.Scrubber)
 
-fun calcRating(list:List<BinaryString>, rating:Rating, ndx:Int = 0):String =
+tailrec fun calcRating(list:List<BinaryString>, rating:Rating, ndx:Int = 0):String =
     if (list.size == 1) list.first()
     else {
         val filteredList = if (list.mostCommonBitInColumn(ndx) == rating.bit) list.filter { it[ndx] == '1' } else list.filter { it[ndx] == '0' }
