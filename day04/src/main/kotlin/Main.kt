@@ -41,13 +41,15 @@ fun callNumberUntilWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledN
     return Pair(lastNumberCalled, winningBingoCard)
 }
 
-fun partOne(data:String):Int {
+fun findWinner(data:String, winningBingoCardFinder:(List<Int>,List<BingoCard>,CalledNumbers)->Pair<Int, BingoCard>):Int {
     val numbers = getNumbers(data)
     val bingoCards = getBingoCards(data)
     val calledNumbers = MutableList(100){false}
-    val (lastNumberCalled, winningBingoCard) = callNumberUntilWinner(numbers, bingoCards, calledNumbers)
+    val (lastNumberCalled, winningBingoCard) = winningBingoCardFinder(numbers, bingoCards, calledNumbers)
     return winningBingoCard.sumOfNumbersNotCalled(calledNumbers) * lastNumberCalled
 }
+
+fun partOne(data:String) = findWinner(data, ::callNumberUntilWinner)
 
 tailrec fun callNumberUntilLastWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers: CalledNumbers):Pair<Int, BingoCard> {
     val (lastNumberCalled, winningBingoCard) = callNumberUntilWinner(numbers, bingoCards, calledNumbers)
@@ -58,12 +60,6 @@ tailrec fun callNumberUntilLastWinner(numbers:List<Int>, bingoCards:List<BingoCa
     }
 }
 
-fun partTwo(data:String):Int {
-    val numbers = getNumbers(data)
-    val bingoCards = getBingoCards(data)
-    val calledNumbers = MutableList(100){false}
-    val (lastNumberCalled, losingBingoCard) = callNumberUntilLastWinner(numbers, bingoCards,calledNumbers)
-    return losingBingoCard.sumOfNumbersNotCalled(calledNumbers) * lastNumberCalled
-}
+fun partTwo(data:String) = findWinner(data, ::callNumberUntilLastWinner)
 
 
