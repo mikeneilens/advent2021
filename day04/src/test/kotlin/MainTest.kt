@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class MainTest {
-    val sampleData = """
+    private val sampleData = """
 7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
@@ -31,11 +31,11 @@ class MainTest {
         assertEquals(expectedResult,getNumbers(sampleData))
     }
     @Test
-    fun `obtaining boards for sample data`() {
-        val expectedResultForBoard2Row4 = listOf(
-            BoardItem(2),BoardItem(0),BoardItem(12),BoardItem(3),BoardItem(7)
+    fun `obtaining bingoCards for sample data`() {
+        val expectedResultForBingoCard2Row4 = listOf(
+            2,0,12,3,7
         )
-        assertEquals(expectedResultForBoard2Row4,getBoards(sampleData)[2].numbers[4])
+        assertEquals(expectedResultForBingoCard2Row4,getBingoCards(sampleData)[2].numbers[4])
     }
     @Test
     fun `move rows to columns`() {
@@ -44,38 +44,42 @@ class MainTest {
     }
     @Test
     fun `no wining row or column`() {
-        val board = getBoards(sampleData)[0]
-        assertEquals(null,winningNumbers(board))
+        val bingoCard = getBingoCards(sampleData)[0]
+        val calledNumbers = MutableList(100){false}
+        assertEquals(false, bingoCard.hasWon(calledNumbers))
     }
     @Test
     fun `wining row`() {
-        val board = getBoards(sampleData)[0]
-        board.numbers[0][0].called = true
-        board.numbers[0][1].called = true
-        board.numbers[0][2].called = true
-        board.numbers[0][3].called = true
-        board.numbers[0][4].called = true
+        val bingoCard = getBingoCards(sampleData)[0]
+        val calledNumbers = MutableList(100){false}
+        calledNumbers[ bingoCard.numbers[0][0]] = true
+        calledNumbers[bingoCard.numbers[0][1]] = true
+        calledNumbers[bingoCard.numbers[0][2]] = true
+        calledNumbers[bingoCard.numbers[0][3]] = true
+        calledNumbers[bingoCard.numbers[0][4]] = true
 
-        assertEquals(board,winningNumbers(board))
+        assertEquals(true, bingoCard.hasWon(calledNumbers))
     }
     @Test
     fun `wining column`() {
-        val board = getBoards(sampleData)[0]
-        board.numbers[0][0].called = true
-        board.numbers[1][0].called = true
-        board.numbers[2][0].called = true
-        board.numbers[3][0].called = true
-        board.numbers[4][0].called = true
+        val bingoCard = getBingoCards(sampleData)[0]
+        val calledNumbers = MutableList(100){false}
+        calledNumbers[bingoCard.numbers[0][0]] = true
+        calledNumbers[bingoCard.numbers[1][0]] = true
+        calledNumbers[bingoCard.numbers[2][0]] = true
+        calledNumbers[bingoCard.numbers[3][0]] = true
+        calledNumbers[bingoCard.numbers[4][0]] = true
 
-        assertEquals(board,winningNumbers(board))
+        assertEquals(true, bingoCard.hasWon(calledNumbers))
     }
     @Test
     fun `winning numbers`(){
         val numbers = getNumbers(sampleData)
-        val boards = getBoards(sampleData)
-        val expectedResult = Pair(24,boards[2]
+        val bingoCards = getBingoCards(sampleData)
+        val calledNumbers = MutableList(100){false}
+        val expectedResult = Pair(24,bingoCards[2]
         )
-        assertEquals(expectedResult, callNumberUntilWinner(numbers, boards))
+        assertEquals(expectedResult, callNumberUntilWinner(numbers, bingoCards, calledNumbers))
     }
     @Test
     fun `part one with sample data`() {
