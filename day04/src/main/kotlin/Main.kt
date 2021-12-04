@@ -44,10 +44,10 @@ fun partOne(data:String):Int {
 fun BingoCard.numbersNotCalled(calledNumbers: MutableList<Boolean>) =
     numbers.sumOf { row -> row.filter { !calledNumbers[it] }.sum() }
 
-tailrec fun callNumberUntilOneLoser(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers: MutableList<Boolean>):Pair<Int, BingoCard> {
+tailrec fun callNumberUntilLastWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers: MutableList<Boolean>):Pair<Int, BingoCard> {
     val (lastNumberCalled, winningBingoCard) = callNumberUntilWinner(numbers, bingoCards, calledNumbers)
     return if (bingoCards.any { !it.hasWon }) {
-        callNumberUntilOneLoser(numbers, bingoCards.filter{!it.hasWon}, calledNumbers)
+        callNumberUntilLastWinner(numbers, bingoCards.filter{!it.hasWon}, calledNumbers)
     } else {
         Pair(lastNumberCalled,winningBingoCard)
     }
@@ -57,7 +57,7 @@ fun partTwo(data:String):Int {
     val numbers = getNumbers(data)
     val bingoCards = getBingoCards(data)
     val calledNumbers = MutableList(100){false}
-    val (lastNumberCalled, losingBoard) = callNumberUntilOneLoser(numbers, bingoCards,calledNumbers)
+    val (lastNumberCalled, losingBoard) = callNumberUntilLastWinner(numbers, bingoCards,calledNumbers)
     return losingBoard.numbersNotCalled(calledNumbers) * lastNumberCalled
 }
 

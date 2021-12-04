@@ -49,7 +49,7 @@ class MainTest {
         assertEquals(false, bingoCard.hasWon(calledNumbers))
     }
     @Test
-    fun `wining row`() {
+    fun `card with winning row`() {
         val bingoCard = getBingoCards(sampleData)[0]
         val calledNumbers = MutableList(100){false}
         calledNumbers[ bingoCard.numbers[0][0]] = true
@@ -61,7 +61,7 @@ class MainTest {
         assertEquals(true, bingoCard.hasWon(calledNumbers))
     }
     @Test
-    fun `wining column`() {
+    fun `card with winning column`() {
         val bingoCard = getBingoCards(sampleData)[0]
         val calledNumbers = MutableList(100){false}
         calledNumbers[bingoCard.numbers[0][0]] = true
@@ -73,7 +73,7 @@ class MainTest {
         assertEquals(true, bingoCard.hasWon(calledNumbers))
     }
     @Test
-    fun `winning numbers`(){
+    fun `find first winner`(){
         val numbers = getNumbers(sampleData)
         val bingoCards = getBingoCards(sampleData)
         val calledNumbers = MutableList(100){false}
@@ -88,6 +88,15 @@ class MainTest {
     @Test
     fun `part one with puzzleInput`() {
         assertEquals(11774, partOne(puzzleInput))
+    }
+    @Test
+    fun `find last winner`(){
+        val numbers = getNumbers(sampleData)
+        val bingoCards = getBingoCards(sampleData)
+        val calledNumbers = MutableList(100){false}
+        val expectedResult = Pair(13,bingoCards[1]
+        )
+        assertEquals(expectedResult, callNumberUntilLastWinner(numbers, bingoCards, calledNumbers))
     }
     @Test
     fun `part two with sample data`() {
