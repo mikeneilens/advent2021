@@ -32,7 +32,7 @@ data class BingoCard(val numbers:List<List<Int>>, val rotatedNumbers:List<List<I
 }
 fun <T>List<List<T>>.rowToColumn() = (0 until first().size).map{row -> (0 until size).map {col-> this[col][row]  }}
 
-fun callNumberUntilWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers:CalledNumbers ):Pair<Int, BingoCard> {
+fun findFirstlWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers:CalledNumbers ):Pair<Int, BingoCard> {
     val (winningBingoCard, lastNumberCalled) =  (numbers.indices).asSequence().mapNotNull{ ndx ->
         calledNumbers[numbers[ndx]] = true
         val possibleWinner = bingoCards.map{ bingoCard ->  bingoCard.refreshWinStatus(calledNumbers)}.firstOrNull{it.hasWon}
@@ -49,17 +49,17 @@ fun findWinner(data:String, winningBingoCardFinder:(List<Int>,List<BingoCard>,Ca
     return winningBingoCard.sumOfNumbersNotCalled(calledNumbers) * lastNumberCalled
 }
 
-fun partOne(data:String) = findWinner(data, ::callNumberUntilWinner)
+fun partOne(data:String) = findWinner(data, ::findFirstlWinner)
 
-tailrec fun callNumberUntilLastWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers: CalledNumbers):Pair<Int, BingoCard> {
-    val (lastNumberCalled, winningBingoCard) = callNumberUntilWinner(numbers, bingoCards, calledNumbers)
+tailrec fun findLastWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers: CalledNumbers):Pair<Int, BingoCard> {
+    val (lastNumberCalled, winningBingoCard) = findFirstlWinner(numbers, bingoCards, calledNumbers)
     return if (bingoCards.any { !it.hasWon }) {
-        callNumberUntilLastWinner(numbers, bingoCards.filter{!it.hasWon}, calledNumbers)
+        findLastWinner(numbers, bingoCards.filter{!it.hasWon}, calledNumbers)
     } else {
         Pair(lastNumberCalled,winningBingoCard)
     }
 }
 
-fun partTwo(data:String) = findWinner(data, ::callNumberUntilLastWinner)
+fun partTwo(data:String) = findWinner(data, ::findLastWinner)
 
 

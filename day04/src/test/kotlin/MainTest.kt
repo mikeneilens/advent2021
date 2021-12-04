@@ -79,7 +79,7 @@ class MainTest {
         val calledNumbers = MutableList(100){false}
         val expectedResult = Pair(24,bingoCards[2]
         )
-        assertEquals(expectedResult, callNumberUntilWinner(numbers, bingoCards, calledNumbers))
+        assertEquals(expectedResult, findFirstlWinner(numbers, bingoCards, calledNumbers))
     }
     @Test
     fun `part one with sample data`() {
@@ -96,7 +96,7 @@ class MainTest {
         val calledNumbers = MutableList(100){false}
         val expectedResult = Pair(13,bingoCards[1]
         )
-        assertEquals(expectedResult, callNumberUntilLastWinner(numbers, bingoCards, calledNumbers))
+        assertEquals(expectedResult, findLastWinner(numbers, bingoCards, calledNumbers))
     }
     @Test
     fun `part two with sample data`() {
