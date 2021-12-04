@@ -22,7 +22,7 @@ data class BingoCard(val numbers:List<List<Int>>, val rotatedNumbers:List<List<I
     fun hasWinningNumbers(calledNumbers: CalledNumbers) =
         numbers.hasWinningRow(calledNumbers) || rotatedNumbers.hasWinningRow(calledNumbers)
 
-    fun sumOfnumbersNotCalled(calledNumbers: CalledNumbers) =
+    fun sumOfNumbersNotCalled(calledNumbers: CalledNumbers) =
         numbers.sumOf { row -> row.filter { !calledNumbers[it] }.sum() }
 
     companion object {
@@ -46,7 +46,7 @@ fun partOne(data:String):Int {
     val bingoCards = getBingoCards(data)
     val calledNumbers = MutableList(100){false}
     val (lastNumberCalled, winningBingoCard) = callNumberUntilWinner(numbers, bingoCards, calledNumbers)
-    return winningBingoCard.sumOfnumbersNotCalled(calledNumbers) * lastNumberCalled
+    return winningBingoCard.sumOfNumbersNotCalled(calledNumbers) * lastNumberCalled
 }
 
 tailrec fun callNumberUntilLastWinner(numbers:List<Int>, bingoCards:List<BingoCard>, calledNumbers: CalledNumbers):Pair<Int, BingoCard> {
@@ -63,7 +63,7 @@ fun partTwo(data:String):Int {
     val bingoCards = getBingoCards(data)
     val calledNumbers = MutableList(100){false}
     val (lastNumberCalled, losingBingoCard) = callNumberUntilLastWinner(numbers, bingoCards,calledNumbers)
-    return losingBingoCard.sumOfnumbersNotCalled(calledNumbers) * lastNumberCalled
+    return losingBingoCard.sumOfNumbersNotCalled(calledNumbers) * lastNumberCalled
 }
 
 
