@@ -46,7 +46,7 @@ class MainTest {
     fun `no wining row or column`() {
         val bingoCard = getBingoCards(sampleData)[0]
         val calledNumbers = MutableList(100){false}
-        assertEquals(false, bingoCard.hasWon(calledNumbers))
+        assertEquals(false, bingoCard.hasWinningNumbers(calledNumbers))
     }
     @Test
     fun `card with winning row`() {
@@ -58,7 +58,7 @@ class MainTest {
         calledNumbers[bingoCard.numbers[0][3]] = true
         calledNumbers[bingoCard.numbers[0][4]] = true
 
-        assertEquals(true, bingoCard.hasWon(calledNumbers))
+        assertEquals(true, bingoCard.hasWinningNumbers(calledNumbers))
     }
     @Test
     fun `card with winning column`() {
@@ -70,10 +70,10 @@ class MainTest {
         calledNumbers[bingoCard.numbers[3][0]] = true
         calledNumbers[bingoCard.numbers[4][0]] = true
 
-        assertEquals(true, bingoCard.hasWon(calledNumbers))
+        assertEquals(true, bingoCard.hasWinningNumbers(calledNumbers))
     }
     @Test
-    fun `find first winner`(){
+    fun `find first winner in sample data`(){
         val numbers = getNumbers(sampleData)
         val bingoCards = getBingoCards(sampleData)
         val calledNumbers = MutableList(100){false}
@@ -90,7 +90,7 @@ class MainTest {
         assertEquals(11774, partOne(puzzleInput))
     }
     @Test
-    fun `find last winner`(){
+    fun `find last winner in sample data`(){
         val numbers = getNumbers(sampleData)
         val bingoCards = getBingoCards(sampleData)
         val calledNumbers = MutableList(100){false}
