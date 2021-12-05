@@ -18,8 +18,8 @@ fun List<String>.updateMap(ventsMap: MutableMap<Point, Int>, includeDiagonals: B
     map(String::toLine).forEach { it.updateMap(ventsMap, includeDiagonals) }
 
 fun Line.updateMap(ventsMap: MutableMap<Point, Int>, includeDiagonals: Boolean = false) {
-    val xIncrement = increment(start.x, end.x)
-    val yIncrement = increment(start.y, end.y)
+    val xIncrement = getIncrement(start.x, end.x)
+    val yIncrement = getIncrement(start.y, end.y)
     multipliers(start, end, includeDiagonals)?.forEach {
         val point = Point(start.x + xIncrement * it, start.y + yIncrement * it)
         ventsMap[point] = (ventsMap[point] ?: 0) + 1
@@ -28,7 +28,7 @@ fun Line.updateMap(ventsMap: MutableMap<Point, Int>, includeDiagonals: Boolean =
 
 fun MutableMap<Point, Int>.pointsToAvoid() = filter { it.value >= 2 }.keys
 
-fun increment(start:Int, end:Int) = if ((end - start) > 0) 1 else if ((end - start) < 0) -1 else 0
+fun getIncrement(start:Int, end:Int) = if ((end - start) > 0) 1 else if ((end - start) < 0) -1 else 0
 
 fun multipliers(start:Point, end:Point, includeDiagonals: Boolean) =
     if (!includeDiagonals && start.x != end.x && start.y != end.y) null
