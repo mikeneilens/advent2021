@@ -34,8 +34,7 @@ class MainTest {
         )
         for (test in data) {
             val ventsMap =  mutableMapOf<Point, Int>()
-            updateMap(test.first.toLine(), ventsMap, includeDiagonals = false)
-            ventsMap.print()
+            test.first.toLine().updateMap(ventsMap, includeDiagonals = false)
             for ( point in test.second) {
                 assertEquals(ventsMap[point], test.third )
             }
@@ -45,14 +44,14 @@ class MainTest {
     @Test
     fun `updating vent map  with sample data`() {
         val ventsMap = mutableMapOf<Point, Int>()
-        updateMap(sampleData, ventsMap)
+        sampleData.updateMap(ventsMap)
         assertEquals(1, ventsMap[Point(7,0)])
         assertEquals(2, ventsMap[Point(3,4)])
     }
     @Test
     fun `points to avoid on sample data`() {
         val ventsMap = mutableMapOf<Point, Int>()
-        updateMap(sampleData, ventsMap)
+        sampleData.updateMap(ventsMap)
         assertEquals(5, ventsMap.pointsToAvoid().size )
     }
     @Test
@@ -77,7 +76,7 @@ class MainTest {
         )
         for (test in data) {
             val ventsMap =  mutableMapOf<Point, Int>()
-            updateMap(test.first.toLine(), ventsMap, includeDiagonals = true)
+            test.first.toLine().updateMap(ventsMap, includeDiagonals = true)
             for ( point in test.second) {
                 assertTrue(ventsMap[point] == test.third )
             }
@@ -86,7 +85,7 @@ class MainTest {
     @Test
     fun `updating vent map with sample data including diagonals`() {
         val ventsMap = mutableMapOf<Point, Int>()
-        updateMap(sampleData, ventsMap, includeDiagonals = true )
+        sampleData.updateMap(ventsMap, includeDiagonals = true)
         ventsMap.print()
         assertEquals(1, ventsMap[Point(7,0)])
         assertEquals(2, ventsMap[Point(3,4)])

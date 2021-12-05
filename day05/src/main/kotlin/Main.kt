@@ -1,23 +1,27 @@
 import kotlin.math.abs
 
 data class Point(val x:Int, val y:Int)
+
 data class Line(val start:Point, val end:Point)
 
 fun String.toLine():Line {
-    val pointStrings = split(" -> ")
-    val startNumbers=pointStrings[0].split(",").map(String::toInt)
-    val endNumbers=pointStrings[1].split(",").map(String::toInt)
-    return Line(Point(startNumbers[0],startNumbers[1]),Point(endNumbers[0],endNumbers[1]))
+    val (start, end) = split(" -> ").toPair()
+    return Line(start.toPoint(),end.toPoint())
 }
 
-fun updateMap(listOfLineText:List<String>, ventsMap:MutableMap<Point,Int>, includeDiagonals:Boolean = false) =
-    listOfLineText.map(String::toLine).forEach {updateMap(it,ventsMap,includeDiagonals)}
+fun String.toPoint() = split(",")
+    .map(String::toInt)
+    .toPair()
+    .let{Point(it.first, it.second)}
 
-fun updateMap(line:Line, ventsMap:MutableMap<Point,Int>, includeDiagonals:Boolean = false) {
-    val xIncrement = increment(line.start.x, line.end.x)
-    val yIncrement = increment(line.start.y, line.end.y)
-    multipliers(line.start, line.end, includeDiagonals)?.forEach {
-        val point = Point(line.start.x + xIncrement * it,line.start.y + yIncrement * it)
+fun List<String>.updateMap(ventsMap: MutableMap<Point, Int>, includeDiagonals: Boolean = false) =
+    map(String::toLine).forEach { it.updateMap(ventsMap, includeDiagonals) }
+
+fun Line.updateMap(ventsMap: MutableMap<Point, Int>, includeDiagonals: Boolean = false) {
+    val xIncrement = increment(start.x, end.x)
+    val yIncrement = increment(start.y, end.y)
+    multipliers(start, end, includeDiagonals)?.forEach {
+        val point = Point(start.x + xIncrement * it, start.y + yIncrement * it)
         ventsMap[point] = (ventsMap[point] ?: 0) + 1
     }
 }
@@ -31,18 +35,17 @@ fun multipliers(start:Point, end:Point, includeDiagonals: Boolean) =
     else if (start.x != end.x) 0..abs(start.x - end.x )
     else 0..abs(start.y - end.y )
 
-fun partOne(data:List<String>): Int {
-    val ventsMap = mutableMapOf<Point, Int>()
-    updateMap(data, ventsMap)
+fun partOne(data:List<String>,ventsMap: MutableMap<Point, Int> = mutableMapOf()): Int {
+    data.updateMap(ventsMap)
     return ventsMap.pointsToAvoid().size
 }
 
-fun partTwo(data:List<String>): Int {
-    val ventsMap = mutableMapOf<Point, Int>()
-    updateMap(data, ventsMap, true)
+fun partTwo(data:List<String>,ventsMap: MutableMap<Point, Int> = mutableMapOf()): Int {
+    data.updateMap(ventsMap, true)
     return ventsMap.pointsToAvoid().size
 }
 
+fun <T>List<T>.toPair() =Pair(get(0),get(1))
 
 fun Map<Point,Int>.print() {
     if (keys.isEmpty()) return
