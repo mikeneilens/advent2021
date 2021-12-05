@@ -85,17 +85,17 @@ func multiplierMax(start point, end point, includeDiagonals bool) int {
 	if !includeDiagonals && start.x != end.x && start.y != end.y {
 		return -1
 	} else if start.x != end.x {
-		if end.x < start.x {
-			return start.x - end.x + 1
-		} else {
-			return end.x - start.x + 1
-		}
+		return diffPlusOne(start.x, end.x)
 	} else {
-		if end.y < start.y {
-			return start.y - end.y + 1
-		} else {
-			return end.y - start.y + 1
-		}
+		return diffPlusOne(start.y, end.y)
+	}
+}
+
+func diffPlusOne(a int, b int) int {
+	if a < b {
+		return b - a + 1
+	} else {
+		return a - b + 1
 	}
 
 }
