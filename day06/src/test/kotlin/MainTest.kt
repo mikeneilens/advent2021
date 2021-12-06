@@ -29,6 +29,11 @@ class MainTest {
         assertEquals(3L, newFishAgedSix(fishForEachAge))
     }
     @Test
+    fun `if there are no fish aged 7 or 0 the total of fish that are now aged 6 is 2`(){
+        var fishForEachAge = mapOf<Int, Long?>( 1 to 4L, 2 to 3L,3 to 4L,4 to 6L, 5 to 3L, 6 to 1L, 8 to 3L )
+        assertEquals(null, newFishAgedSix(fishForEachAge))
+    }
+    @Test
     fun `part one using sample data for 80 days`() {
         assertEquals(5934,partOne(sampleData,80))
     }
