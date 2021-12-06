@@ -1,15 +1,15 @@
 fun partOne(data:String, days:Int):Long {
-    var fishForEachAge = turnListOfNumbersIntoMap(data)
-    repeat(days) {
-        fishForEachAge = ((1..8) + 0).mapIndexed {newAge,oldAge -> calcFishCount(oldAge, newAge, fishForEachAge) }.toMap()
-    }
-    return fishForEachAge.values.sumOf{it}
+    val fishForEachAge = turnListOfNumbersIntoMap(data)
+    return (1..days).fold(fishForEachAge,::makeFishOlder).values.sumOf{it}
 }
 
-fun calcFishCount(oldAge: Int, newAge: Int, fishForEachAge: Map<Int, Long>) =
-    if (newAge == 6) Pair(6, newFishAgedSix(fishForEachAge)) else Pair(newAge, fishForEachAge.getOrDefault(oldAge, 0))
+fun makeFishOlder(fishForEachAge: Map<Int, Long>, day:Int) =
+    ((1..8) + 0).mapIndexed { newAge, oldAge -> Pair(newAge, calcFishCount(oldAge, newAge, fishForEachAge)) }.toMap()
 
-fun newFishAgedSix(fishMap: Map<Int, Long>) =
+fun calcFishCount(oldAge: Int, newAge: Int, fishForEachAge: Map<Int, Long>) =
+    if (newAge == 6) calcFishAgedSix(fishForEachAge) else fishForEachAge.getOrDefault(oldAge, 0)
+
+fun calcFishAgedSix(fishMap: Map<Int, Long>) =
     fishMap.getOrDefault(7,0) + fishMap.getOrDefault(0,0)
 
 fun turnListOfNumbersIntoMap(data:String):Map<Int, Long> =
