@@ -1,21 +1,18 @@
-
 fun partOne(data:String, days:Int):Long {
     var fishForEachAge = turnListOfNumbersIntoMap(data)
     repeat(days) {
-        val newFishAges = ((1..8) + 0).mapIndexed {newAge,oldAge ->Pair(newAge,fishForEachAge[oldAge])}.toMap().toMutableMap()
-        newFishAges[6] = newFishAgedSix(fishForEachAge)
-        fishForEachAge = newFishAges
+        fishForEachAge = ((1..8) + 0).mapIndexed {newAge,oldAge -> calcFishCount(oldAge, newAge, fishForEachAge) }.toMap()
     }
-    return fishForEachAge.values.filterNotNull().sumOf{it}
+    return fishForEachAge.values.sumOf{it}
 }
 
-fun newFishAgedSix(fishMap: Map<Int, Long?>) =
-    if (fishMap[7] == null && fishMap[0] == null) null
-    else if (fishMap[7] != null && fishMap[0] != null) fishMap[7]!! + fishMap[0]!!
-    else if (fishMap[7] != null) fishMap[7]
-    else fishMap[0]
+fun calcFishCount(oldAge: Int, newAge: Int, fishForEachAge: Map<Int, Long>) =
+    if (newAge == 6) Pair(6, newFishAgedSix(fishForEachAge)) else Pair(newAge, fishForEachAge.getOrDefault(oldAge, 0))
 
-fun turnListOfNumbersIntoMap(data:String):Map<Int, Long?> =
+fun newFishAgedSix(fishMap: Map<Int, Long>) =
+    fishMap.getOrDefault(7,0) + fishMap.getOrDefault(0,0)
+
+fun turnListOfNumbersIntoMap(data:String):Map<Int, Long> =
     data.split(",")
         .map(String::toInt)
         .groupingBy { it }.eachCount()

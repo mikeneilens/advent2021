@@ -15,23 +15,23 @@ class MainTest {
     }
     @Test
     fun `if number of fish age 7 is 2 and number of fish age 0 is 3 the total of fish that are now aged 6 is 5`(){
-        var fishForEachAge = mapOf<Int, Long?>( 7 to 2L, 0 to 3L )
+        var fishForEachAge = mapOf<Int, Long>( 7 to 2L, 0 to 3L )
         assertEquals(5L, newFishAgedSix(fishForEachAge))
     }
     @Test
     fun `if number of fish age 7 is 2 and no other fish the total of fish that are now aged 6 is 2`(){
-        var fishForEachAge = mapOf<Int, Long?>( 7 to 2L )
+        var fishForEachAge = mapOf<Int, Long>( 7 to 2L )
         assertEquals(2L, newFishAgedSix(fishForEachAge))
     }
     @Test
     fun `if number of fish age 0 is 3 and no other fish the total of fish that are now aged 6 is 2`(){
-        var fishForEachAge = mapOf<Int, Long?>( 0 to 3L )
+        var fishForEachAge = mapOf<Int, Long>( 0 to 3L )
         assertEquals(3L, newFishAgedSix(fishForEachAge))
     }
     @Test
-    fun `if there are no fish aged 7 or 0 the total of fish that are now aged 6 is 2`(){
-        var fishForEachAge = mapOf<Int, Long?>( 1 to 4L, 2 to 3L,3 to 4L,4 to 6L, 5 to 3L, 6 to 1L, 8 to 3L )
-        assertEquals(null, newFishAgedSix(fishForEachAge))
+    fun `if there are no fish aged 7 or 0 the total of fish that are now aged 6 is 0`(){
+        var fishForEachAge = mapOf<Int, Long>( 1 to 4L, 2 to 3L,3 to 4L,4 to 6L, 5 to 3L, 6 to 1L, 8 to 3L )
+        assertEquals(0L, newFishAgedSix(fishForEachAge))
     }
     @Test
     fun `part one using sample data for 80 days`() {
@@ -49,5 +49,4 @@ class MainTest {
     fun `day 5 part two`() {
         assertEquals(1574445493136L,partOne(puzzleInput,256))
     }
-
 }
