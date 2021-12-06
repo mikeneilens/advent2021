@@ -9,7 +9,7 @@ fun partOne(data:String, days:Int):Long {
     return fishMap.values.filter{it!=null}.sumOf{it!!}
 }
 
-private fun newFishesAgedSix(fishMap: Map<Int, Long?>) =
+fun newFishesAgedSix(fishMap: Map<Int, Long?>) =
     if (fishMap[7] == null && fishMap[0] == null) null
     else if (fishMap[7] != null && fishMap[0] != null) fishMap[7]!! + fishMap[0]!!
     else if (fishMap[7] != null) fishMap[7]!!
