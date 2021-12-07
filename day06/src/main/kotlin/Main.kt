@@ -1,17 +1,13 @@
 fun partOne(data:String, days:Int):Long =
-    (1..days).fold(parse(data),::makeFishOlder).values.sumOf{it}
+    (1..days).fold(parse(data),::makeFishOlder).sumOf{it}
 
-fun makeFishOlder(fishForEachAge: Map<Int, Long>, day:Int) =
-    ((1..8) + 0).mapIndexed { newAge, oldAge -> Pair(newAge, calcFishCount(oldAge, newAge, fishForEachAge)) }.toMap()
+fun makeFishOlder(fishForEachAge: List<Long>, day:Int) =
+    ((1..8) + 0).mapIndexed { newAge, oldAge -> calcFishCount(oldAge, newAge, fishForEachAge) }
 
-fun calcFishCount(oldAge: Int, newAge: Int, fishForEachAge: Map<Int, Long>) =
-    if (newAge == 6) calcFishAgedSix(fishForEachAge) else fishForEachAge.getOrDefault(oldAge, 0)
+fun calcFishCount(oldAge: Int, newAge: Int, fishForEachAge: List<Long>) =
+    if (newAge == 6) calcFishAgedSix(fishForEachAge) else fishForEachAge[oldAge]
 
-fun calcFishAgedSix(fishMap: Map<Int, Long>) =
-    fishMap.getOrDefault(7,0) + fishMap.getOrDefault(0,0)
+fun calcFishAgedSix(fishMap: List<Long>) =
+    fishMap[7] + fishMap[0]
 
-fun parse(data:String):Map<Int, Long> =
-    data.split(",")
-        .map(String::toInt)
-        .groupingBy { it }.eachCount()
-        .toList().associate { Pair(it.first, it.second.toLong()) }
+fun parse(data:String) =(0..8).map{fishAge->  data.split(",").count { it.toInt() == fishAge}.toLong()}

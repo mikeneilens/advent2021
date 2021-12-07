@@ -15,22 +15,22 @@ class MainTest {
     }
     @Test
     fun `if number of fish age 7 is 2 and number of fish age 0 is 3 the total of fish that are now aged 6 is 5`(){
-        var fishForEachAge = mapOf<Int, Long>( 7 to 2L, 0 to 3L )
+        var fishForEachAge = listOf( 3L,0L,0L,0L,0L,0L,0L,2L,0L )
         assertEquals(5L, calcFishAgedSix(fishForEachAge))
     }
     @Test
     fun `if number of fish age 7 is 2 and no other fish the total of fish that are now aged 6 is 2`(){
-        var fishForEachAge = mapOf<Int, Long>( 7 to 2L )
+        var fishForEachAge = listOf( 0L,0L,0L,0L,0L,0L,0L,2L,0L )
         assertEquals(2L, calcFishAgedSix(fishForEachAge))
     }
     @Test
     fun `if number of fish age 0 is 3 and no other fish the total of fish that are now aged 6 is 2`(){
-        var fishForEachAge = mapOf<Int, Long>( 0 to 3L )
+        var fishForEachAge = listOf(  3L,0L,0L,0L,0L,0L,0L,0L,0L )
         assertEquals(3L, calcFishAgedSix(fishForEachAge))
     }
     @Test
     fun `if there are no fish aged 7 or 0 the total of fish that are now aged 6 is 0`(){
-        var fishForEachAge = mapOf<Int, Long>( 1 to 4L, 2 to 3L,3 to 4L,4 to 6L, 5 to 3L, 6 to 1L, 8 to 3L )
+        var fishForEachAge = listOf( 0L,4L,3L,4L,6L,3L,1L,0L,3L )
         assertEquals(0L, calcFishAgedSix(fishForEachAge))
     }
     @Test
