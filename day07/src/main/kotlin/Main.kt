@@ -2,8 +2,13 @@ import kotlin.math.abs
 
 fun parse(data:String) = data.split(",").map(String::toInt).groupingBy { it }.eachCount()
 
-fun calcDistanceForEachPosition(m:Map<Int,Int>,cost:List<Int>): List<Pair<Int, Int>> =
-    (0..m.keys.maxOf { it }).map{position -> Pair(position, m.keys.sumOf { k -> cost[abs(position - k)] * m.getValue(k) })}
+fun calcDistanceForEachPosition(crabsAtEachPosition:Map<Int,Int>, costForEachStepSize:List<Int>): List<Pair<Int, Int>> =
+    (0..crabsAtEachPosition.keys.maxOf { it }).map{ position -> Pair(position, costOfMovingCrabs(position, crabsAtEachPosition, costForEachStepSize))}
+
+fun costOfMovingCrabs(position: Int, crabsAtEachPosition: Map<Int, Int>, costForEachStepSize: List<Int>) =
+    crabsAtEachPosition.keys.sumOf { crabPosition ->
+        costForEachStepSize[abs(position - crabPosition)] * crabsAtEachPosition.getValue(crabPosition)
+    }
 
 fun partOne(data:String):Int {
     val values = parse(data)
