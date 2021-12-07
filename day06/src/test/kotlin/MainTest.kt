@@ -7,7 +7,7 @@ class MainTest {
 
     @Test
     fun `turning a list of values into a map`() {
-        val result = turnListOfNumbersIntoMap(sampleData)
+        val result = parse(sampleData)
         assertEquals(1,result[1])
         assertEquals(1,result[2])
         assertEquals(2,result[3])
