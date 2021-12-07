@@ -17,6 +17,6 @@ class MainTest {
     }
     @Test
     fun `part two with puzzle input`() {
-        assertEquals(168,partTwo(puzzleInput))
+        assertEquals(97164301,partTwo(puzzleInput))
     }
 }
