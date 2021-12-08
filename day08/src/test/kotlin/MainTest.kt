@@ -63,7 +63,7 @@ class MainTest {
     @Test
     fun `values of segments in test data`() {
         val display = parse(testData)[0]
-        assertEquals(5353, display.valuesOfSegments())
+        assertEquals(5353, display.valueOfEachSegments())
     }
     @Test
     fun `values of segments in sample data`() {

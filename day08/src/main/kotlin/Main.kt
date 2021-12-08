@@ -12,9 +12,9 @@ data class Display(val signalWires:List<Set<Char>>, val segments:List<Set<Char>>
     val zero by lazy {signalWires.filter { it.size == 6 && it != six }.map { Pair(it, (it - five)) }.first { it.second.size == 2 }.first}
     val nine by lazy {signalWires.first { it.size == 6 && it != six && it != zero }}
 
-    private val decoders = listOf(zero, one, two, three, four, five, six, seven, eight, nine).asSequence()
+    private val decodedWires = listOf(zero, one, two, three, four, five, six, seven, eight, nine).asSequence()
 
-    fun valuesOfSegments() = segments.map{segment ->  decoders.indexOfFirst { segment == it}}.toInt()
+    fun valueOfEachSegments() = segments.map{ segment ->  decodedWires.indexOfFirst { segment == it}}.toInt()
 }
 
 fun parse(data:List<String>):List<Display> =
@@ -28,7 +28,7 @@ fun List<Display>.digitsContainingFourSevenEight() =
 
 fun partOne(data:List<String>) = parse(data).digitsContainingFourSevenEight().size
 
-fun partTwo(data:List<String>) = parse(data).sumOf(Display::valuesOfSegments)
+fun partTwo(data:List<String>) = parse(data).sumOf(Display::valueOfEachSegments)
 
 //helpers
 fun List<String>.toPair() = listOf(get(0),get(1))
