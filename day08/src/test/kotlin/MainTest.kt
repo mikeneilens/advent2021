@@ -49,16 +49,16 @@ class MainTest {
     @Test
     fun `puzzleInput findNumbers`() {
         val display = parse(testData)[0]
-        assertEquals("ab".toSet(),display.one)
-        assertEquals("eafb".toSet(),display.four)
-        assertEquals("dab".toSet(),display.seven)
-        assertEquals("acedgfb".toSet(),display.eight)
-        assertEquals("cdfgeb".toSet(),display.six)
-        assertEquals("fbcad".toSet(), display.three)
-        assertEquals("cdfbe".toSet(), display.five)
-        assertEquals("gcdfa".toSet(), display.two)
-        assertEquals("cagedb".toSet(), display.zero)
-        assertEquals("cefabd".toSet(), display.nine)
+        assertEquals("ab".toSet(),display.wiresForOne)
+        assertEquals("eafb".toSet(),display.wiresForFour)
+        assertEquals("dab".toSet(),display.wiresForSeven)
+        assertEquals("acedgfb".toSet(),display.wiresForEight)
+        assertEquals("cdfgeb".toSet(),display.wiresForSix)
+        assertEquals("fbcad".toSet(), display.wiresForThree)
+        assertEquals("cdfbe".toSet(), display.wiresForFive)
+        assertEquals("gcdfa".toSet(), display.wiresForTwo)
+        assertEquals("cagedb".toSet(), display.wiresForZero)
+        assertEquals("cefabd".toSet(), display.wiresForNine)
     }
     @Test
     fun `values of segments in test data`() {
