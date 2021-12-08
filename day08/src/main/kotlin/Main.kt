@@ -1,39 +1,38 @@
-data class Display(val signalWires:List<String>, val segments:List<String>) {
-    fun segmentsdThatAreOne() = segments.filter{it.length == 2}
-    fun segmentsdThatAreFour() = segments.filter{it.length == 4}
-    fun segmentsdThatAreSeven() = segments.filter{it.length == 3}
-    fun segmentsdThatAreEight() = segments.filter{it.length == 7}
+data class Display(val signalWires:List<Set<Char>>, val segments:List<Set<Char>>) {
+    fun segmentsThatAreOne() = segments.filter{it == one}
+    fun segmentsThatAreFour() = segments.filter{it == four}
+    fun segmentsThatAreSeven() = segments.filter{it == seven}
+    fun segmentsThatAreEight() = segments.filter{it == eight}
 
-    fun eight() = signalWires.map(String::toSet).filter{it.size == 7}.first().toSet()
-    fun one() = signalWires.map(String::toSet).filter{it.size == 2}.first().toSet()
-    fun four() = signalWires.map(String::toSet).filter{it.size == 4}.first().toSet()
-    fun seven() = signalWires.map(String::toSet).filter{it.size == 3}.first().toSet()
-    fun six():Set<Char> = signalWires.map(String::toSet).filter{it.size == 6}.map{ Pair(it, (it - one())) }.filter{it.second.size == 5}.first().first
-    fun three() = signalWires.map(String::toSet).filter{it.size == 5}.map{ Pair(it, it - one()) }.filter{it.second.size == 3}.first().first
-    fun five() = signalWires.map(String::toSet).filter{it.size == 5}.filter{it != three()}.map{Pair(it, it - four())}.filter{it.second.size == 2}.first().first
-    fun two() = signalWires.map(String::toSet).filter{it.size == 5 &&  it != three() && it != five()}.first()
-    fun zero() = signalWires.map(String::toSet).filter{it.size == 6 && it != six()}.map{ Pair(it, (it - five())) }.filter{it.second.size == 2}.first().first
-    fun nine() = signalWires.map(String::toSet).filter{it.size == 6 &&  it != six() && it != zero()}.first()
+    val eight by lazy {signalWires.first { it.size == 7 }}
+    val one by lazy {signalWires.first { it.size == 2 }}
+    val four by lazy {signalWires.first { it.size == 4 }}
+    val seven by lazy {signalWires.first { it.size == 3 }}
+    val six by lazy {signalWires.filter { it.size == 6 }.map { Pair(it, (it - one)) }.first { it.second.size == 5 }.first}
+    val three by lazy {signalWires.filter { it.size == 5 }.map { Pair(it, it - one) }.first { it.second.size == 3 }.first}
+    val five by lazy {signalWires.filter { it.size == 5 }.filter { it != three }.map { Pair(it, it - four) }.first { it.second.size == 2 }.first}
+    val two by lazy {signalWires.first { it.size == 5 && it != three && it != five }}
+    val zero by lazy {signalWires.filter { it.size == 6 && it != six }.map { Pair(it, (it - five)) }.first { it.second.size == 2 }.first}
+    val nine by lazy {signalWires.first { it.size == 6 && it != six && it != zero }}
 
-    val decoders = listOf(::zero, ::one, ::two, ::three, ::four, ::five, ::six, ::seven, ::eight, ::nine).asSequence()
+    private val decoders = listOf(zero, one, two, three, four, five, six, seven, eight, nine).asSequence()
 
-    fun valuesOfSegments() = segments.map{segment ->  decoders.indexOfFirst { segment.toSet() == it()}}.map(Int::toString).joinToString("").toInt()
+    fun valuesOfSegments() = segments.map{segment ->  decoders.indexOfFirst { segment == it}}.toInt()
 }
-
-fun partTwo(data:List<String>) = parse(data).map(Display::valuesOfSegments).sum()
 
 fun parse(data:List<String>):List<Display> =
     data.map {
         val (signals, segments) = it.split(" | ").toPair()
-        Display(signals.split(" "), segments.split(" "))
+        Display(signals.split(" ").map(String::toSet), segments.split(" ").map(String::toSet))
     }
 
+fun List<Display>.digitsContainingFourSevenEight() =
+    flatMap{it.segmentsThatAreOne() + it.segmentsThatAreFour() + it.segmentsThatAreSeven() + it.segmentsThatAreEight()}
+
+fun partOne(data:List<String>) = parse(data).digitsContainingFourSevenEight().size
+
+fun partTwo(data:List<String>) = parse(data).sumOf(Display::valuesOfSegments)
+
+//helpers
 fun List<String>.toPair() = listOf(get(0),get(1))
-
-fun digitsContainingFourSevenEight(displays:List<Display>) =
-    displays.flatMap{it.segmentsdThatAreOne() + it.segmentsdThatAreFour() + it.segmentsdThatAreSeven() + it.segmentsdThatAreEight()}
-
-fun partOne(data:List<String>):Int {
-    val displays = parse(data)
-    return digitsContainingFourSevenEight(displays).size
-}
+fun List<Int>.toInt() = joinToString("", transform = Int::toString).toInt() // converts "[1,2,3]" to integer 123

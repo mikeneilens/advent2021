@@ -21,8 +21,9 @@ class MainTest {
     @Test
     fun `parsing test data`() {
         val result = parse(testData)
-        val expectedSignals = "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab".split(" ")
-        val expectedSegments = "cdfeb fcadb cdfeb cdbaf".split(" ")
+        val expectedSignals =  listOf("acedgfb".toSet(), "cdfbe".toSet(), "gcdfa".toSet(), "fbcad".toSet(),
+            "dab".toSet(), "cefabd".toSet(), "cdfgeb".toSet(), "eafb".toSet(), "cagedb".toSet(), "ab".toSet())
+        val expectedSegments = listOf("cdfeb".toSet(), "fcadb".toSet(), "cdfeb".toSet(), "cdbaf".toSet(),)
         assertEquals(1,result.size)
         assertEquals(expectedSignals, result[0].signalWires)
         assertEquals(expectedSegments, result[0].segments)
@@ -30,7 +31,7 @@ class MainTest {
     @Test
     fun `digitsThatContainOneFourSevenEight using test data`() {
         val displays = parse(testData)
-        val result = digitsContainingFourSevenEight(displays)
+        val result = displays.digitsContainingFourSevenEight()
         assertEquals(listOf<String>(), result)
     }
     @Test
@@ -48,16 +49,16 @@ class MainTest {
     @Test
     fun `puzzleInput findNumbers`() {
         val display = parse(testData)[0]
-        assertEquals("ab".toSet(),display.one())
-        assertEquals("eafb".toSet(),display.four())
-        assertEquals("dab".toSet(),display.seven())
-        assertEquals("acedgfb".toSet(),display.eight())
-        assertEquals("cdfgeb".toSet(),display.six())
-        assertEquals("fbcad".toSet(), display.three())
-        assertEquals("cdfbe".toSet(), display.five())
-        assertEquals("gcdfa".toSet(), display.two())
-        assertEquals("cagedb".toSet(), display.zero())
-        assertEquals("cefabd".toSet(), display.nine())
+        assertEquals("ab".toSet(),display.one)
+        assertEquals("eafb".toSet(),display.four)
+        assertEquals("dab".toSet(),display.seven)
+        assertEquals("acedgfb".toSet(),display.eight)
+        assertEquals("cdfgeb".toSet(),display.six)
+        assertEquals("fbcad".toSet(), display.three)
+        assertEquals("cdfbe".toSet(), display.five)
+        assertEquals("gcdfa".toSet(), display.two)
+        assertEquals("cagedb".toSet(), display.zero)
+        assertEquals("cefabd".toSet(), display.nine)
     }
     @Test
     fun `values of segments in test data`() {
