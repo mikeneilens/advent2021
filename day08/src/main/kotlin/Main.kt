@@ -1,8 +1,5 @@
 data class Display(val signalWires:List<Set<Char>>, val segments:List<Set<Char>>) {
-    fun segmentsThatAreOne() = segments.filter{it == one}
-    fun segmentsThatAreFour() = segments.filter{it == four}
-    fun segmentsThatAreSeven() = segments.filter{it == seven}
-    fun segmentsThatAreEight() = segments.filter{it == eight}
+    fun segmentsThatAre(wires:Set<Char>) = segments.filter{it == wires}
 
     val eight by lazy {signalWires.first { it.size == 7 }}
     val one by lazy {signalWires.first { it.size == 2 }}
@@ -27,7 +24,7 @@ fun parse(data:List<String>):List<Display> =
     }
 
 fun List<Display>.digitsContainingFourSevenEight() =
-    flatMap{it.segmentsThatAreOne() + it.segmentsThatAreFour() + it.segmentsThatAreSeven() + it.segmentsThatAreEight()}
+    flatMap{it.segmentsThatAre(it.one) + it.segmentsThatAre(it.four) + it.segmentsThatAre(it.seven) + it.segmentsThatAre(it.eight)}
 
 fun partOne(data:List<String>) = parse(data).digitsContainingFourSevenEight().size
 
