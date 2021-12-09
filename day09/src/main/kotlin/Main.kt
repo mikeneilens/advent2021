@@ -3,8 +3,7 @@ data class Position(val x:Int, val y:Int ) {
 
     fun surroundingPositions(maxX:Int, maxY:Int):List<Position> =
         listOf(Position(x - 1, y),Position(x , y - 1),Position(x + 1, y),Position(x , y + 1))
-            .filter{it.x >= 0 && it.x <= maxX && it.y >= 0 && it.y <= maxY}
-
+            .filter{ it.x in 0..maxX && it.y in 0..maxY}
 }
 
 data class HeightMap(val map:Map<Position, Int> ) {
@@ -15,17 +14,12 @@ data class HeightMap(val map:Map<Position, Int> ) {
     fun height(position:Position) = map.getValue(position)
 }
 
-fun parse(data:List<String>):HeightMap {
-    val heightMap = mutableMapOf<Position, Int>()
-    data.forEachIndexed { y, row ->
-        row.mapIndexed{x, char -> heightMap[Position(x,y)] = "$char".toInt()}
-    }
-    return HeightMap(heightMap)
-}
+fun parse(data:List<String>) = HeightMap( data.flatMapIndexed { y, row -> row.mapIndexed{x, char -> char.toPositionHeight(x,y)} }.toMap())
+
+fun Char.toPositionHeight(x:Int, y:Int) = Pair(Position(x,y), "$this".toInt())
 
 fun HeightMap.isLowerThanSurroundings(position:Position) =
     position.surroundingPositions(maxX,maxY).all { surroundingPosition -> height(surroundingPosition) > height(position) }
-
 
 fun partOne(data:List<String>):Int {
     val heatMap = parse(data)
