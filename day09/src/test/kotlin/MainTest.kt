@@ -11,11 +11,9 @@ class MainTest {
     """.trimIndent().split("\n")
     @Test
     fun `parse sample data`() {
-        val (heatMap, maxX, maxY) = parse(sampleData)
-        assertEquals(4, maxY)
-        assertEquals(9, maxX)
-        assertEquals(2, heatMap[Position(0,0)])
-        assertEquals(8, heatMap[Position(9,4)])
+        val heatMap = parse(sampleData)
+        assertEquals(2, heatMap.map[Position(0,0)])
+        assertEquals(8, heatMap.map[Position(9,4)])
     }
     @Test
     fun `surrounding positions`() {
@@ -27,13 +25,12 @@ class MainTest {
     }
     @Test
     fun `position is lower than surroundings`() {
-        val (heatMap, maxX, maxY) = parse(sampleData)
-        assertFalse(heatMap.isLowerThanSurroundings(Position(0,0),maxX, maxY))
-        assertTrue(heatMap.isLowerThanSurroundings(Position(1,0),maxX, maxY))
-        assertTrue(heatMap.isLowerThanSurroundings(Position(2,2),maxX, maxY))
-        assertFalse(heatMap.isLowerThanSurroundings(Position(2,3),maxX, maxY))
-        assertFalse(heatMap.isLowerThanSurroundings(Position(5,0),maxX, maxY))
-
+        val heatMap = parse(sampleData)
+        assertFalse(heatMap.isLowerThanSurroundings(Position(0,0)))
+        assertTrue(heatMap.isLowerThanSurroundings(Position(1,0)))
+        assertTrue(heatMap.isLowerThanSurroundings(Position(2,2)))
+        assertFalse(heatMap.isLowerThanSurroundings(Position(2,3)))
+        assertFalse(heatMap.isLowerThanSurroundings(Position(5,0)))
     }
     @Test
     fun `part one with sample data`() {
@@ -45,25 +42,25 @@ class MainTest {
     }
     @Test
     fun `find positions in a basin`() {
-        val (heatMap, maxX, maxY) = parse(sampleData)
+        val heatMap = parse(sampleData)
 
-        val basin10 = heatMap.higherSurroundingPoints(Position(1,0), maxX, maxY)
+        val basin10 = heatMap.higherSurroundingPoints(Position(1,0))
         assertEquals(listOf(Position(x=1, y=0),Position(x=0, y=0), Position(x=0, y=1)), basin10.distinct())
 
-        val basin90 = heatMap.higherSurroundingPoints(Position(9,0), maxX, maxY)
+        val basin90 = heatMap.higherSurroundingPoints(Position(9,0))
         assertEquals(listOf(Position(x=9, y=0), Position(x=8, y=0), Position(x=7, y=0), Position(x=6, y=0), Position(x=5, y=0), Position(x=6, y=1), Position(x=8, y=1), Position(x=9, y=1), Position(x=9, y=2)), basin90.distinct())
 
-        val basin22 = heatMap.higherSurroundingPoints(Position(2,2), maxX, maxY)
-        assertEquals(listOf(Position(x=2, y=2), Position(x=1, y=2), Position(x=2, y=1), Position(x=3, y=2), Position(x=2, y=3), Position(x=3, y=1), Position(x=4, y=1), Position(x=4, y=2), Position(x=5, y=2), Position(x=4, y=3), Position(x=3, y=3), Position(x=1, y=3), Position(x=0, y=3), Position(x=1, y=4)), basin22.distinct())
+        val basin22 = heatMap.higherSurroundingPoints(Position(2,2))
+        assertEquals(listOf(Position(x=2, y=2), Position(x=1, y=2), Position(x=2, y=1), Position(x=3, y=2), Position(x=3, y=1), Position(x=4, y=1), Position(x=4, y=2), Position(x=5, y=2), Position(x=4, y=3), Position(x=3, y=3), Position(x=2, y=3), Position(x=1, y=3), Position(x=0, y=3), Position(x=1, y=4)), basin22.distinct())
 
     }
     @Test
     fun `find heights in a basin`() {
-        val (heatMap, maxX, maxY) = parse(sampleData)
-        assertEquals(3, heatMap.basin(Position(1,0), maxX, maxY).size)
-        assertEquals(9, heatMap.basin(Position(9,0), maxX, maxY).size)
-        assertEquals(14, heatMap.basin(Position(2,2), maxX, maxY).size)
-        assertEquals(9, heatMap.basin(Position(6,4), maxX, maxY).size)
+        val heatMap = parse(sampleData)
+        assertEquals(3, heatMap.basin(Position(1,0)).size)
+        assertEquals(9, heatMap.basin(Position(9,0)).size)
+        assertEquals(14, heatMap.basin(Position(2,2)).size)
+        assertEquals(9, heatMap.basin(Position(6,4)).size)
     }
     @Test
     fun `part two with sample data`() {

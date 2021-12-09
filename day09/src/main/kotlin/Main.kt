@@ -10,48 +10,52 @@ data class Position(val x:Int, val y:Int ) {
     }
 }
 
-typealias HeightMap = Map<Position, Int>
-fun HeightMap.height(position:Position) = getValue(position)
+data class HeightMap(val map:Map<Position, Int> ) {
 
-fun parse(data:List<String>):Triple<Map<Position, Int>, Int, Int> {
+    val maxX:Int by lazy { map.keys.maxOf { it.x } }
+    val maxY:Int by lazy { map.keys.maxOf { it.y } }
+
+    fun height(position:Position) = map.getValue(position)
+}
+
+fun parse(data:List<String>):HeightMap {
     val heightMap = mutableMapOf<Position, Int>()
     data.forEachIndexed { y, row ->
         row.mapIndexed{x, char -> heightMap[Position(x,y)] = "$char".toInt()}
     }
-    return Triple(heightMap, heightMap.keys.maxOf { it.x }, heightMap.keys.maxOf{it.y})
+    return HeightMap(heightMap)
 }
 
-fun Map<Position, Int>.isLowerThanSurroundings(position:Position, maxX:Int, maxY:Int):Boolean {
-    val height = height(position)
-    return position.surroundingPositions(maxX,maxY).all { surroundingPosition -> height(surroundingPosition) > height }
-}
+fun HeightMap.isLowerThanSurroundings(position:Position) =
+    position.surroundingPositions(maxX,maxY).all { surroundingPosition -> height(surroundingPosition) > height(position) }
+
 
 fun partOne(data:List<String>):Int {
-    val (heatMap, maxX, maxY) = parse(data)
-    return heatMap
+    val heatMap = parse(data)
+    return heatMap.map
         .keys
-        .filter{ position -> heatMap.isLowerThanSurroundings(position, maxX, maxY)}
+        .filter{ position -> heatMap.isLowerThanSurroundings(position)}
         .sumOf { lowPosition ->  heatMap.height(lowPosition) + 1 }
 }
 
-fun HeightMap.higherSurroundingPoints(position:Position, maxX:Int, maxY:Int, higherPositions:List<Position> = listOf()): List<Position> {
+fun HeightMap.higherSurroundingPoints(position:Position, higherPositions:List<Position> = listOf()): List<Position> {
     val higherSurroundingPositions = position
         .surroundingPositions(maxX, maxY)
-        .filter{surroundingPosition -> height(surroundingPosition) > height(position) && height(surroundingPosition) != 9 }
+        .filter{surroundingPosition -> height(surroundingPosition) != 9 && height(surroundingPosition) > height(position)}
 
     return if (higherSurroundingPositions.isEmpty())
         higherPositions + position
     else
-        higherSurroundingPositions.flatMap{surroundingPosition -> higherSurroundingPoints(surroundingPosition, maxX, maxY, higherPositions + position)}
+        higherSurroundingPositions.flatMap{surroundingPosition -> higherSurroundingPoints(surroundingPosition,higherPositions + position)}
 }
 
-fun HeightMap.basin(position:Position, maxX:Int, maxY:Int) = higherSurroundingPoints(position, maxX, maxY).distinct()
+fun HeightMap.basin(position:Position) = higherSurroundingPoints(position).distinct()
 
 fun partTwo(data:List<String>):Int {
-    val (heatMap, maxX, maxY) = parse(data)
-    val biggestBasins = heatMap.keys
-        .filter{ position -> heatMap.isLowerThanSurroundings(position, maxX, maxY)}
-        .map{position -> heatMap.basin(position, maxX, maxY) }
+    val heatMap = parse(data)
+    val biggestBasins = heatMap.map.keys
+        .filter{ position -> heatMap.isLowerThanSurroundings(position)}
+        .map{position -> heatMap.basin(position) }
         .sortedBy {basin -> basin.size }
         .takeLast(3)
         .map{it.size}
