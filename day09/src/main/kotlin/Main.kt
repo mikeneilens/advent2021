@@ -1,13 +1,10 @@
 
 data class Position(val x:Int, val y:Int ) {
-    fun surroundingPositions(maxX:Int, maxY:Int):List<Position> {
-        val result = mutableListOf<Position>()
-        if (x > 0 ) result += Position(x - 1, y)
-        if (y > 0 ) result += Position(x , y - 1)
-        if (x < maxX ) result += Position(x + 1, y)
-        if (y < maxY ) result += Position(x , y + 1)
-        return result
-    }
+
+    fun surroundingPositions(maxX:Int, maxY:Int):List<Position> =
+        listOf(Position(x - 1, y),Position(x , y - 1),Position(x + 1, y),Position(x , y + 1))
+            .filter{it.x >= 0 && it.x <= maxX && it.y >= 0 && it.y <= maxY}
+
 }
 
 data class HeightMap(val map:Map<Position, Int> ) {
