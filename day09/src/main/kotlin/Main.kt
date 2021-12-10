@@ -43,10 +43,10 @@ fun HeightMap.higherSurroundingPoints(position:Position, higherPositions:List<Po
 fun HeightMap.basin(position:Position) = higherSurroundingPoints(position).distinct()
 
 fun partTwo(data:List<String>):Int {
-    val heatMap = parse(data)
-    val biggestBasins = heatMap.map.keys
-        .filter{ position -> heatMap.isLowerThanSurroundings(position)}
-        .map{position -> heatMap.basin(position) }
+    val heightMap = parse(data)
+    val biggestBasins = heightMap.map.keys
+        .filter{ position -> heightMap.isLowerThanSurroundings(position)}
+        .map{position -> heightMap.basin(position) }
         .sortedBy {basin -> basin.size }
         .takeLast(3)
         .map{it.size}
