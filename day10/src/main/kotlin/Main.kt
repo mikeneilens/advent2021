@@ -20,5 +20,21 @@ fun List<String>.findErrors() = map(::validateExpression).filterIsInstance<Resul
 
 fun valueForEachError(error:Result.Error) = valuesForBrace[error.illegalChar] ?: 0
 
-fun partOne(data:List<String>):Int = data.findErrors().map(::valueForEachError).sum()
+fun partOne(data:List<String>):Int = data.findErrors().sumOf(::valueForEachError)
 
+fun List<String>.findStackForIncompleteExpressions() = map(::validateExpression)
+    .filterIsInstance<Result.OK>()
+    .filter{it.stack.isNotEmpty()}
+    .map{it.stack.reversed()}
+
+val characterScore = mapOf(')' to 1, ']' to 2, '}' to 3,'>' to 4)
+
+fun String.calcScore() = fold(0L){total, char -> total * 5 + characterScore.getValue(char)}
+
+fun List<Long>.middleScore() = get(size/2)
+
+fun partTwo(data:List<String>) =
+     data.findStackForIncompleteExpressions()
+         .map(String::calcScore)
+         .sorted()
+         .middleScore()

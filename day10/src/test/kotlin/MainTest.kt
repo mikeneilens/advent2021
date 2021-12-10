@@ -50,4 +50,27 @@ class MainTest {
         val result = partOne(puzzleInput)
         assertEquals(392043, result)
     }
+    @Test
+    fun `expression is complete by adding particular characters `() {
+        val result1 = validateExpression("[({(<(())[]>[[{[]{<()<>>") as Result.OK
+        assertEquals("}}]])})]" , result1.stack.reversed())
+        val result2 = validateExpression("[(()[<>])]({[<{<<[]>>(") as Result.OK
+        assertEquals(")}>]})" , result2.stack.reversed())
+    }
+    @Test
+    fun `score of characters required to complete an expression`(){
+        assertEquals(288957,"}}]])})]".calcScore())
+        assertEquals(5566,")}>]})".calcScore())
+        assertEquals(1480781,"}}>}>))))".calcScore())
+        assertEquals(995444,"]]}}]}]}>".calcScore())
+        assertEquals(294,"])}>".calcScore())
+    }
+    @Test
+    fun `middle of scores for SampleData`() {
+        assertEquals(288957L, partTwo(sampleData))
+    }
+    @Test
+    fun `middle of scores for PuzzleInput`() {
+        assertEquals(1605968119L, partTwo(puzzleInput))
+    }
 }
