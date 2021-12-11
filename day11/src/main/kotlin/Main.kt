@@ -52,7 +52,7 @@ fun OctopusMap.processStep():Int {
 
 fun partOne(data:List<String>, steps:Int):Int {
     val octopusMap = data.parse()
-    return (0 until steps).sumOf { octopusMap.processStep() }
+    return (1..steps).sumOf { octopusMap.processStep() }
 }
 
 fun partTwo(data:List<String>):Int {
