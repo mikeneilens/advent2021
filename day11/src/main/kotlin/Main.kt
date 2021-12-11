@@ -12,6 +12,9 @@ typealias OctopusMap = MutableMap<Position, Int>
 val OctopusMap.positions  get() = keys
 val OctopusMap.maxX  get() =  positions.maxOf { it.x }
 val OctopusMap.maxY  get() =  positions.maxOf { it.y }
+val OctopusMap.noOfOctopuses  get() =  (1 + maxX) * (1 + maxY)
+val OctopusMap.noOfOctopusThatHaveFlashed get()  = values.count{it == 0}
+val OctopusMap.allHaveFlashed get() = noOfOctopuses == noOfOctopusThatHaveFlashed
 
 fun List<String>.parse():OctopusMap {
     val octopusMap = mutableMapOf<Position, Int>()
@@ -41,13 +44,11 @@ fun OctopusMap.resetFlashers() {
     positions.filter{getValue(it) > 9 }.forEach { this[it] = 0}
 }
 
-fun OctopusMap.noOfOctopusThatHaveFlashed() = values.count{it == 0}
-
 fun OctopusMap.processStep():Int {
     increaseEnergyByOne()
     upDateOctopusSurroundingFlashers()
     resetFlashers()
-    return noOfOctopusThatHaveFlashed()
+    return noOfOctopusThatHaveFlashed
 }
 
 fun partOne(data:List<String>, steps:Int):Int {
@@ -58,7 +59,7 @@ fun partOne(data:List<String>, steps:Int):Int {
 fun partTwo(data:List<String>):Int {
     val octopusMap = data.parse()
     var step = 0
-    while (!octopusMap.values.all { it == 0 }) {
+    while (!octopusMap.allHaveFlashed) {
         step++
         octopusMap.processStep()
     }
