@@ -18,18 +18,34 @@ val sampleData = """
 class MainTest {
     @Test
     fun `test validating with test data`() {
-        val result0 = validateExpression("<[[]]>}<{[{[{[]{()[[[]")
+        val result0 = "<[[]]>}<{[{[{[]{()[[[]".validateExpression()
         assertTrue(result0 is Result.OK)
 
-        val result1 = validateExpression("{([(<{}[<>[]}>{[]{[(<()>")
+        val result1 = "{([(<{}[<>[]}>{[]{[(<()>".validateExpression()
         assertEquals('}',(result1 as Result.Error).illegalChar)
-        val result2 = validateExpression("[[<[([]))<([[{}[[()]]]")
+        val result2 = "[[<[([]))<([[{}[[()]]]".validateExpression()
         assertEquals(')',(result2 as Result.Error).illegalChar)
-        val result3 = validateExpression("[{[{({}]{}}([{[{{{}}([]")
+        val result3 = "[{[{({}]{}}([{[{{{}}([]".validateExpression()
         assertEquals(']',(result3 as Result.Error).illegalChar)
-        val result4 = validateExpression("[<(<(<(<{}))><([]([]()")
+        val result4 = "[<(<(<(<{}))><([]([]()".validateExpression()
         assertEquals(')',(result4 as Result.Error).illegalChar)
-        val result5 = validateExpression("<{([([[(<>()){}]>(<<{{")
+        val result5 = "<{([([[(<>()){}]>(<<{{".validateExpression()
+        assertEquals('>',(result5 as Result.Error).illegalChar)
+    }
+    @Test
+    fun `test validating2 with test data`() {
+        val result0 = "<[[]]>}<{[{[{[]{()[[[]".validateExpression()
+        assertTrue(result0 is Result.OK)
+
+        val result1 = "{([(<{}[<>[]}>{[]{[(<()>".validateExpression()
+        assertEquals('}',(result1 as Result.Error).illegalChar)
+        val result2 = "[[<[([]))<([[{}[[()]]]".validateExpression()
+        assertEquals(')',(result2 as Result.Error).illegalChar)
+        val result3 = "[{[{({}]{}}([{[{{{}}([]".validateExpression()
+        assertEquals(']',(result3 as Result.Error).illegalChar)
+        val result4 = "[<(<(<(<{}))><([]([]()".validateExpression()
+        assertEquals(')',(result4 as Result.Error).illegalChar)
+        val result5 = "<{([([[(<>()){}]>(<<{{".validateExpression()
         assertEquals('>',(result5 as Result.Error).illegalChar)
     }
     @Test
@@ -52,9 +68,9 @@ class MainTest {
     }
     @Test
     fun `expression is complete by adding particular characters `() {
-        val result1 = validateExpression("[({(<(())[]>[[{[]{<()<>>") as Result.OK
+        val result1 = "[({(<(())[]>[[{[]{<()<>>".validateExpression() as Result.OK
         assertEquals("}}]])})]" , result1.stack.reversed())
-        val result2 = validateExpression("[(()[<>])]({[<{<<[]>>(") as Result.OK
+        val result2 = "[(()[<>])]({[<{<<[]>>(".validateExpression() as Result.OK
         assertEquals(")}>]})" , result2.stack.reversed())
     }
     @Test
