@@ -1,25 +1,20 @@
 
-data class Position(val x:Int, val y:Int ) {
+data class Position(val x:Int, val y:Int, private val maxX:Int, val maxY:Int ) {
 
-    fun surroundingPositions(maxX:Int, maxY:Int):List<Position> =
-        listOf(Position(x - 1, y),Position(x , y - 1),Position(x + 1, y),Position(x , y + 1),
-            Position(x - 1, y - 1),Position(x + 1, y - 1),Position(x - 1, y + 1),Position(x + 1, y + 1)
-        )
-            .filter{ it.x in 0..maxX && it.y in 0..maxY}
+    val surroundingPositions:List<Position> by lazy {
+        (-1..1).flatMap { xOffset -> (-1..1).map{yOffset -> Position(x + xOffset, y + yOffset, maxX, maxY)} }
+            .filter{ it.x in 0..maxX && it.y in 0..maxY && it != this}}
 }
 
 typealias OctopusMap = MutableMap<Position, Int>
 val OctopusMap.positions  get() = keys
-val OctopusMap.maxX  get() =  positions.maxOf { it.x }
-val OctopusMap.maxY  get() =  positions.maxOf { it.y }
-val OctopusMap.noOfOctopuses  get() =  (1 + maxX) * (1 + maxY)
-val OctopusMap.noOfOctopusThatHaveFlashed get()  = values.count{it == 0}
-val OctopusMap.allHaveFlashed get() = noOfOctopuses == noOfOctopusThatHaveFlashed
+val OctopusMap.noOfOctopusThatHaveFlashed get() = values.count{it == 0}
+val OctopusMap.allHaveFlashed get() = noOfOctopusThatHaveFlashed == positions.size
 
 fun List<String>.parse():OctopusMap {
     val octopusMap = mutableMapOf<Position, Int>()
     forEachIndexed{y, row -> row.forEachIndexed{x, char ->
-        octopusMap[Position(x,y)]= char.toString().toInt()
+        octopusMap[Position(x,y, row.length -1, size -1)]= char.toString().toInt()
     }}
     return octopusMap
 }
@@ -32,7 +27,7 @@ fun OctopusMap.upDateOctopusSurroundingFlashers() {
     val flashedPositions = mutableListOf<Position>()
     while (positionsOfFlashersNotProcessed(flashedPositions).isNotEmpty() ) {
         positionsOfFlashersNotProcessed(flashedPositions).forEach{ position ->
-            position.surroundingPositions(maxX,maxY).forEach (::incrementValue)
+            position.surroundingPositions.forEach (::incrementValue)
             flashedPositions.add(position)
         }
     }
