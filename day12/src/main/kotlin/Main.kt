@@ -27,8 +27,8 @@ fun CaveMap.findRoute(cave:Cave, caveDecider:CaveDecider, route:List<Cave> = lis
     if (cave.isEndCave)  routes + listOf(route + cave)
     else adjacentCaves(cave)
         .map{adjacentCave -> caveDecider(adjacentCave, route, smallCaveVisitedAgain)}
-        .filter {ruleOutcome -> ruleOutcome.includeCave}
-        .flatMap{ruleOutcome ->  findRoute(ruleOutcome.nextCave, caveDecider, route + cave, routes, ruleOutcome.smallCaveVisitedAgain) }
+        .filter {caveDecision -> caveDecision.includeCave}
+        .flatMap{caveDecision ->  findRoute(caveDecision.nextCave, caveDecider, route + cave, routes, caveDecision.smallCaveVisitedAgain) }
 
 val caveDeciderP1:CaveDecider = { nextCave, route, _ ->
     if (nextCave.isLarge || nextCave !in route)  CaveDecision(nextCave, includeCave = true)
