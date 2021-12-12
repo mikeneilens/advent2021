@@ -27,4 +27,21 @@ class MainTest {
     fun `finding routes using Puzzle Input`() {
         assertEquals(3410, partOne(puzzleInput).size)
     }
+
+    @Test
+    fun `finding routes for part two using sampleData1`() {
+        assertEquals(36, partTwo(sampleData1).size)
+    }
+    @Test
+    fun `finding routes for part two using sampleData2`() {
+        assertEquals(103, partTwo(sampleData2).size)
+    }
+    @Test
+    fun `finding routes for part two using sampleData3`() {
+        assertEquals(3509, partTwo(sampleData3).size)
+    }
+    @Test
+    fun `finding routes for part two using puzzle input`() {
+        assertEquals(98796, partTwo(puzzleInput).size)
+    }
 }
