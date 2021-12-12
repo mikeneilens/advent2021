@@ -26,7 +26,7 @@ fun partOne(data:List<String>):List<List<Cave>> = data.parse().findRoute("start"
 fun CaveMap.findRoute(cave:Cave, caveDecider:CaveDecider, route:List<Cave> = listOf("start"), routes:List<List<Cave>> = listOf(), smallCaveVisitedAgain:Boolean = false):List<List<Cave>> =
     if (cave.isEndCave)  routes + listOf(route + cave)
     else adjacentCaves(cave)
-        .map{caveDecider(it, route, smallCaveVisitedAgain)}
+        .map{adjacentCave -> caveDecider(adjacentCave, route, smallCaveVisitedAgain)}
         .filter {ruleOutcome -> ruleOutcome.includeCave}
         .flatMap{ruleOutcome ->  findRoute(ruleOutcome.nextCave, caveDecider, route + cave, routes, ruleOutcome.smallCaveVisitedAgain) }
 
