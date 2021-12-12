@@ -1,39 +1,49 @@
-fun List<String>.parse():Map<String, List<String>> {
-    val map = mutableMapOf<String, List<String>>()
-    forEach{line ->
-        val (p1, p2) = line.split("-")
-        val existingValuesForP1 = map.getOrDefault(p1, listOf())
-        map[p1] = existingValuesForP1 + p2
-        val existingValuesForP2 = map.getOrDefault(p2, listOf())
-        map[p2] = existingValuesForP2 + p1
+typealias Cave = String
+typealias CaveMap = Map<Cave, List<Cave>>
 
+fun CaveMap.adjacentCaves(cave:Cave) = getOrDefault(cave, listOf())
+
+fun List<String>.parse():CaveMap {
+    val map = mutableMapOf<Cave, List<Cave>>()
+    forEach{line ->
+        val (cave1, cave2) = line.split("-")
+        map[cave1] = map.adjacentCaves(cave1) + cave2
+        map[cave2] = map.adjacentCaves(cave2) + cave1
     }
     return map
 }
 
-fun Map<String, List<String>>.findRoute(start:String, route:List<String> = listOf("start"), routes:List<List<String>> = listOf()):List<List<String>> {
-    return if (start == "end")  routes + listOf(route + start)
-    else getValue(start).filter{it == it.uppercase() || !(route.contains(it))}.flatMap{ findRoute(it, route + start, routes) }
+val Cave.isLarge get() = equals(uppercase())
+val Cave.isStartCave get() = equals("start")
+val Cave.isEndCave get() = equals("end")
 
+data class RuleOutcome(val nextCave:Cave, val includeCave:Boolean, val smallCaveVisitedAgain:Boolean )
+
+typealias CaveFilterRule = (nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean ) -> RuleOutcome
+
+fun partOne(data:List<String>):List<List<Cave>> = data.parse().findRoute("start", filterRule = ::filterRuleP1)
+
+fun CaveMap.findRoute(cave: Cave, filterRule: CaveFilterRule, route: List<Cave> = listOf("start"), routes: List<List<Cave>> = listOf(), smallCaveVisitedAgain: Boolean = false):List<List<Cave>> =
+    if (cave.isEndCave)  routes + listOf(route + cave)
+    else adjacentCaves(cave)
+        .map{filterRule(it, route, smallCaveVisitedAgain)}
+        .filter {ruleOutcome -> ruleOutcome.includeCave}
+        .flatMap{ findRoute(it.nextCave, filterRule, route + cave, routes, it.smallCaveVisitedAgain) }
+
+fun filterRuleP1(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):RuleOutcome = when {
+    (nextCave.isLarge) -> RuleOutcome(nextCave, true, smallCaveVisitedAgain)
+    (nextCave.isStartCave)  -> RuleOutcome(nextCave,false, smallCaveVisitedAgain)
+    (!route.contains(nextCave)) -> RuleOutcome(nextCave, true, smallCaveVisitedAgain)
+    else ->  RuleOutcome(nextCave, false, smallCaveVisitedAgain)
 }
 
-fun partOne(data:List<String>):List<List<String>> = data.parse().findRoute("start")
-
-fun Map<String, List<String>>.findRoute2(start:String, route:List<String> = listOf("start"), routes:List<List<String>> = listOf(),smallCaveVisitedAgain:Boolean):List<List<String>> {
-    return if (start == "end")  routes + listOf(route + start)
-    //else getValue(start).filter{it == it.uppercase() || !(route.contains(it))}.flatMap{ findRoute2(it, route + start, routes) }
-    else getValue(start).map{filterRule(it, route, smallCaveVisitedAgain)}.filter {it.include}  .flatMap{ findRoute2(it.start, route + start, routes, it.smallCaveVisitedAgain) }
-}
-
-data class RuleOutcome(val start:String, val include:Boolean, val smallCaveVisitedAgain:Boolean )
-
-fun filterRule(nextCave:String, route:List<String>, smallCaveVisitedAgain:Boolean):RuleOutcome = when {
-    (nextCave == nextCave.uppercase()) -> RuleOutcome(nextCave, true, smallCaveVisitedAgain)
-    (nextCave == "start")  -> RuleOutcome(nextCave,false, smallCaveVisitedAgain)
+fun filterRuleP2(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):RuleOutcome = when {
+    (nextCave.isLarge) -> RuleOutcome(nextCave, true, smallCaveVisitedAgain)
+    (nextCave.isStartCave)  -> RuleOutcome(nextCave,false, smallCaveVisitedAgain)
     (!route.contains(nextCave)) -> RuleOutcome(nextCave, true, smallCaveVisitedAgain)
     (route.contains(nextCave) && !smallCaveVisitedAgain ) -> RuleOutcome(nextCave, true, true)
     else ->  RuleOutcome(nextCave, false, smallCaveVisitedAgain)
 }
 
-fun partTwo(data:List<String>):List<List<String>> = data.parse().findRoute2("start",  smallCaveVisitedAgain = false )
+fun partTwo(data:List<String>):List<List<Cave>> = data.parse().findRoute("start", filterRule = ::filterRuleP2)
 
