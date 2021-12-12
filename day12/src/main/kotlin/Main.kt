@@ -17,11 +17,11 @@ val Cave.isLarge get() = equals(uppercase())
 val Cave.isStartCave get() = equals("start")
 val Cave.isEndCave get() = equals("end")
 
-data class CaveDecision(val nextCave:Cave, val includeCave:Boolean, val smallCaveVisitedAgain:Boolean )
+data class CaveDecision(val nextCave:Cave, val includeCave:Boolean, val smallCaveVisitedAgain:Boolean = false )
 
 typealias CaveDecider = (nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean ) -> CaveDecision
 
-fun partOne(data:List<String>):List<List<Cave>> = data.parse().findRoute("start", caveDecider = ::caveDeciderP1)
+fun partOne(data:List<String>):List<List<Cave>> = data.parse().findRoute("start", caveDeciderP1)
 
 fun CaveMap.findRoute(cave:Cave, caveDecider:CaveDecider, route:List<Cave> = listOf("start"), routes:List<List<Cave>> = listOf(), smallCaveVisitedAgain:Boolean = false):List<List<Cave>> =
     if (cave.isEndCave)  routes + listOf(route + cave)
@@ -30,17 +30,19 @@ fun CaveMap.findRoute(cave:Cave, caveDecider:CaveDecider, route:List<Cave> = lis
         .filter {ruleOutcome -> ruleOutcome.includeCave}
         .flatMap{ruleOutcome ->  findRoute(ruleOutcome.nextCave, caveDecider, route + cave, routes, ruleOutcome.smallCaveVisitedAgain) }
 
-fun caveDeciderP1(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):CaveDecision =
-    if (nextCave.isLarge || !route.contains(nextCave))  CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    else  CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
+val caveDeciderP1:CaveDecider = { nextCave, route, _ ->
+    if (nextCave.isLarge || nextCave !in route)  CaveDecision(nextCave, includeCave = true)
+    else  CaveDecision(nextCave, includeCave = false)
+ }
 
-fun caveDeciderP2(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):CaveDecision = when {
-    (nextCave.isLarge) -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    (nextCave.isStartCave)  -> CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    (!route.contains(nextCave)) -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    (route.contains(nextCave) && !smallCaveVisitedAgain ) -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = true)
+fun partTwo(data:List<String>):List<List<Cave>> = data.parse().findRoute("start", caveDeciderP2)
+
+val caveDeciderP2:CaveDecider = { nextCave, route, smallCaveVisitedAgain -> when {
+    nextCave.isLarge -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
+    nextCave.isStartCave -> CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
+    nextCave !in route -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
+    (nextCave in route) && !smallCaveVisitedAgain -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = true)
     else ->  CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
-}
+}}
 
-fun partTwo(data:List<String>):List<List<Cave>> = data.parse().findRoute("start", caveDecider = ::caveDeciderP2)
 

@@ -45,3 +45,4 @@ class MainTest {
         assertEquals(98796, partTwo(puzzleInput).size)
     }
 }
+
