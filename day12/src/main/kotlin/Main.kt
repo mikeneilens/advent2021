@@ -30,12 +30,9 @@ fun CaveMap.findRoute(cave:Cave, caveDecider:CaveDecider, route:List<Cave> = lis
         .filter {ruleOutcome -> ruleOutcome.includeCave}
         .flatMap{ruleOutcome ->  findRoute(ruleOutcome.nextCave, caveDecider, route + cave, routes, ruleOutcome.smallCaveVisitedAgain) }
 
-fun caveDeciderP1(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):CaveDecision = when {
-    (nextCave.isLarge) -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    (nextCave.isStartCave)  -> CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    (!route.contains(nextCave)) -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
-    else ->  CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
-}
+fun caveDeciderP1(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):CaveDecision =
+    if (nextCave.isLarge || !route.contains(nextCave))  CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
+    else  CaveDecision(nextCave, includeCave = false, smallCaveVisitedAgain = smallCaveVisitedAgain)
 
 fun caveDeciderP2(nextCave:Cave, route:List<Cave>, smallCaveVisitedAgain:Boolean):CaveDecision = when {
     (nextCave.isLarge) -> CaveDecision(nextCave, includeCave = true, smallCaveVisitedAgain = smallCaveVisitedAgain)
