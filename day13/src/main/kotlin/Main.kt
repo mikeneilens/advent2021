@@ -1,18 +1,18 @@
 data class Position(val x:Int, val y:Int )
 
 typealias Paper = Map<Position, Boolean>
-typealias Folder = (Paper)->Paper
+typealias PaperFolder = (Paper)->Paper
 
 fun String.toPosition() =
     Position( split(",").first().toString().toInt(),split(",").last().toString().toInt() )
 
-fun List<String>.parse():Pair<Paper,List<Folder>> {
+fun List<String>.parse():Pair<Paper,List<PaperFolder>> {
     val map = filter { !it.startsWith("fold") }.associate { Pair(it.toPosition(), true) }
-    val folders= filter{it.startsWith("fold along ")}.map(String::getFold)
-    return Pair(map, folders)
+    val paperFolders= filter{it.startsWith("fold along ")}.map(String::getPaperFolder)
+    return Pair(map, paperFolders)
 }
 
-fun String.getFold():Folder {
+fun String.getPaperFolder():PaperFolder {
     if (startsWith("fold along y="))  {
         val y = removePrefix("fold along y=").toInt()
         return {paper:Paper -> foldAtRowY(paper, y)}
@@ -36,17 +36,17 @@ fun foldAtColX(paper:Paper, x:Int):Paper {
 }
 
 fun partOne(data:List<String>):Paper {
-    val (map, folders) = data.parse()
-    return folders.first()(map)
+    val (map, paperFolders) = data.parse()
+    return paperFolders.first()(map)
 }
 
 fun partTwo(data:List<String>):Paper {
-    val (map, folders) = data.parse()
-    var newMap = folders.first()(map)
-    folders.forEach { folder ->
-        newMap = folder(newMap).toMutableMap()
+    val (map, paperFolders) = data.parse()
+    var foldedMap = map
+    paperFolders.forEach { paperFolder ->
+        foldedMap = paperFolder(foldedMap)
     }
-    return newMap
+    return foldedMap
 }
 
 fun Paper.print() {
