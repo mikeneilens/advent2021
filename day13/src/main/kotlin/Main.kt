@@ -8,19 +8,13 @@ fun String.toPosition() =
 
 fun List<String>.parse():Pair<Paper,List<PaperFolder>> {
     val papers = filter { !it.startsWith("fold") }.map{it.toPosition()}.toSet()
-    val paperFolders= filter{it.startsWith("fold along ")}.map(String::getPaperFolder)
+    val paperFolders= filter{it.startsWith("fold ")}.map(String::getPaperFolder)
     return Pair(papers, paperFolders)
 }
 
-fun String.getPaperFolder():PaperFolder {
-    if (startsWith("fold along y="))  {
-        val y = removePrefix("fold along y=").toInt()
-        return {paper:Paper -> foldAtLine(paper, y, true)}
-    } else {
-        val x = removePrefix("fold along x=").toInt()
-        return {paper:Paper -> foldAtLine(paper, x, false)}
-    }
-}
+fun String.getPaperFolder():PaperFolder  = {paper:Paper -> foldAtLine(paper, foldLine(), startsWith("fold along y="))}
+
+fun String.foldLine() = split("=").last().toInt()
 
 fun foldAtLine(paper:Paper, n:Int, foldOnRow:Boolean):Paper {
     val foldedPaper = if (foldOnRow) paper.filter{it.y < n}.toMutableSet() else paper.toList().filter{it.x < n}.toMutableSet()
