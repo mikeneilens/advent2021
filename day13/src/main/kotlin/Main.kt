@@ -7,7 +7,7 @@ fun String.toPosition() =
     Position( split(",").first().toString().toInt(),split(",").last().toString().toInt() )
 
 fun List<String>.parse():Pair<Paper,List<PaperFolder>> {
-    val papers = filter { !it.startsWith("fold") }.map{it.toPosition()}.toSet() // associate { Pair(it.toPosition(), true) }
+    val papers = filter { !it.startsWith("fold") }.map{it.toPosition()}.toSet()
     val paperFolders= filter{it.startsWith("fold along ")}.map(String::getPaperFolder)
     return Pair(papers, paperFolders)
 }
