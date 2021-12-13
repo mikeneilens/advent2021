@@ -18,11 +18,10 @@ val String.foldLine get() = split("=").last().toInt()
 
 fun foldAtLine(paper:Paper, line:Int, foldOnRow:Boolean):Paper {
     val foldedPaper = foldedPaper(paper, foldOnRow, line)
-    foldedPositions(paper, foldOnRow, line).forEach { position -> foldedPaper.add(position) }
-    return foldedPaper
+    return foldedPositions(paper, foldOnRow, line).fold(foldedPaper){result, position -> result + position}
 }
 
-fun foldedPaper(paper: Paper, foldOnRow: Boolean, line: Int) = if (foldOnRow) paper.filter { it.y < line }.toMutableSet() else paper.filter { it.x < line }.toMutableSet()
+fun foldedPaper(paper: Paper, foldOnRow: Boolean, line: Int) = if (foldOnRow) paper.filter { it.y < line }.toSet() else paper.filter { it.x < line }.toSet()
 
 fun foldedPositions(paper: Paper, foldOnRow: Boolean, line: Int) =
     if (foldOnRow)
@@ -37,11 +36,7 @@ fun partOne(data:List<String>):Paper {
 
 fun partTwo(data:List<String>):Paper {
     val (paper, paperFolders) = data.parse()
-    var foldedPaper = paper
-    paperFolders.forEach { paperFolder ->
-        foldedPaper = paperFolder(foldedPaper)
-    }
-    return foldedPaper
+    return paperFolders.fold(paper){foldedPaper, paperFolder -> paperFolder(foldedPaper) }
 }
 
 fun Paper.print() {
