@@ -16,15 +16,19 @@ fun String.getPaperFolder():PaperFolder  = {paper:Paper -> foldAtLine(paper, fol
 
 fun String.foldLine() = split("=").last().toInt()
 
-fun foldAtLine(paper:Paper, n:Int, foldOnRow:Boolean):Paper {
-    val foldedPaper = if (foldOnRow) paper.filter{it.y < n}.toMutableSet() else paper.toList().filter{it.x < n}.toMutableSet()
-    val foldedPositions = if (foldOnRow)
-            paper.filter{it.y > n}.map{Position(it.x, n * 2 - it.y)}
-        else
-            paper.filter{it.x > n}.map{Position(n * 2 - it.x,it.y)}
-    foldedPositions.forEach {position -> foldedPaper.add(position) }
+fun foldAtLine(paper:Paper, line:Int, foldOnRow:Boolean):Paper {
+    val foldedPaper = foldedPaper(paper, foldOnRow, line)
+    foldedPositions(paper, foldOnRow, line).forEach { position -> foldedPaper.add(position) }
     return foldedPaper
 }
+
+fun foldedPaper(paper: Paper, foldOnRow: Boolean, line: Int) = if (foldOnRow) paper.filter { it.y < line }.toMutableSet() else paper.toList().filter { it.x < line }.toMutableSet()
+
+fun foldedPositions(paper: Paper, foldOnRow: Boolean, line: Int) =
+    if (foldOnRow)
+        paper.filter { it.y > line }.map { Position(it.x, line * 2 - it.y) }
+    else
+        paper.filter { it.x > line }.map { Position(line * 2 - it.x, it.y) }
 
 fun partOne(data:List<String>):Paper {
     val (paper, paperFolders) = data.parse()
