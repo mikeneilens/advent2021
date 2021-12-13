@@ -39,6 +39,6 @@ fun partTwo(data:List<String>):Paper {
 
 fun Paper.print() {
     val output = (0..maxOf { it.y }).fold("The result is: \n"){ result, y ->
-        (0..maxOf { it.x }).fold(result){ line, x -> if (Position(x,y) in this) line + '#' else line + ' ' } + '\n'   }
+        (0..maxOf { it.x }).fold(result){ line, x -> if (Position(x,y) in this) "$line#" else "$line " } + '\n'   }
     println(output)
 }
