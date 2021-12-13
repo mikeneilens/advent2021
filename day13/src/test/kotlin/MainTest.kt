@@ -29,15 +29,13 @@ class MainTest {
     fun `parse sample data`() {
         val (map, folds) = sampleData.parse()
         assertEquals(2, folds.size)
-        assertEquals(7, folds[0].second)
-        assertEquals(5, folds[1].second)
         assertTrue(map[Position(6,10)] ?: false)
         assertTrue(map[Position(10,12)] ?: false)
     }
     @Test
     fun `folding sample data along y=7`() {
         val (map, folds) = sampleData.parse()
-        val foldedMap = foldY(map,folds[0].second)
+        val foldedMap = folds[0](map)
         assertTrue(foldedMap[Position(0,0)] ?: false)
         assertFalse(foldedMap[Position(1,0)] ?: false)
         assertTrue(foldedMap[Position(2,0)] ?: false)
@@ -53,8 +51,8 @@ class MainTest {
     }
     @Test
     fun `folding sample data along y=7 and then x = 5`() {
-        val foldedMap = partOne(sampleData,2)
-
+        val (map, folds) = sampleData.parse()
+        val foldedMap = folds[1](folds[0](map))
         assertTrue(foldedMap[Position(0,0)] ?: false)
         assertTrue(foldedMap[Position(1,0)] ?: false)
         assertTrue(foldedMap[Position(2,0)] ?: false)
@@ -83,7 +81,12 @@ class MainTest {
     }
     @Test
     fun `part one using puzzle input`() {
-        val newMap = partOne(puzzleInput,1)
+        val newMap = partOne(puzzleInput)
         assertEquals(712, newMap.keys.size)
+    }
+    @Test
+    fun `part two using puzzle input`() {
+        val newMap = partTwo(puzzleInput)
+        newMap.print()
     }
 }
