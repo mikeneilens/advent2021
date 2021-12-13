@@ -38,12 +38,7 @@ fun partTwo(data:List<String>):Paper {
 }
 
 fun Paper.print() {
-    val maxX = maxOf { it.x }
-    val maxY = maxOf { it.y }
-    (0..maxY).forEach{ y ->
-        (0..maxX).forEach{ x ->
-            if ( Position(x,y) in this) print('#') else print (' ')
-        }
-        println()
-    }
+    val output = (0..maxOf { it.y }).fold("The result is: \n"){ result, y ->
+        (0..maxOf { it.x }).fold(result){ line, x -> if (Position(x,y) in this) line + '#' else line + ' ' } + '\n'   }
+    println(output)
 }
