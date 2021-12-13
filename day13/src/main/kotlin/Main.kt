@@ -12,9 +12,9 @@ fun List<String>.parse():Pair<Paper,List<PaperFolder>> {
     return Pair(papers, paperFolders)
 }
 
-fun String.getPaperFolder():PaperFolder  = {paper:Paper -> foldAtLine(paper, foldLine(), startsWith("fold along y="))}
+fun String.getPaperFolder():PaperFolder  = {paper:Paper -> foldAtLine(paper, foldLine, startsWith("fold along y="))}
 
-fun String.foldLine() = split("=").last().toInt()
+val String.foldLine get() = split("=").last().toInt()
 
 fun foldAtLine(paper:Paper, line:Int, foldOnRow:Boolean):Paper {
     val foldedPaper = foldedPaper(paper, foldOnRow, line)
@@ -22,7 +22,7 @@ fun foldAtLine(paper:Paper, line:Int, foldOnRow:Boolean):Paper {
     return foldedPaper
 }
 
-fun foldedPaper(paper: Paper, foldOnRow: Boolean, line: Int) = if (foldOnRow) paper.filter { it.y < line }.toMutableSet() else paper.toList().filter { it.x < line }.toMutableSet()
+fun foldedPaper(paper: Paper, foldOnRow: Boolean, line: Int) = if (foldOnRow) paper.filter { it.y < line }.toMutableSet() else paper.filter { it.x < line }.toMutableSet()
 
 fun foldedPositions(paper: Paper, foldOnRow: Boolean, line: Int) =
     if (foldOnRow)
