@@ -26,11 +26,8 @@ fun partTwo(data:List<String>,steps:Int):Long {
 
     (0 until steps).forEach { qtyPerElementPair = qtyPerElementPair.splitAllElementPairs(insertionRules).toMutableMap() }
 
-    println(qtyPerElementPair)
     val qtyOfEachChar = qtyPerElementPair.countChars(polymerTemplate)
-    val max = qtyOfEachChar.toList().maxOf { it.second }
-    val min = qtyOfEachChar.toList().minOf { it.second }
-    return max - min
+    return qtyOfEachChar.toList().maxOf { it.second } - qtyOfEachChar.toList().minOf { it.second }
 }
 
 fun Map<String,Long>.splitAllElementPairs(insertionRules:Map<String, String>):Map<String,Long> {
