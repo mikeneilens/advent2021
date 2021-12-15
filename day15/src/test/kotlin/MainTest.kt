@@ -27,7 +27,7 @@ class MainTest {
     fun `find path using sample data`() {
         val cavern = sampleData.parse()
         cavern[Position(0,0,9,9)]?.cheapestCostToGetHere = 0
-        val results = findPath(cavern,Position(0,0,9,9), Position(9,9,9,9))
+        val results = findPath2(cavern,Position(0,0,9,9), Position(9,9,9,9))
         assertEquals(40, cavern[Position(9,9,9,9)]?.cheapestCostToGetHere)
     }
 
@@ -39,5 +39,23 @@ class MainTest {
     @Test
     fun `find path2 using puzzleInput`() {
         assertEquals(685, puzzleInput.partOne())
+    }
+    @Test
+    fun `making a cave five times bigger using sample data`() {
+        val cavern = sampleData.parse()
+        val bigCavern = cavern.makeFiveTimesBigger()
+        assertEquals(2500, bigCavern.size)
+        assertEquals(1, bigCavern[Position(0,0,49,49)]?.num)
+
+        assertEquals("11637517422274862853338597396444961841755517295286", bigCavern.toList().filter{it.first.y == 0}.sortedBy { it.first.x }.map{it.second.num}.joinToString(""))
+    }
+    @Test
+    fun `find path2 for Part Two using sample data`() {
+        assertEquals(315, sampleData.partTwo())
+    }
+
+    @Test
+    fun `find path2 for Part Two using puzzle input`() {
+        assertEquals(315, puzzleInput.partTwo())
     }
 }
