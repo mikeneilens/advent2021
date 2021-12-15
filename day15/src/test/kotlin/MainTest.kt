@@ -56,6 +56,6 @@ class MainTest {
 
     @Test
     fun `find path2 for Part Two using puzzle input`() {
-        assertEquals(315, puzzleInput.partTwo())
+        assertEquals(2995, puzzleInput.partTwo())
     }
 }

@@ -57,10 +57,11 @@ fun List<String>.partOne():Int {
 fun Cavern.makeFiveTimesBigger():Cavern {
     val result:MutableMap<Position, RiskLevel> = mutableMapOf()
     val width = keys.maxOf { it.x } + 1
+    val newMaxX = 5 * (keys.maxOf { it.x} + 1) -1
     forEach { position, riskLevel ->
         (0..4).forEach { row ->
             (0..4).forEach { col ->
-                result[Position(position.x + width * col, position.y + width * row  ,5 * (keys.maxOf { it.x} + 1) -1,5 * (keys.maxOf { it.x }+ 1) -1)] = RiskLevel(calcRiskLevel(riskLevel, col, row), Int.MAX_VALUE)
+                result[Position(position.x + width * col, position.y + width * row  ,newMaxX,newMaxX)] = RiskLevel(calcRiskLevel(riskLevel, col, row), Int.MAX_VALUE)
             }
         }
     }
