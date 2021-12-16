@@ -39,6 +39,7 @@ fun findPath2(cavern:Cavern, start:Position, target:Position):Int {
             }
         } else {
             println("reached target ${cavern[position]}")
+            return cavern[target]?.cheapestCostToGetHere ?: 0
         }
     }
     return cavern[target]?.cheapestCostToGetHere ?: 0
