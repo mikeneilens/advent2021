@@ -14,25 +14,25 @@ class MainTest {
     }
     @Test
     fun `first number in the literal 110100101111111000101000 is 0111`() {
-        val (bin, moreData ) = "110100101111111000101000".getNumber(0)
+        val (bin, moreData ) = Packet.Literal.getNumber("110100101111111000101000",0)
         assertEquals(bin, "0111")
         assertTrue(moreData)
     }
     @Test
     fun `second number in the literal 110100101111111000101000 is 1110`() {
-        val (bin, moreData ) = "110100101111111000101000".getNumber(1)
+        val (bin, moreData ) = Packet.Literal.getNumber("110100101111111000101000", 1)
         assertEquals(bin, "1110")
         assertTrue(moreData)
     }
     @Test
     fun `third number in the literal 110100101111111000101000 is 0101`() {
-        val (bin, moreData ) = "110100101111111000101000".getNumber(2)
+        val (bin, moreData ) = Packet.Literal.getNumber("110100101111111000101000",2)
         assertEquals(bin, "0101")
         assertTrue(!moreData)
     }
     @Test
     fun `converting 110100101111111000101000 to a packet`(){
-        val packet = "110100101111111000101000".toPacket() as Packet.Literal
+        val packet = "110100101111111000101000".toPacket()[0] as Packet.Literal
         assertEquals("011111100101", packet.num)
     }
     @Test
@@ -114,7 +114,23 @@ class MainTest {
     @Test
     fun `part one using puzzle input`() {
         val bin = puzzleInput.hexToBin()
-        assertEquals(, bin.toPacket().first().versionSum())
+        assertEquals(895, bin.toPacket().first().versionSum())
     }
 
+    @Test
+    fun `type calculation`() {
+        assertEquals(3, "C200B40A82".hexToBin().toPacket().first().typeCalc())
+        assertEquals(54, "04005AC33890".hexToBin().toPacket().first().typeCalc())
+        assertEquals(7, "880086C3E88112".hexToBin().toPacket().first().typeCalc())
+        assertEquals(9, "CE00C43D881120".hexToBin().toPacket().first().typeCalc())
+        assertEquals(1, "D8005AC2A8F0".hexToBin().toPacket().first().typeCalc())
+        assertEquals(0, "F600BC2D8F".hexToBin().toPacket().first().typeCalc())
+        assertEquals(0, "9C005AC2F8F0".hexToBin().toPacket().first().typeCalc())
+        assertEquals(1, "9C0141080250320F1802104A08".hexToBin().toPacket().first().typeCalc())
+    }
+
+    @Test
+    fun `part two using puzzlue input`(){
+        assertEquals(1148595959144, puzzleInput.hexToBin().toPacket().first().typeCalc())
+    }
 }
