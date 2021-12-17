@@ -14,21 +14,19 @@ class MainTest {
     }
     @Test
     fun `first number in the literal 110100101111111000101000 is 0111`() {
-        val (bin, moreData ) = Packet.Literal.getNumber("110100101111111000101000",0)
-        assertEquals(bin, "0111")
-        assertTrue(moreData)
+        val bits = Packet.Literal.getBits("110100101111111000101000",0)
+        assertEquals(bits, "10111")
     }
     @Test
     fun `second number in the literal 110100101111111000101000 is 1110`() {
-        val (bin, moreData ) = Packet.Literal.getNumber("110100101111111000101000", 1)
-        assertEquals(bin, "1110")
-        assertTrue(moreData)
+        val bits = Packet.Literal.getBits("110100101111111000101000",1)
+        assertEquals(bits, "11110")
     }
     @Test
     fun `third number in the literal 110100101111111000101000 is 0101`() {
-        val (bin, moreData ) = Packet.Literal.getNumber("110100101111111000101000",2)
-        assertEquals(bin, "0101")
-        assertTrue(!moreData)
+        val bits = Packet.Literal.getBits("110100101111111000101000",2)
+        assertEquals(bits, "00101")
+
     }
     @Test
     fun `converting 110100101111111000101000 to a packet`(){

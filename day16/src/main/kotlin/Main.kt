@@ -26,30 +26,24 @@ sealed class Packet(val version:Int, val typeId:Int) {
 
         companion object {
             const val headerBits = versionBits + typeIdBits
-            fun getNumber(data:String, n:Int):Pair<String, Boolean> {
-                val bin = data.drop(headerBits + n * 5).take(5)
-                return Pair(bin.drop(1).take(4), bin.first() == '1')
-            }
+            fun getBits(data:String, n:Int) = data.drop(headerBits + n * 5).take(5)
         }
     }
-    class Operator1(version:Int, typeId:Int, val subPackets:List<Packet>):Packet(version, typeId) {
-        override fun versionSum() = version + subPackets.sumOf { it.versionSum() }
-        override fun noOfBits() = headerBits + subPackets.sumOf { it.noOfBits() }
-        override fun typeCalc() = valueCalculators.getValue(typeId)(subPackets)
 
-        companion object {
-            const val headerBits = versionBits + typeIdBits + lengthTypeIdBits + totalLengthBits
-        }
-    }
-    class Operator2(version:Int, typeId:Int, val subPackets:List<Packet>):Packet(version, typeId) {
+    open class Operator1(version:Int, typeId:Int, val subPackets:List<Packet>):Packet(version, typeId) {
         override fun versionSum() = version + subPackets.sumOf { it.versionSum() }
-        override fun noOfBits() = headerBits + subPackets.sumOf { it.noOfBits() }
         override fun typeCalc() = valueCalculators.getValue(typeId)(subPackets)
+        override fun noOfBits() = op1HeaderBits + subPackets.sumOf { it.noOfBits() }
 
-        companion object {
-            const val headerBits = versionBits + typeIdBits + lengthTypeIdBits + numberOfSubPacketsBits
-        }
+        companion object { const val op1HeaderBits = versionBits + typeIdBits + lengthTypeIdBits + totalLengthBits }
     }
+
+    class Operator2(version:Int, typeId:Int, subPackets:List<Packet>):Operator1(version, typeId, subPackets) {
+        override fun noOfBits() = op2HeaderBits + subPackets.sumOf { it.noOfBits() }
+
+        companion object { const val op2HeaderBits = versionBits + typeIdBits + lengthTypeIdBits + numberOfSubPacketsBits }
+    }
+
     class VoidPacket(version:Int, val length:Int, typeId:Int = 0):Packet(version, typeId) {
         override fun versionSum() = 0
         override fun noOfBits() = length
@@ -81,8 +75,9 @@ fun String.toPacket(maxQty:Int = Int.MAX_VALUE):List<Packet> {
                 var num = ""
                 var n = 0
                 while (moreData) {
-                    num += Packet.Literal.getNumber(data, n).first
-                    moreData = Packet.Literal.getNumber(data, n).second
+                    val bits = Packet.Literal.getBits(data, n)
+                    num +=  bits.drop(1).take(4)
+                    moreData = bits.first() == '1'
                     n++
                 }
                 val packet = Packet.Literal(version, typeId, num,n)
@@ -92,12 +87,12 @@ fun String.toPacket(maxQty:Int = Int.MAX_VALUE):List<Packet> {
             else -> {
                 data = if (data.lengthTypeId == 0) {
                     val subPacketsLength = data.lengthOfSubPackets
-                    val packet = Packet.Operator1(version, typeId, data.drop(Packet.Operator1.headerBits).take(subPacketsLength).toPacket())
+                    val packet = Packet.Operator1(version, typeId, data.drop(Packet.Operator1.op1HeaderBits).take(subPacketsLength).toPacket())
                     packets.add(packet)
                     data.drop(packet.noOfBits())
                 } else {
                     val numberOfSubPackets = data.numberOfSubPackets
-                    val packet = Packet.Operator2(version, typeId, data.drop(Packet.Operator2.headerBits).toPacket(maxQty = numberOfSubPackets))
+                    val packet = Packet.Operator2(version, typeId, data.drop(Packet.Operator2.op2HeaderBits).toPacket(numberOfSubPackets))
                     packets.add(packet)
                     data.drop(packet.noOfBits())
                 }
