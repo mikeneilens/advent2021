@@ -30,15 +30,18 @@ sealed class Packet(val version:Int, val typeId:Int) {
         }
     }
 
-    open class Operator1(version:Int, typeId:Int, val subPackets:List<Packet>):Packet(version, typeId) {
+    abstract class Operator(version:Int, typeId:Int, val subPackets:List<Packet>):Packet(version, typeId) {
         override fun versionSum() = version + subPackets.sumOf { it.versionSum() }
         override fun typeCalc() = valueCalculators.getValue(typeId)(subPackets)
+    }
+
+    class Operator1(version:Int, typeId:Int, subPackets:List<Packet>):Operator(version, typeId, subPackets) {
         override fun noOfBits() = op1HeaderBits + subPackets.sumOf { it.noOfBits() }
 
         companion object { const val op1HeaderBits = versionBits + typeIdBits + lengthTypeIdBits + totalLengthBits }
     }
 
-    class Operator2(version:Int, typeId:Int, subPackets:List<Packet>):Operator1(version, typeId, subPackets) {
+    class Operator2(version:Int, typeId:Int, subPackets:List<Packet>):Operator(version, typeId, subPackets) {
         override fun noOfBits() = op2HeaderBits + subPackets.sumOf { it.noOfBits() }
 
         companion object { const val op2HeaderBits = versionBits + typeIdBits + lengthTypeIdBits + numberOfSubPacketsBits }
@@ -69,37 +72,49 @@ fun String.toPacket(maxQty:Int = Int.MAX_VALUE):List<Packet> {
     while (packets.size < maxQty && data.isNotEmpty()) {
         val version = data.version
         if (data.all{it=='0'}) return packets + Packet.VoidPacket(version,data.length)
-        when (val typeId = data.typeId) {
+        val packet = when (val typeId = data.typeId) {
             4 -> {
-                var moreData = true
-                var num = ""
-                var n = 0
-                while (moreData) {
-                    val bits = Packet.Literal.getBits(data, n)
-                    num +=  bits.drop(1).take(4)
-                    moreData = bits.first() == '1'
-                    n++
-                }
-                val packet = Packet.Literal(version, typeId, num,n)
-                packets.add(packet)
-                data = data.drop(packet.noOfBits())
+                val (value, numberOfParts) = getValueAndNoOfPartsOfLiteral(data)
+                Packet.Literal(version, typeId, value,numberOfParts)
             }
             else -> {
-                data = if (data.lengthTypeId == 0) {
+                if (data.lengthTypeId == 0) {
                     val subPacketsLength = data.lengthOfSubPackets
-                    val packet = Packet.Operator1(version, typeId, data.drop(Packet.Operator1.op1HeaderBits).take(subPacketsLength).toPacket())
-                    packets.add(packet)
-                    data.drop(packet.noOfBits())
+                    Packet.Operator1(version, typeId, data.drop(Packet.Operator1.op1HeaderBits).take(subPacketsLength).toPacket())
                 } else {
                     val numberOfSubPackets = data.numberOfSubPackets
-                    val packet = Packet.Operator2(version, typeId, data.drop(Packet.Operator2.op2HeaderBits).toPacket(numberOfSubPackets))
-                    packets.add(packet)
-                    data.drop(packet.noOfBits())
+                    Packet.Operator2(version, typeId, data.drop(Packet.Operator2.op2HeaderBits).toPacket(numberOfSubPackets))
                 }
             }
         }
+        packets.add(packet)
+        data = data.drop(packet.noOfBits())
+
     }
     return packets
+}
+
+fun getValueAndNoOfPartsOfLiteral(data: String): Pair<String, Int> {
+    var moreData = true
+    var value = ""
+    var numberOfParts = 0
+    while (moreData) {
+        val bits = Packet.Literal.getBits(data, numberOfParts)
+        value += bits.drop(1).take(4)
+        moreData = bits.first() == '1'
+        numberOfParts++
+    }
+    return Pair(value, numberOfParts)
+}
+
+fun partOne(data:String):Int {
+    val binaryData = data.hexToBin()
+    return binaryData.toPacket().first().versionSum()
+}
+
+fun partTwo(data:String):Long {
+    val binaryData = data.hexToBin()
+    return binaryData.toPacket().first().typeCalc()
 }
 
 fun String.hexToBin():String {

@@ -111,8 +111,7 @@ class MainTest {
 
     @Test
     fun `part one using puzzle input`() {
-        val bin = puzzleInput.hexToBin()
-        assertEquals(895, bin.toPacket().first().versionSum())
+        assertEquals(895, partOne(puzzleInput))
     }
 
     @Test
@@ -129,6 +128,6 @@ class MainTest {
 
     @Test
     fun `part two using puzzlue input`(){
-        assertEquals(1148595959144, puzzleInput.hexToBin().toPacket().first().typeCalc())
+        assertEquals(1148595959144, partTwo(puzzleInput))
     }
 }
