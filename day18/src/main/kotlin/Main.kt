@@ -1,5 +1,5 @@
 
-abstract class SnailFish(var parent:SnailFish?) {
+sealed class SnailFish(var parent:SnailFish?) {
     abstract fun magnitude():Int
 }
 
@@ -11,15 +11,17 @@ class RegularNumber(val num:Int, parent: SnailFish?):SnailFish(parent) {
     override fun magnitude() = num
 }
 
+fun newSnakeFish(parent:SnailFish?): SFPair = SFPair(RegularNumber(-999,null),RegularNumber(-99,null),parent)
+
 operator fun SnailFish.plus(other:SnailFish):SnailFish {
-    val sfPair = SFPair(this,other,null)
+    val sfPair = SFPair(this, other,null)
     this.parent = sfPair
     other.parent = sfPair
     explodeAndSplit(sfPair)
     return sfPair
 }
 
-fun List<SnailFish>.sum() = reduce{total, sf -> total + sf }
+fun List<SnailFish>.sum() = reduce{total, snailFish -> total + snailFish }
 
 fun parse(s:String, parent:SnailFish? = null):SnailFish {
     val expression = s.drop(1).dropLast(1)
@@ -31,18 +33,19 @@ fun parse(s:String, parent:SnailFish? = null):SnailFish {
 
     val p1Expression = expression.substring(0,firstExpressionEnd + 1)
     val p2Expression = expression.substring(secondExpressionStart,secondExpressionEnd + 1)
-    val sfPair = SFPair(RegularNumber(1,null),RegularNumber(1,null),parent)
+    val sfPair = newSnakeFish(parent)
     sfPair.p1 = if (p1Expression.first() == '[') parse(p1Expression, sfPair) else RegularNumber(p1Expression.toInt(),sfPair)
     sfPair.p2 = if (p2Expression.first() == '[') parse(p2Expression,sfPair) else RegularNumber(p2Expression.toInt(),sfPair)
     return sfPair
 }
 
-fun SnailFish.text():String {
-    if (this is RegularNumber) return "${this.num}"
-    val p1 = (this as SFPair).p1.text()
-    val p2 = this.p2.text()
-    return "[$p1,$p2]"
-}
+fun SnailFish.text():String =
+    if (this is RegularNumber) "${this.num}"
+    else {
+        val p1 = (this as SFPair).p1.text()
+        val p2 = this.p2.text()
+        "[$p1,$p2]"
+    }
 
 data class ExplodersAndSplitters(val exploder:SFPair?, val left:RegularNumber?, val right:RegularNumber?, val splitter:RegularNumber?)
 
@@ -53,78 +56,68 @@ fun findExplodersAndSplitters(snailFish: SnailFish):ExplodersAndSplitters {
     var splitter:RegularNumber? = null
 
     fun find(snailFish: SnailFish, level:Int = 1) {
-        if (snailFish is SFPair) {
-            if (exploder == null && level == 5 ) {
-                exploder = snailFish
+        when {
+            (snailFish is SFPair) -> {
+                if (exploder == null && level == 5 ) exploder = snailFish
+                find(snailFish.p1, level + 1)
+                find(snailFish.p2, level + 1)
+                return
             }
-            find(snailFish.p1, level + 1)
-            find(snailFish.p2, level + 1)
-            return
-        } else {
-            if (snailFish is RegularNumber) {
-                if (exploder == null )
-                    regularNumber1 = snailFish
-                if (exploder != null && regularNumber2 == null  && snailFish.parent != exploder)
-                    regularNumber2 = snailFish
-                if (splitter == null && snailFish.num > 9 ) {
-                    splitter = snailFish
-                }
+            (snailFish is RegularNumber) -> {
+                if (exploder == null ) regularNumber1 = snailFish
+                if (exploder != null && regularNumber2 == null  && snailFish.parent != exploder) regularNumber2 = snailFish
+                if (splitter == null && snailFish.num > 9 ) splitter = snailFish
+                return
             }
-            return
         }
     }
+
     find(snailFish)
     return ExplodersAndSplitters(exploder, regularNumber1, regularNumber2,splitter)
 }
 
 fun explode(exploder: SFPair, left:RegularNumber?, right:RegularNumber? ) {
-    val newLeftNum = (left?.num ?: 0) + (exploder.p1 as RegularNumber).num
-    val newRightNum = (right?.num ?: 0) + (exploder.p2 as RegularNumber).num
-    if (exploder.parent is SFPair) {
-        val exploderParent = exploder.parent as SFPair
-        if (exploderParent.p1 == exploder) exploderParent.p1 = RegularNumber(0, exploder.parent)
-        if (exploderParent.p2 == exploder) exploderParent.p2 = RegularNumber(0, exploder.parent)
+    if (left?.parent != null) {
+        val newLeftNum = left.num + (exploder.p1 as RegularNumber).num
+        replaceSnailFish(left,RegularNumber(newLeftNum, left.parent) )
     }
-    if (left?.parent is SFPair) {
-        val leftParent = left.parent as SFPair
-        if (leftParent.p1 == left)
-            leftParent.p1 = RegularNumber(newLeftNum, left.parent)
-        if (leftParent.p2 == left)
-            leftParent.p2 = RegularNumber(newLeftNum, left.parent)
+
+    if (right?.parent != null) {
+        val newRightNum = right.num + (exploder.p2 as RegularNumber).num
+        replaceSnailFish(right,RegularNumber(newRightNum, right.parent) )
     }
-    if (right?.parent is SFPair) {
-        val rightParent = right.parent as SFPair
-        if (rightParent.p1 == right)
-            rightParent.p1 = RegularNumber(newRightNum, right.parent)
-        if (rightParent.p2 == right)
-            rightParent.p2 = RegularNumber(newRightNum, right.parent)
+
+    replaceSnailFish(exploder,RegularNumber(0, exploder.parent) )
+}
+
+fun replaceSnailFish(oldSnailFish:SnailFish, newSnailFish:SnailFish) {
+    if (oldSnailFish.parent is SFPair) {
+        val parent = oldSnailFish.parent as SFPair
+        if (parent.p1 == oldSnailFish) parent.p1 = newSnailFish
+        if (parent.p2 == oldSnailFish) parent.p2 = newSnailFish
     }
 }
 
 fun split(splitter:RegularNumber) {
-    if(splitter.parent is SFPair) {
-        val splitterParent = splitter.parent as SFPair
-        if (splitterParent.p1 == splitter)
-            splitterParent.p1 = splitter.splitInTwo()
-        if (splitterParent.p2 == splitter)
-            splitterParent.p2 = splitter.splitInTwo()
-    }
-}
+    val newSFPair = newSnakeFish(splitter.parent)
 
-fun RegularNumber.splitInTwo():SFPair {
-    val newSFPair = SFPair(RegularNumber(1,null),RegularNumber(1,null),parent)
-    newSFPair.p1 = RegularNumber(num/2, newSFPair)
-    if (num % 2 == 0 ) newSFPair.p2 = RegularNumber(num/2, newSFPair) else newSFPair.p2 = RegularNumber(num/2 + 1, newSFPair)
-    return newSFPair
+    newSFPair.p1 = RegularNumber(splitter.num/2, newSFPair)
+
+    newSFPair.p2 = if (splitter.num % 2 == 0 ) RegularNumber(splitter.num/2, newSFPair)
+                    else RegularNumber(splitter.num/2 + 1, newSFPair)
+
+    replaceSnailFish(splitter, newSFPair)
 }
 
 fun explodeAndSplit(snailFish: SnailFish) {
     var notFinished = true
     while (notFinished) {
         val (exploder, left, right, splitter) = findExplodersAndSplitters(snailFish)
-        if (exploder != null) explode(exploder, left, right)
-        else if (splitter != null) split(splitter)
-        if (exploder == null && splitter == null) notFinished = false
+        when {
+            (exploder != null) -> explode(exploder, left, right)
+            (splitter != null) -> split(splitter)
+            else -> notFinished = false
+        }
     }
 }
 
@@ -140,9 +133,9 @@ fun findExpressionEnd(expression: String):Int {
     return closingPosition
 }
 
-fun partOne(data:List<String>):Int =  data.map{parse(it,null)}.sum().magnitude()
+fun partOne(data:List<String>):Int =  data.map(::parse).sum().magnitude()
 
 fun partTwo(data:List<String>):Int =
-    data.indices.map { m -> data.indices.map{ n->
-        (parse(data[m],null) + parse(data[n],null)).magnitude()
-    } }.maxOf { it.maxOf { it } }
+    data.indices.flatMap { m -> data.indices.map{ n->
+        (parse(data[m]) + parse(data[n])).magnitude()
+    } }.maxOf { it}

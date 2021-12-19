@@ -10,14 +10,14 @@ class MainTest {
     @Test
     fun `parsing simple`() {
         val expression = "[1,4]"
-        val snailFish = parse(expression,null)
+        val snailFish = parse(expression)
         assertEquals(1, ((snailFish as SFPair).p1 as RegularNumber).num)
         assertEquals(4, (snailFish.p2 as RegularNumber).num)
     }
     @Test
     fun `parsing regular number paired with a pair`() {
         val expression = "[[1,2],3]"
-        val snailFish = parse(expression, null)
+        val snailFish = parse(expression)
         assertEquals(1,(((snailFish as SFPair).p1 as SFPair).p1 as RegularNumber).num)
         assertEquals(2,(((snailFish ).p1 as SFPair).p2 as RegularNumber).num)
         assertEquals(3,((snailFish ).p2 as RegularNumber).num)
@@ -26,7 +26,7 @@ class MainTest {
     @Test
     fun `parsing pair paired with a regular number`() {
         val expression = "[9,[8,7]]"
-        val snailFish = parse(expression, null)
+        val snailFish = parse(expression)
         assertEquals(9,(((snailFish as SFPair).p1 as RegularNumber).num))
         assertEquals(8,(((snailFish ).p2 as SFPair).p1 as RegularNumber).num)
         assertEquals(7,(((snailFish ).p2 as SFPair).p2 as RegularNumber).num)
@@ -34,77 +34,77 @@ class MainTest {
     @Test
     fun `parsing pair paired with a pair`() {
         val expression = "[[1,9],[8,5]]"
-        val snailFish = parse(expression, null)
+        val snailFish = parse(expression)
         assertEquals(1,(((snailFish as SFPair).p1 as SFPair).p1 as RegularNumber).num)
         assertEquals(9,(((snailFish ).p1 as SFPair).p2 as RegularNumber).num)
-        assertEquals(8,(((snailFish as SFPair).p2 as SFPair).p1 as RegularNumber).num)
+        assertEquals(8,((snailFish.p2 as SFPair).p1 as RegularNumber).num)
         assertEquals(5,(((snailFish ).p2 as SFPair).p2 as RegularNumber).num)
     }
     @Test
     fun `parsing something complicated and seeing if it converts back to text`() {
         val expression = "[[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]]"
-        val snailFish = parse(expression, null)
+        val snailFish = parse(expression)
         assertEquals("[[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]]", snailFish.text())
     }
     @Test
     fun `exploding example 1`() {
-        val snailfish = parse( "[[[[[9,8],1],2],3],4]",null)
-        val (exploder, left, right, _) = findExplodersAndSplitters(snailfish)
+        val snailFish = parse( "[[[[[9,8],1],2],3],4]")
+        val (exploder, left, right, _) = findExplodersAndSplitters(snailFish)
         exploder?.apply { explode(this, left,right) }
-        assertEquals("[[[[0,9],2],3],4]", snailfish.text())
+        assertEquals("[[[[0,9],2],3],4]", snailFish.text())
     }
 
     @Test
     fun `exploding example 2`() {
-        val snailfish = parse( "[7,[6,[5,[4,[3,2]]]]]",null)
-        val (exploder, left, right, _) = findExplodersAndSplitters(snailfish)
+        val snailFish = parse( "[7,[6,[5,[4,[3,2]]]]]")
+        val (exploder, left, right, _) = findExplodersAndSplitters(snailFish)
         exploder?.apply { explode(this, left,right) }
-        assertEquals("[7,[6,[5,[7,0]]]]", snailfish.text())
+        assertEquals("[7,[6,[5,[7,0]]]]", snailFish.text())
     }
     @Test
     fun `exploding example 3`() {
-        val snailfish = parse( "[[6,[5,[4,[3,2]]]],1]",null)
-        val (exploder, left, right, _) = findExplodersAndSplitters(snailfish)
+        val snailFish = parse( "[[6,[5,[4,[3,2]]]],1]",null)
+        val (exploder, left, right, _) = findExplodersAndSplitters(snailFish)
         exploder?.apply { explode(this, left,right) }
-        assertEquals("[[6,[5,[7,0]]],3]", snailfish.text())
+        assertEquals("[[6,[5,[7,0]]],3]", snailFish.text())
     }
     @Test
     fun `exploding example 4`() {
-        val snailfish = parse( "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]", null)
-        val (exploder, left, right, _) = findExplodersAndSplitters(snailfish)
+        val snailFish = parse( "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]")
+        val (exploder, left, right, _) = findExplodersAndSplitters(snailFish)
         exploder?.apply { explode(this, left,right) }
-        assertEquals("[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", snailfish.text())
+        assertEquals("[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", snailFish.text())
     }
     @Test
     fun `exploding example 5`() {
-        val snailfish = parse( "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", null)
-        val (exploder, left, right, _) = findExplodersAndSplitters(snailfish)
+        val snailFish = parse( "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]")
+        val (exploder, left, right, _) = findExplodersAndSplitters(snailFish)
         exploder?.apply { explode(this, left,right) }
-        assertEquals("[[3,[2,[8,0]]],[9,[5,[7,0]]]]", snailfish.text())
+        assertEquals("[[3,[2,[8,0]]],[9,[5,[7,0]]]]", snailFish.text())
     }
     @Test
     fun `splitting a snailFish containing a splitter with an even split`() {
-        val snailfish = SFPair(RegularNumber(0,null),RegularNumber(0,null),null)
-        snailfish.p1 = RegularNumber(9,snailfish)
-        snailfish.p2 = RegularNumber(10,snailfish)
-        val (_,_,_, splitter) = findExplodersAndSplitters(snailfish)
+        val snailFish = SFPair(RegularNumber(0,null),RegularNumber(0,null),null)
+        snailFish.p1 = RegularNumber(9,snailFish)
+        snailFish.p2 = RegularNumber(10,snailFish)
+        val (_,_,_, splitter) = findExplodersAndSplitters(snailFish)
         splitter?.apply { split(this) }
-        assertEquals("[9,[5,5]]", snailfish.text())
+        assertEquals("[9,[5,5]]", snailFish.text())
     }
     @Test
     fun `splitting a snailFish containing a splitter with an odd split`() {
-        val snailfish = SFPair(RegularNumber(0,null),RegularNumber(0,null),null)
-        snailfish.p1 = RegularNumber(11,snailfish)
-        snailfish.p2 = RegularNumber(10,snailfish)
-        val (_,_,_, splitter) = findExplodersAndSplitters(snailfish)
+        val snailFish = SFPair(RegularNumber(0,null),RegularNumber(0,null),null)
+        snailFish.p1 = RegularNumber(11,snailFish)
+        snailFish.p2 = RegularNumber(10,snailFish)
+        val (_,_,_, splitter) = findExplodersAndSplitters(snailFish)
         splitter?.apply { split(this) }
-        assertEquals("[[5,6],10]", snailfish.text())
+        assertEquals("[[5,6],10]", snailFish.text())
     }
     @Test
-    fun `explodning and splitting until done`() {
-        val snailfish = parse( "[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]", null)
-        explodeAndSplit(snailfish)
-        assertEquals("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]", snailfish.text())
+    fun `exploding and splitting until done`() {
+        val snailFish = parse( "[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]")
+        explodeAndSplit(snailFish)
+        assertEquals("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]", snailFish.text())
     }
 
     @Test
@@ -184,6 +184,6 @@ class MainTest {
     }
     @Test
     fun `partTwo using puzzleInput`() {
-        assertEquals(3993, partTwo(puzzleInput))
+        assertEquals(4735, partTwo(puzzleInput))
     }
 }
