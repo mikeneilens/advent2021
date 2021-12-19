@@ -39,6 +39,18 @@ fun parse(s:String, parent:SnailFish? = null):SnailFish {
     return sfPair
 }
 
+fun findExpressionEnd(expression: String):Int {
+    var openings = 0
+    var ndx = 0
+    var closingPosition = 0
+    while (closingPosition == 0) {
+        if (expression[ndx] == '[') openings++
+        if (expression[ndx] == ']') openings--
+        if (openings == 0) closingPosition = ndx else ndx++
+    }
+    return closingPosition
+}
+
 fun SnailFish.text():String =
     if (this is RegularNumber) "${this.num}"
     else {
@@ -100,12 +112,9 @@ fun replaceSnailFish(oldSnailFish:SnailFish, newSnailFish:SnailFish) {
 
 fun split(splitter:RegularNumber) {
     val newSFPair = newSnakeFish(splitter.parent)
-
     newSFPair.p1 = RegularNumber(splitter.num/2, newSFPair)
-
-    newSFPair.p2 = if (splitter.num % 2 == 0 ) RegularNumber(splitter.num/2, newSFPair)
-                    else RegularNumber(splitter.num/2 + 1, newSFPair)
-
+    val roundUp = if (splitter.num % 2 == 0 ) 0 else 1
+    newSFPair.p2 = RegularNumber(splitter.num/2 + roundUp, newSFPair)
     replaceSnailFish(splitter, newSFPair)
 }
 
@@ -119,18 +128,6 @@ fun explodeAndSplit(snailFish: SnailFish) {
             else -> notFinished = false
         }
     }
-}
-
-fun findExpressionEnd(expression: String):Int {
-    var openings = 0
-    var ndx = 0
-    var closingPosition = 0
-    while (closingPosition == 0) {
-        if (expression[ndx] == '[') openings++
-        if (expression[ndx] == ']') openings--
-        if (openings == 0) closingPosition = ndx else ndx++
-    }
-    return closingPosition
 }
 
 fun partOne(data:List<String>):Int =  data.map(::parse).sum().magnitude()
