@@ -21,7 +21,7 @@ operator fun SnailFish.plus(other:SnailFish):SnailFish {
 
 fun List<SnailFish>.sum() = reduce{total, sf -> total + sf }
 
-fun parse(s:String, parent:SnailFish?):SnailFish {
+fun parse(s:String, parent:SnailFish? = null):SnailFish {
     val expression = s.drop(1).dropLast(1)
     val firstExpressionEnd  = if (expression.first() == '[') findExpressionEnd(expression) else 0
     val secondExpressionStart = firstExpressionEnd + 2
@@ -141,3 +141,8 @@ fun findExpressionEnd(expression: String):Int {
 }
 
 fun partOne(data:List<String>):Int =  data.map{parse(it,null)}.sum().magnitude()
+
+fun partTwo(data:List<String>):Int =
+    data.indices.map { m -> data.indices.map{ n->
+        (parse(data[m],null) + parse(data[n],null)).magnitude()
+    } }.maxOf { it.maxOf { it } }
