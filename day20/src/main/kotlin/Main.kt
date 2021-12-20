@@ -15,17 +15,20 @@ fun createImage(data:List<String>):Image {
     return image
 }
 
+data class Boundary(val xRange:IntRange, val yRange:IntRange)
+
+fun Image.boundary(borderSize:Int) =
+    Boundary( (toList().minOf { it.x } - borderSize)..(toList().maxOf { it.x } + borderSize),
+        (toList().minOf { it.y } - borderSize)..(toList().maxOf { it.y } + borderSize)
+    )
+
 fun Image.getBinary(position: Position): String =
-    position.rows().map{row -> row.map{  if ( it in this ) "1" else "0" }.joinToString("") }.joinToString ("")
+    position.rows().joinToString("") { row -> row.joinToString("") { if (it in this) "1" else "0" } }
 
 fun Image.applyAlgorithmToImage(algorithm:String, borderSize:Int):Image {
     val output = mutableSetOf<Position>()
-    val minX = toList().minOf { it.x } - borderSize
-    val minY = toList().minOf { it.y } - borderSize
-    val maxX = toList().maxOf { it.x } + borderSize
-    val maxY = toList().maxOf { it.y } + borderSize
-    (minY..maxY).forEach{y ->
-        (minX..maxX).forEach { x->
+    boundary(borderSize).yRange.forEach{y ->
+        boundary(borderSize).xRange.forEach { x->
             val ndx = getBinary(Position(x,y)).toInt(2)
             if (algorithm[ndx] == '#') output.add(Position(x,y))
         }
@@ -35,13 +38,9 @@ fun Image.applyAlgorithmToImage(algorithm:String, borderSize:Int):Image {
 
 fun Image.text():String {
     var output = ""
-    val minX = toList().minOf { it.x } - 2
-    val minY = toList().minOf { it.y } - 2
-    val maxX = toList().maxOf { it.x } + 2
-    val maxY = toList().maxOf { it.y } + 2
-    (minY..maxY).forEach{y ->
-        (minX..maxX).forEach { x->
-            if (Position(x,y) in this) output = "$output#" else output = "$output."
+    boundary(2).yRange.forEach{y ->
+        boundary(2).xRange.forEach { x->
+            output = if (Position(x,y) in this) "$output#" else "$output."
         }
         output = "$output\n"
     }
@@ -55,7 +54,7 @@ fun partOne(algorithm:String, data:List<String>):Int =
 
 fun partTwo(algorithm:String, data:List<String>):Int {
     var image = createImage(data)
-    (1..25).forEach {
+    (1..25).forEach { _ ->
         image = image.applyAlgorithmToImage(algorithm,3)
         image = image.applyAlgorithmToImage(algorithm,if (algorithm[0] =='#') -1 else 3)
     }
