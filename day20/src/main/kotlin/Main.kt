@@ -1,8 +1,11 @@
 
 data class Position(val x:Int, val y:Int) {
-    fun rows() = ((y-1)..(y+1)).map{row ->
-        ((x-1)..(x+1)).map{col -> Position(col, row) }
-    }
+    fun positionsOfBits() = listOf(
+        Position(x-1,y-1),Position(x,y-1),Position(x+1,y-1),
+        Position(x-1,y),Position(x,y),Position(x+1,y),
+        Position(x-1,y+1),Position(x,y+1),Position(x+1,y+1)
+    )
+
 }
 
 typealias Image = Set<Position>
@@ -23,7 +26,7 @@ fun Image.boundary(borderSize:Int) =
     )
 
 fun Image.getBinary(position: Position): String =
-    position.rows().joinToString("") { row -> row.joinToString("") { if (it in this) "1" else "0" } }
+    position.positionsOfBits().joinToString("") { if (it in this) "1" else "0" }
 
 fun Image.applyAlgorithmToImage(algorithm:String, borderSize:Int):Image {
     val output = mutableSetOf<Position>()

@@ -20,12 +20,13 @@ class MainTest {
             ..###
         """.trimIndent().split("\n")
     @Test
-    fun `rows for a position`() {
+    fun `positions of bits`() {
         val position = Position(3,5)
-        val row0 = listOf(Position(2,4),Position(3,4),Position(4,4))
-        val row1 = listOf(Position(2,5),Position(3,5),Position(4,5))
-        val row2 = listOf(Position(2,6),Position(3,6),Position(4,6))
-        assertEquals(listOf(row0,row1,row2), position.rows())
+        val expectedResult = listOf(
+            Position(2,4),Position(3,4),Position(4,4),
+            Position(2,5),Position(3,5),Position(4,5),
+            Position(2,6),Position(3,6),Position(4,6))
+        assertEquals(expectedResult, position.positionsOfBits())
     }
     @Test
     fun `printing image`() {
