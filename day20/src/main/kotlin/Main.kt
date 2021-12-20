@@ -5,7 +5,6 @@ data class Position(val x:Int, val y:Int) {
         Position(x-1,y),Position(x,y),Position(x+1,y),
         Position(x-1,y+1),Position(x,y+1),Position(x+1,y+1)
     )
-
 }
 
 typealias Image = Set<Position>
@@ -25,7 +24,7 @@ fun Image.boundary(borderSize:Int) =
         (toList().minOf { it.y } - borderSize)..(toList().maxOf { it.y } + borderSize)
     )
 
-fun Image.getBinary(position: Position): String =
+fun Image.getBinary(position: Position) =
     position.positionsOfBits().joinToString("") { if (it in this) "1" else "0" }
 
 fun Image.applyAlgorithmToImage(algorithm:String, borderSize:Int):Image {
