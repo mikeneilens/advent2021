@@ -2,27 +2,25 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class MainTest {
-    @Test
-    fun `rolling dice`() {
-        assertEquals(listOf(1,2,3),dice(1))
-        assertEquals(listOf(4,5,6),dice(2))
-        assertEquals(listOf(100,1,2),dice(34))
-    }
-    @Test
-    fun `caculating new position`() {
-        assertEquals(9, newPosition(7,2))
-        assertEquals(10, newPosition(7,3))
-        assertEquals(2, newPosition(7,5))
-    }
+
     @Test
     fun `playing a game using starting positions of 4 and 8`() {
-        assertEquals(739785, playGame(4,8))
+        val game = Game(Player(4),Player(8)).apply { playGame() }
+        assertEquals(739785, game.result())
     }
 
     @Test
     fun `playing a game using puzzle input`() {
-        assertEquals(925605, playGame(6,9))
+        val game = Game(Player(6),Player(9)).apply { playGame() }
+        assertEquals(925605, game.result())
     }
-
+    @Test
+    fun `test counting wins for part two using starting position of 4 and 8`() {
+        assertEquals(ScoreCard(444356092776315, 341960390180808), countWin(Player(4), Player(8)))
+    }
+    @Test
+    fun `part two using puzzle input`() {
+        assertEquals(486638407378784L, countWin(Player(6),Player(9)).highestNumberOfWins())
+    }
 }
 
