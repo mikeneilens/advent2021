@@ -1,2 +1,0 @@
-package days.day19
-

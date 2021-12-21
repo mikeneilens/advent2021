@@ -47,7 +47,7 @@ fun splitElementPair( elementPair:String, insertionRules:Map<String, String>) =
 fun MutableMap<String,Long>.increment(key:String, num:Long) = set(key, getOrDefault(key,0) + num)
 
 fun Map<String,Long>.countChars(polymerTemplate: String):Map<Char, Long> {
-    val results = mutableMapOf<Char, Long>(polymerTemplate.last() to 1)
+    val results = mutableMapOf(polymerTemplate.last() to 1L)
     toList().forEach { (key, value) ->
         results[key.first()] = (results[key.first()] ?: 0) + value
     }

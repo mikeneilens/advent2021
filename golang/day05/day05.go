@@ -99,3 +99,4 @@ func diffPlusOne(a int, b int) int {
 	}
 
 }
+type alias Folder = Paper.(Int)->Paper

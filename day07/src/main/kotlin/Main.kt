@@ -12,6 +12,7 @@ fun costOfMovingCrabs(position: Int, crabsAtEachPosition: Map<Int, Int>, costFor
 
 fun partOne(data:String):Int {
     val values = parse(data)
+
     val costForStepSize = (0..values.keys.maxOf{it}).toList() // returns [0,1,2,3,4,5] etc
     return calcDistanceForEachPosition(values,costForStepSize).minOf { it.second }
 }
