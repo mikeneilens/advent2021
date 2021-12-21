@@ -28,8 +28,8 @@ class Game(private val player1:Player, private val player2:Player) {
     private fun dice(r:Int) = 1 + (r -1) % 100
 }
 
-data class ScoreCard(var noPlayer1Wins:Long = 0L, var noOfPlayer2Wins:Long = 0L) {
-    fun highestNumberOfWins() = if (noPlayer1Wins > noOfPlayer2Wins) noPlayer1Wins else noOfPlayer2Wins
+data class ScoreCard(var noOfPlayer1Wins:Long = 0L, var noOfPlayer2Wins:Long = 0L) {
+    fun highestNumberOfWins() = if (noOfPlayer1Wins > noOfPlayer2Wins) noOfPlayer1Wins else noOfPlayer2Wins
 }
 
 val gameHistory = mutableMapOf<Pair<Player, Player>,ScoreCard>()
@@ -46,7 +46,7 @@ fun countWins(player1:Player, player2:Player):ScoreCard {
             (1..3).forEach { dice3 ->
                 val newPlayer1 = player1.moveAndCreatePlayer(dice1 + dice2 + dice3)
                 val (player2Wins, player1Wins) = countWins(player2, newPlayer1)
-                scoreCard.noPlayer1Wins += player1Wins
+                scoreCard.noOfPlayer1Wins += player1Wins
                 scoreCard.noOfPlayer2Wins += player2Wins
             }
         }
