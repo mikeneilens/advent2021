@@ -16,11 +16,11 @@ class MainTest {
     }
     @Test
     fun `test counting wins for part two using starting position of 4 and 8`() {
-        assertEquals(ScoreCard(444356092776315, 341960390180808), countWin(Player(4), Player(8)))
+        assertEquals(ScoreCard(444356092776315, 341960390180808), countWins(Player(4), Player(8)))
     }
     @Test
     fun `part two using puzzle input`() {
-        assertEquals(486638407378784L, countWin(Player(6),Player(9)).highestNumberOfWins())
+        assertEquals(486638407378784L, countWins(Player(6),Player(9)).highestNumberOfWins())
     }
 }
 
