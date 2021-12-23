@@ -21,14 +21,9 @@ fun List<String>.parse() = map(String::toCuboid)
 fun List<String>.partOne():Map<Position, Boolean> {
     val map = mutableMapOf<Position,Boolean>()
     parse().filter{it.isInitializer() }.forEach { cuboid ->
-          cuboid.xRange.forEach { x->
-              cuboid.yRange.forEach { y->
-                  cuboid.zRange.forEach { z ->
+          cuboid.xRange.forEach { x-> cuboid.yRange.forEach { y-> cuboid.zRange.forEach { z ->
                       map[Position(x,y,z)] = cuboid.switch
-                }
-            }
-        }
-    }
+                } } } }
     return map
 }
 fun Cuboid.isInitializer() = xRange.isInitializer()  && yRange.isInitializer() && zRange.isInitializer()
