@@ -132,55 +132,11 @@ class MainTest {
     fun `Cuboid to Set`() {
         assertEquals(27, Cuboid(switch=true, xRange=11..13L, yRange=11..13L, zRange=11..13L).toSet().size)
     }
-    @Test
-    fun `adding a cuboid to a list of one cuboids`() {
-        val cuboid1 = Cuboid(switch=true, xRange=10..12L, yRange=10..12L, zRange=10..12L)
-        val cuboid2 = Cuboid(switch=true, xRange=11..13L, yRange=11..13L, zRange=11..13L)
-        val result = listOf(cuboid1) + cuboid2
-        assertEquals(cuboid1.toSet() + cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
-    }
-    @Test
-    fun `subtracting a cuboid to a list of one cuboids`() {
-        val cuboid1 = Cuboid(switch=true, xRange=10..12L, yRange=10..12L, zRange=10..12L)
-        val cuboid2 = Cuboid(switch=true, xRange=11..13L, yRange=11..13L, zRange=11L..13L)
-        val result = listOf(cuboid1)- cuboid2
-        assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
-    }
-    @Test
-    fun `subtracting a cuboid to a list of one cuboids2`() {
-        val cuboid1 = Cuboid(switch=true, xRange=10..10L, yRange=11..12L, zRange=10..10L)
-        val cuboid2 = Cuboid(switch=true, xRange=9..11L, yRange=9..11L, zRange=9..11L)
-        val result = listOf(cuboid1)- cuboid2
-        assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
-    }
-    @Test
-    fun `subtracting a cuboid to a list of one cuboids3`() {
-        val cuboid1 = Cuboid(switch=true, xRange=5..10L, yRange=4..10L, zRange=5..8L)
-        val cuboid2 = Cuboid(switch=true, xRange=6..12L, yRange=6..12L, zRange=7..12L)
-        val result = listOf(cuboid1)- cuboid2
-        assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
-    }
-    @Test
-    fun `subtracting a cuboid to a list of one cuboids4`() {
-        val cuboid1 = Cuboid(switch=true, xRange=5..10L, yRange=4..10L, zRange=5..8L)
-        val cuboid2 = Cuboid(switch=true, xRange=11..12L, yRange=11..12L, zRange=9..12L)
-        val result = listOf(cuboid1)- cuboid2
-        assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
-    }
 
     @Test
     fun `volume of a cuboid`() {
         assertEquals(27, Cuboid(true, 10..12L,10..12L,10..12L).volume)
         assertEquals(27, Cuboid(true, -12..-10L,-12..-10L,-12..-10L).volume)
-    }
-
-    @Test
-    fun `range is inside another range`() {
-        assertTrue(1L..2L isInside  1L..2L)
-        assertTrue(1L..2L isInside  -2L..2L)
-        assertFalse(1L..2L isInside  2L..2L)
-        assertFalse(1L..2L isInside  2L..2L)
-        assertFalse(1L..2L isInside  2L..3L)
     }
 
     @Test

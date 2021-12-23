@@ -8,10 +8,10 @@ data class Position(val x:Long, val y:Long, val z:Long)
 
 fun String.toCuboid():Cuboid {
     val switch = startsWith("on")
-    val xVals = split("=")[1].split(",")[0].split("..").map(String::toLong)
-    val yVals = split("=")[2].split(",")[0].split("..").map(String::toLong)
-    val zVals = split("=")[3].split(",")[0].split("..").map(String::toLong)
-    return Cuboid(switch, (xVals[0]..xVals[1]),(yVals[0]..yVals[1]),(zVals[0]..zVals[1]))
+    val valuesForX = split("=")[1].split(",")[0].split("..").map(String::toLong)
+    val valuesForY = split("=")[2].split(",")[0].split("..").map(String::toLong)
+    val valuesForZ = split("=")[3].split(",")[0].split("..").map(String::toLong)
+    return Cuboid(switch, (valuesForX[0]..valuesForX[1]),(valuesForY[0]..valuesForY[1]),(valuesForZ[0]..valuesForZ[1]))
 }
 
 fun Cuboid.toSet():Set<Position> = xRange.flatMap{x -> yRange.flatMap{y->  zRange.map{ z -> Position(x,y,z)  }  }  }.toSet()
@@ -20,7 +20,7 @@ fun List<String>.parse() = map(String::toCuboid)
 
 fun List<String>.partOne():Map<Position, Boolean> {
     val map = mutableMapOf<Position,Boolean>()
-    parse().filter{it.xRange isInside -50L..50L  && it.yRange isInside -50L..50L && it.zRange isInside -50L..50L  }.forEach { cuboid ->
+    parse().filter{it.isInitializer() }.forEach { cuboid ->
           cuboid.xRange.forEach { x->
               cuboid.yRange.forEach { y->
                   cuboid.zRange.forEach { z ->
@@ -31,23 +31,24 @@ fun List<String>.partOne():Map<Position, Boolean> {
     }
     return map
 }
-
-infix fun LongRange.isInside(other:LongRange) = first in other && last in other
+fun Cuboid.isInitializer() = xRange.isInitializer()  && yRange.isInitializer() && zRange.isInitializer()
+fun LongRange.isInitializer() = first in -50L..50L && last in -50L..50L
 
 fun List<Cuboid>.partTwo():List<Cuboid> =
     drop(1).fold(listOf(first())){total, cuboid ->
         if (cuboid.switch) subtract(total, cuboid) + cuboid else subtract(total, cuboid)
     }
 
-fun subtract(line:LongRange, otherLine:LongRange, rangesToKeep:List<LongRange> = listOf(),rangesRemoved:List<LongRange> = listOf()):Pair<List<LongRange>,List<LongRange>> {
-    when {
-        line.last < otherLine.first -> return Pair(rangesToKeep + listOf(line),rangesRemoved)
-        line.first > otherLine.last -> return Pair(rangesToKeep + listOf(line),rangesRemoved)
-        line.first >= otherLine.first && line.last <= otherLine.last -> return Pair(rangesToKeep,rangesRemoved + listOf(line))
+//Subtracts a range from another ranges giving the ranges that are left over and the ranges that were removed.
+tailrec fun subtract(line:LongRange, otherLine:LongRange, rangesToKeep:List<LongRange> = listOf(),rangesRemoved:List<LongRange> = listOf()):Pair<List<LongRange>,List<LongRange>> {
+    return when {
+        line.last < otherLine.first -> Pair(rangesToKeep + listOf(line),rangesRemoved)
+        line.first > otherLine.last -> Pair(rangesToKeep + listOf(line),rangesRemoved)
+        line.first >= otherLine.first && line.last <= otherLine.last -> Pair(rangesToKeep,rangesRemoved + listOf(line))
         line.first < otherLine.first ->
-            return subtract(otherLine.first..line.last, otherLine, rangesToKeep + listOf((line.first..otherLine.first -1)),rangesRemoved)
+            subtract(otherLine.first..line.last, otherLine, rangesToKeep + listOf((line.first until otherLine.first)),rangesRemoved)
         else ->
-            return subtract(otherLine.last+1..line.last, otherLine, rangesToKeep, rangesRemoved + listOf(line.first..otherLine.last) )
+            subtract(otherLine.last+1..line.last, otherLine, rangesToKeep, rangesRemoved + listOf(line.first..otherLine.last) )
     }
 }
 
