@@ -128,7 +128,7 @@ class MainTest {
         assertEquals(expectedResult, amphipodB.stepsAllowed(otherAmphipods))
     }
     @Test
-    fun `firsst steps are not allowed if at back of room and the position above is not clear`() {
+    fun `first steps are not allowed if at back of room and the position above is not clear`() {
         val amphipods = sampleData.toAmphipods()
         val amphipodAtBack = amphipods.first{it.position.y == 3}
         val otherAmphipods = amphipods.filter{it != amphipodAtBack}
