@@ -81,7 +81,7 @@ fun calcCost(data:List<String>, depth:Int = 3):Int {
     var minCost = Int.MAX_VALUE
     val combinationsTried = mutableSetOf<List<Amphipod>>()
 
-    fun calcMoves(amphipods:List<Amphipod>, cost:Int = 0, level:Int=0) {
+    fun calcMoves(amphipods:List<Amphipod>, cost:Int = 0) {
         if (amphipods in combinationsTried) {
             return
         } else {
@@ -102,7 +102,7 @@ fun calcCost(data:List<String>, depth:Int = 3):Int {
                     .forEach{ step ->
                         val movedAmphipod = amphipod.moveAmphipod(step)
                         val updatedAmphipods = amphipods.map{if (it == amphipod) movedAmphipod else it}
-                        calcMoves(updatedAmphipods, cost + step.cost, level + 1 )
+                        calcMoves(updatedAmphipods, cost + step.cost )
                     }
             }
     }
