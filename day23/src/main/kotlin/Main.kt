@@ -3,112 +3,110 @@ import kotlin.math.abs
 data class Position(val x:Int, val y:Int)
 
 val energy = mapOf('A' to 1, 'B' to 10, 'C' to 100, 'D' to 1000)
+val destinationColumns = mapOf('A' to 3, 'B' to 5, 'C' to 7, 'D' to 9)
 
-fun List<String>.toAmphipods():List<Amphipod> {
-    val destinationColumns = mapOf('A' to 3, 'B' to 5, 'C' to 7, 'D' to 9)
-    val amphipods = mutableListOf<Amphipod>()
-    forEachIndexed{y, row ->
-        row.forEachIndexed{x, char ->
+fun List<String>.toAmphipods(depth: Int):List<Amphipod> =
+     flatMapIndexed{y, row ->
+        row.mapIndexed{x, char ->
             if (char in destinationColumns.keys) {
-                val destinationColumn = destinationColumns.getValue(char)
-                if (x != destinationColumn || y != 3){
+                if (x != destinationColumns[char] || y != depth){
                     val position = Position(x, y)
-                    amphipods.add(position.createAmphipod(destinationColumn,energy.getValue(char)))
-                }
-            }
-        }
+                    position.createAmphipod(destinationColumns.getValue(char), depth, energy.getValue(char))
+                } else //an amphipod already in the right place is given a dummy first move.
+                    Amphipod(listOf(Move(Position(x,y),Position(x,y),0)),destinationColumns.getValue(char))
+            } else null
+        }.filterNotNull()
     }
-    return amphipods
+
+fun Position.createAmphipod(destinationColumn: Int, depth: Int, energy:Int):Amphipod {
+    val firstSteps =  (1..11).mapNotNull { if (it !in destinationColumns.values)  Position(it,1) else null }
+        .map{Move(this,it, energy * (abs(this.x - it.x) + abs(this.y - it.y)))}
+    val secondSteps = (2..depth).flatMap{row -> firstSteps.map{firstStep ->  secondMove(firstStep.end, destinationColumn, row, energy) } }
+    return Amphipod(firstSteps + secondSteps, destinationColumn)
 }
 
-fun Position.createAmphipod(destinationColumn: Int, energy:Int):Amphipod {
-    val step1 =  (1..11).map { Position(it,1) }.filter{it.x != 3 && it.x !=5 && it.x != 7 && it.x != 9 }.map{Move(this,it, energy * (abs(this.x - it.x) + abs(this.y - it.y)))}
-    val step2 = step1.map{Move(it.end, Position(destinationColumn,2),energy * (abs(destinationColumn - it.end.x) + abs(2 - it.end.y)) )} + step1.map{Move(it.end, Position(destinationColumn,3),energy * (abs(destinationColumn - it.end.x) + abs(3 - it.end.y)) )}
-    return Amphipod(step1 + step2, destinationColumn)
-}
+private fun secondMove(firstStepEnd:Position, destinationColumn:Int, row:Int, energy:Int) =
+    Move(firstStepEnd, Position(destinationColumn, row), energy * (abs(destinationColumn - firstStepEnd.x) + abs(row - firstStepEnd.y)))
 
 data class Move(val start:Position, val end:Position, val cost:Int)
 
-data class Amphipod( val steps:List<Move>, val destinationColum:Int, val stepsTaken:List<Int> = listOf() ) {
+data class Amphipod(val possibleSteps:List<Move>, val destinationColumn:Int, val stepsTaken:List<Move> = listOf(), val depth:Int = 3 ) {
     fun stepsAllowed(otherAmphipods:List<Amphipod>):List<Move> {
         val othersInHallway = otherAmphipods.filter{it != this && it.isInHallway}
-        return steps
-                //Is not at the back of the correct room then no steps
-            .filter{ !isAtBackOfCorrectRoom
-                //Amphipods can only move twice
-                    && stepsTaken.size < 2
-                //Is not at the back of a room or is at the back and space above is clear
-                    && notAtBackOfRoomOrSpaceAboveIsClear(otherAmphipods)}
-                //only include steps that start at current position
-            .filter{ step -> step.start == position
-                //include steps where end of step is an empty position
-                     && endOfMoveIsEmpty(step,otherAmphipods)
-                //include steps where no other amphipods in the way
-                     && noOthersInTheWay(step, othersInHallway)
-                //include steps if not going to the destination room or destination room doesnt contain other amphipods from a different room
-                     && (step.end.x != destinationColum
-                    || destinationContainsNoIntruders(otherAmphipods))}
-                //include steps not going to the middle of a room or going to the middle of a room when the back of the room is occupied
-           // .filter{step -> movesToMiddleOfRoomIfBackisNotEmpty(step, otherAmphipods)}
+        val allStepsAllowed = possibleSteps
+            .filter{ step -> step.start == position               //only include steps that start at current position
+                     && endOfMoveIsUnoccupied(step,otherAmphipods)    //include steps where end of step is an empty position
+                     && noOthersInTheWayInHallway(step, othersInHallway)   //include steps where no other amphipods in the way
+                     && noOthersInTheWayInRoom(step, otherAmphipods)   //include steps where no other amphipods in the way
+                     && (step.end.x != destinationColumn         //include steps if not going to the destination room
+                    || destinationContainsNoIntruders(otherAmphipods))} // or destination room does not contain other amphipods from a different room
+
+        //This final filter ensures that when going into a room the amphipod moves to the lowest level in the room
+        return allStepsAllowed.filter{s1 ->  s1.end.x != destinationColumn || s1.end.x == destinationColumn && s1.end.y == allStepsAllowed.filter{s2 -> s2.end.x == destinationColumn}.maxOf { it.end.y }}
     }
 
-    val position = if (stepsTaken.isEmpty()) steps.first().start else steps[stepsTaken.last()].end
-    val isInHallway = position.y == 1
-    val isInCorrectRoom = position.x == destinationColum
-    val isAtBackOfCorrectRoom = isInCorrectRoom && position.y == 3
+    val position = if (stepsTaken.isEmpty()) possibleSteps.first().start else stepsTaken.last().end
+    private val isInHallway = position.y == 1
+    val isInCorrectRoom = position.x == destinationColumn
+    val isAtBackOfCorrectRoom = isInCorrectRoom && position.y == depth
 
-    fun endOfMoveIsEmpty(move: Move, otherAmphipods:List<Amphipod>) = otherAmphipods.all { other -> other.position != move.end }
+    private fun endOfMoveIsUnoccupied(move: Move, otherAmphipods:List<Amphipod>) = otherAmphipods.all { other -> other.position != move.end }
 
-    fun notAtBackOfRoomOrSpaceAboveIsClear(otherAmphipods: List<Amphipod>) =
-        position.y != 3 || position.y == 3 && otherAmphipods.none{other -> other.position.x == position.x}
+    fun atBackOfRoom(otherAmphipods: List<Amphipod>):Boolean {
+        val amphipodsInRoom = otherAmphipods.filter{it.position.x == this.position.x && it.position.y > this.position.y}
+        val backOfRoom = depth - amphipodsInRoom.size
+        return position.y == backOfRoom && amphipodsInRoom.all{it.destinationColumn == this.destinationColumn}
+    }
 
-    fun noOthersInTheWay(move: Move, otherAmphipods:List<Amphipod>) =
+    private fun noOthersInTheWayInHallway(move: Move, otherAmphipods:List<Amphipod>) =
         (move.end.x < move.start.x && otherAmphipods.none{ other -> other.position.x < move.start.x && other.position.x >= move.end.x})
                 || (move.end.x > move.start.x && otherAmphipods.none{ other -> other.position.x > move.start.x && other.position.x <= move.end.x})
 
-    fun destinationContainsNoIntruders(otherAmphipods: List<Amphipod>) =
-        otherAmphipods.filter {other -> other.destinationColum != destinationColum }.none{other -> other.position.x == destinationColum}
-    
-    fun moveAmphipod(move:Move):Amphipod = Amphipod(steps, destinationColum, stepsTaken + steps.indexOf(move))
+    fun noOthersInTheWayInRoom(move: Move, otherAmphipods:List<Amphipod>)=
+        (move.end.y == 1 && otherAmphipods.none{it.position.x == move.start.x && it.position.y <= move.start.y  } )
+                || (move.start.y == 1 && otherAmphipods.none{it.position.x == move.end.x && it.position.y <= move.end.y  } )
 
-    fun cost() = stepsTaken.sumOf{ steps[it].cost  }
+
+    private fun destinationContainsNoIntruders(otherAmphipods: List<Amphipod>) =
+        otherAmphipods.filter {other -> other.destinationColumn != destinationColumn }.none{ other -> other.position.x == destinationColumn}
+    
+    fun moveAmphipod(move:Move):Amphipod = Amphipod(possibleSteps.filter{it.start == move.end}, destinationColumn, stepsTaken + move)
 }
 
 fun List<Amphipod>.allHome() = all{it.isInCorrectRoom}
 fun List<Amphipod>.allStuck() = all{amphipod -> amphipod.stepsAllowed( this.filter{it != amphipod} ).isEmpty()}
-fun List<Amphipod>.cost() = sumOf{it.cost()}
 
-
-fun calcCost(data:List<String>):Int {
+fun calcCost(data:List<String>, depth:Int = 3):Int {
 
     var minCost = Int.MAX_VALUE
-    val combinitationsTried = mutableSetOf<List<Amphipod>>()
+    val combinationsTried = mutableSetOf<List<Amphipod>>()
 
-    fun calcMoves(amphipods:List<Amphipod>, cost:Int = 0) {
-        if (amphipods in combinitationsTried) {
+    fun calcMoves(amphipods:List<Amphipod>, cost:Int = 0, level:Int=0) {
+        if (amphipods in combinationsTried) {
             return
         } else {
-            combinitationsTried.add(amphipods)
+            combinationsTried.add(amphipods)
         }
         if (amphipods.allHome()) {
             if (cost < minCost) minCost = cost
             return
         }
         if (amphipods.allStuck())return
-        if (amphipods.cost() > minCost) return
 
-        amphipods.forEach{ amphipod ->
-            val otherAmphipods = amphipods.filter{it != amphipod}
-            amphipod.stepsAllowed(otherAmphipods)
-                .filter{it.cost + cost < minCost}
-                .forEach{ step ->
-                val movedAmphipod = amphipod.moveAmphipod(step)
-                val updatedAmphipods = amphipods.map{if (it == amphipod) movedAmphipod else it}
-                calcMoves(updatedAmphipods, cost + step.cost )
+        amphipods
+            .filter{it.stepsTaken.size < 2 &&  !it.isAtBackOfCorrectRoom }
+            .forEach{ amphipod ->
+                val otherAmphipods = amphipods.filter{it != amphipod}
+                amphipod.stepsAllowed(otherAmphipods)
+                    .filter{it.cost + cost < minCost }
+                    .forEach{ step ->
+                        val movedAmphipod = amphipod.moveAmphipod(step)
+                        val updatedAmphipods = amphipods.map{if (it == amphipod) movedAmphipod else it}
+                        calcMoves(updatedAmphipods, cost + step.cost, level + 1 )
+                    }
             }
-        }
     }
-    val amphipods = data.toAmphipods()
+    val amphipods = data.toAmphipods(depth)
     calcMoves(amphipods)
     return minCost
 }
