@@ -188,6 +188,6 @@ class MainTest {
     }
     @Test
     fun `calculating moves part 2`() {
-        assertEquals(44169, calcCost(puzzleInputP2, 5))
+        assertEquals(40954, calcCost(puzzleInputP2, 5))
     }
 }
