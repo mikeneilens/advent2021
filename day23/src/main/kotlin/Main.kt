@@ -41,7 +41,7 @@ data class Amphipod(val possibleSteps:List<Move>, val destinationColumn:Int, val
                      && (step.end.x != destinationColumn         //include steps if not going to the destination room
                     || destinationContainsNoIntruders(otherAmphipods))} // or destination room does not contain other amphipods from a different room
 
-        //This final filter ensures that when going into a room the amphipod moves to the lowest level in the room
+        //This final filter ensures that when going into a room the amphipod always moves to the lowest level in the room to prevent a pointless move.
         return allStepsAllowed.filter{s1 ->  s1.end.x != destinationColumn || s1.end.x == destinationColumn && s1.end.y == allStepsAllowed.filter{s2 -> s2.end.x == destinationColumn}.maxOf { it.end.y }}
     }
 
