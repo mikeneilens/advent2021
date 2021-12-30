@@ -172,7 +172,7 @@ class MainTest {
 
     @Test
     fun `creating paired digits`() {
-        val pairedDigits = createPairedDigits(puzzleInput)
+        val pairedDigits = createPairedDigits(puzzleInput, PairedDigit::updateDigitValuesPartOne)
         assertEquals(PairedDigit(0, 13, 9, 3), pairedDigits[0])
         assertEquals(PairedDigit(1, 12, 9, 7), pairedDigits[1])
         assertEquals(PairedDigit(2, 3, 2, 9), pairedDigits[2])
@@ -192,6 +192,8 @@ class MainTest {
     @Test
     fun `part one`() {
         assertEquals(listOf(9, 9, 2, 9, 8, 9, 9, 3, 1, 9, 9, 8, 7, 3), partOne(puzzleInput))
+        println("Part one answer is ${partOne(puzzleInput).map{it.toString()}.joinToString("")}")
+
     }
 
     @Test
@@ -204,5 +206,6 @@ class MainTest {
     @Test
     fun `part two`() {
         assertEquals(listOf(7, 3, 1, 8, 1, 2, 2, 1, 1, 9, 7, 1, 1, 1), partTwo(puzzleInput))
+        println("Part two answer is ${partTwo(puzzleInput).map{it.toString()}.joinToString("")}")
     }
 }

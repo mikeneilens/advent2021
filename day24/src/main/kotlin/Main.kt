@@ -46,15 +46,15 @@ class Alu( _input:List<Int>, _lines:List<String> = listOf()) {
             }
         }
 
-    private fun createInp(line:String): () -> Unit = { inp(line[4]) }
+    private fun createInp(line:String): () -> Unit = { inp(line.parameter1) }
 
-    private fun createFunction(line:String, f1:(Char, Char)->Unit, f2:(Char, Int)->Unit): ()->Unit  {
-        val (a, b) = line.getParameters()
-        if (b.toIntOrNull() != null) return { f2(a[0], b.toInt())} else return { f1(a[0], b[0])}
+    private fun createFunction(line:String, f1:(Char, Char)->Unit, f2:(Char, Int)->Unit): ()->Unit {
+        if (line.parameter2.toIntOrNull() != null) return { f2(line.parameter1, line.parameter2.toInt()) }
+        else return { f1(line.parameter1, line.parameter2[0]) }
     }
 
-    fun runProgram(_input:List<Int>) {
-        inputStream = _input
+    fun runProgram(input:List<Int>) {
+        inputStream = input
         inputNdx = 0
         variables['w'] = 0
         variables['x'] = 0
@@ -64,35 +64,44 @@ class Alu( _input:List<Int>, _lines:List<String> = listOf()) {
     }
 }
 
-//**** The stuff that actually caclulates the solution ****//
-data class PairedDigit(val aPosition:Int, var bPosition:Int? = null, var a:Int? = null, var b:Int? = null)
+//**** The stuff that actually calculates the solution ****//
+data class PairedDigit(val aPosition:Int, var bPosition:Int? = null, var a:Int? = null, var b:Int? = null) {
+    fun updateDigitValuesPartOne(diff: Int) {
+        a = if (diff >= 0) 9 - diff else 9
+        b = if (diff >= 0) 9 else 9 + diff
+    }
+    fun updateDigitValuesPartTwo(diff: Int) {
+        a = if (diff >= 0) 1 else 1 - diff
+        b = if (diff >= 0) 1 + diff else 1
+    }
+    fun differenceBetweenDigitValues(sourceCode:List<String>) = sourceCode[bPosition!! * SUB_PROGRAM_SIZE + B_VAL_OFFSET].parameter2.toInt() +
+            sourceCode[aPosition * SUB_PROGRAM_SIZE + A_VAL_OFFSET].parameter2.toInt()
+}
 
-fun createPairedDigits(sourceCode:List<String>, part:String = "one"):List<PairedDigit> {
+const val SUB_PROGRAM_SIZE = 18
+const val STACK_OFFSET = 4
+const val A_VAL_OFFSET = 15
+const val B_VAL_OFFSET = 5
+
+fun createPairedDigits(sourceCode:List<String>, digitUpdater:PairedDigit.(Int)->Unit):List<PairedDigit> {
     val pairedDigits = mutableListOf<PairedDigit>()
-    sourceCode.chunked(18).forEachIndexed { ndx, subProgram ->
-        if (subProgram[4].parameter2 == "1") pairedDigits.add(PairedDigit(ndx))
+    sourceCode.chunked(SUB_PROGRAM_SIZE).forEachIndexed { ndx, subProgram ->
+        if (subProgram[STACK_OFFSET].parameter2 == "1") pairedDigits.add(PairedDigit(ndx))
         else {
             pairedDigits.findLast { it.bPosition == null }?.apply {
                 bPosition = ndx
-                val diff = sourceCode[ndx * 18 + 5].parameter2.toInt() + sourceCode[aPosition * 18 + 15].parameter2.toInt()
-                if (part == "one") {
-                    a = if (diff >= 0) 9 - diff else 9
-                    b =  if (diff >= 0) 9 else 9 + diff
-                } else {
-                    a = if (diff >= 0) 1 else 1 - diff
-                    b = if (diff >= 0) 1 + diff else 1
-                }
+                digitUpdater(differenceBetweenDigitValues(sourceCode))
             }
         }
     }
     return pairedDigits
 }
+
 fun List<PairedDigit>.toListOfInts() =
     flatMap{ listOf(Pair(it.aPosition,it.a),Pair(it.bPosition, it.b))}.sortedBy { it.first }.map{it.second as Int}
 
-fun partOne(data:List<String>) = createPairedDigits(data, part = "one").toListOfInts()
-fun partTwo(data:List<String>) = createPairedDigits(data, part = "two").toListOfInts()
+fun partOne(data:List<String>) = createPairedDigits(data, PairedDigit::updateDigitValuesPartOne).toListOfInts()
+fun partTwo(data:List<String>) = createPairedDigits(data, PairedDigit::updateDigitValuesPartTwo).toListOfInts()
 
-fun String.getParameters() = Pair(parameter1,parameter2)
-val String.parameter1 get()  = split(" ")[1]
-val String.parameter2 get()  = split(" ")[2]
+val String.parameter1 get()  = split(" ")[1][0] // e.g. with mul x 1 returns 'x'
+val String.parameter2 get()  = split(" ")[2]   // e.g. with mul x 2 returns "2"
