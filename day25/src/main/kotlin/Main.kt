@@ -1,26 +1,25 @@
 
 data class Position(val x:Int, val y:Int) {
-    fun nextPositionOnRow(maxX:Int) = Position((x + 1) % (maxX + 1), y)
-    fun nextPositionOnColumn(maxY:Int) = Position(x, (y + 1) % (maxY + 1))
+    fun nextPositionOnRow(max:MaxSize) = Position((x + 1) % (max.x + 1), y)
+    fun nextPositionOnColumn(max:MaxSize) = Position(x, (y + 1) % (max.y + 1))
 }
+data class MaxSize(val x:Int, val y:Int)
 
 fun List<String>.parse():Map<Position, Char> =
     flatMapIndexed{y, row ->
-        row.mapIndexed{x, char->
-            Pair(Position(x,y),char)
-        }
+        row.mapIndexed{x, char-> Pair(Position(x,y),char) }
     }.toMap()
 
-fun Map<Position, Char>.horizontalMovers(max:Int) =
+fun Map<Position, Char>.horizontalMovers(max:MaxSize) =
     filter{it.value == '>' && getValue(it.key.nextPositionOnRow(max)) == '.' }.keys
 
-fun Map<Position, Char>.verticalMovers(max:Int) =
+fun Map<Position, Char>.verticalMovers(max:MaxSize) =
     filter{it.value == 'v' && getValue(it.key.nextPositionOnColumn(max)) == '.' }.keys
 
-fun MutableMap<Position, Char>.updateWithHorizontalMovers(movers:Set<Position>, max:Int) =
+fun MutableMap<Position, Char>.updateWithHorizontalMovers(movers:Set<Position>, max:MaxSize) =
     movers.forEach{ position -> moveCucumber(position, position.nextPositionOnRow(max),'>') }
 
-fun MutableMap<Position, Char>.updateWithVerticalMovers(movers:Set<Position>, max:Int) =
+fun MutableMap<Position, Char>.updateWithVerticalMovers(movers:Set<Position>, max:MaxSize) =
     movers.forEach{ position -> moveCucumber(position, position.nextPositionOnColumn(max) ,'v') }
 
 fun MutableMap<Position, Char>.moveCucumber(oldPosition:Position, newPosition: Position, char:Char) {
@@ -30,22 +29,18 @@ fun MutableMap<Position, Char>.moveCucumber(oldPosition:Position, newPosition: P
 
 fun partOne(data:List<String>):Int {
     val map = data.parse().toMutableMap()
-    val maxX = map.maxX
-    val maxY = map.maxY
-    var count = 1
-    var notFinished  = true
-    while (notFinished) {
-        val horizontalMovers = map.horizontalMovers(maxX)
-        map.updateWithHorizontalMovers(horizontalMovers, maxX)
-        val verticalMovers = map.verticalMovers(maxY)
-        map.updateWithVerticalMovers(verticalMovers, maxY)
-        if (horizontalMovers.isEmpty() && verticalMovers.isEmpty()) notFinished = false
-        else {
-            count++
-        }
+    val maxSize = map.maxSize
+    var count = 0
+    while (true) {
+        count++
+        val horizontalMovers = map.horizontalMovers(maxSize)
+        map.updateWithHorizontalMovers(horizontalMovers, maxSize)
+        val verticalMovers = map.verticalMovers(maxSize)
+        map.updateWithVerticalMovers(verticalMovers, maxSize)
+        if (horizontalMovers.isEmpty() && verticalMovers.isEmpty()) return count
     }
-    return count
 }
 
+val Map<Position, Char>.maxSize get() = MaxSize(keys.maxOf { it.x }, keys.maxOf { it.y })
 val Map<Position, Char>.maxX get() = keys.maxOf { it.x }
 val Map<Position, Char>.maxY get() = keys.maxOf { it.y }
