@@ -116,27 +116,27 @@ class MainTest {
 
     @Test
     fun `parsing string into a cuboid`() {
-        assertEquals(Cuboid(switch=true, xRange=1L..12L, yRange=-10L..12L, zRange=-10L..12L),"on x=1..12,y=-10..12,z=-10..12".toCuboid())
+        assertEquals(Cuboid(switch=true, xRange=Range(1L,12L), yRange=Range(-10L,12L), zRange=Range(-10L,12L)),"on x=1..12,y=-10..12,z=-10..12".toCuboid())
     }
     @Test
     fun `parsing sampleData1`() {
         val expectedResult = listOf<Cuboid>(
-            Cuboid(switch=true, xRange=10L..12L, yRange=10L..12L, zRange=10..12L),
-            Cuboid(switch=true, xRange=11L..13L, yRange=11L..13L, zRange=11..13L),
-            Cuboid(switch=false, xRange=9L..11L, yRange=9L..11L, zRange=9..11L),
-            Cuboid(switch=true, xRange=10L..10L, yRange=10L..10L, zRange=10..10L)
+            Cuboid(switch=true, xRange=Range(10L,12L), yRange=Range(10L, 12L), zRange=Range(10, 12L)),
+            Cuboid(switch=true, xRange=Range(11L, 13L), yRange=Range(11L, 13L), zRange=Range(11, 13L)),
+            Cuboid(switch=false, xRange=Range(9L, 11L), yRange=Range(9L, 11L), zRange=Range(9, 11L)),
+            Cuboid(switch=true, xRange=Range(10L, 10L), yRange=Range(10L, 10L), zRange=Range(10, 10L))
         )
         assertEquals(expectedResult, sampleData1.parse())
     }
     @Test
     fun `Cuboid to Set`() {
-        assertEquals(27, Cuboid(switch=true, xRange=11..13L, yRange=11..13L, zRange=11..13L).toSet().size)
+        assertEquals(27, Cuboid(switch=true, xRange=Range(11, 13L), yRange=Range(11, 13L), zRange=Range(11, 13L)).toSet().size)
     }
 
     @Test
     fun `volume of a cuboid`() {
-        assertEquals(27, Cuboid(true, 10..12L,10..12L,10..12L).volume)
-        assertEquals(27, Cuboid(true, -12..-10L,-12..-10L,-12..-10L).volume)
+        assertEquals(27, Cuboid(true, Range(10, 12L),Range(10, 12L),Range(10, 12L)).volume)
+        assertEquals(27, Cuboid(true, Range(-12, -10L),Range(-12, -10L),Range(-12, -10L)).volume)
     }
 
     @Test
@@ -156,47 +156,49 @@ class MainTest {
     }
     @Test
     fun `subtracting a line`() {
-        assertEquals(listOf(1..2L), subtract(1..6L, 3..7L).first)  // other line overlaps end
-        assertEquals(listOf(5..6L), subtract(3..6L, 1..4L).first)  // other line overlaps start
-        assertEquals(listOf(1..2L,6..6L), subtract(1..6L, 3..5L).first) //other line is inside
-        assertEquals(listOf(3..6L), subtract(3..6L, 1..2L).first) //other line is before start
-        assertEquals(listOf(1..2L), subtract(1..2L, 3..9L).first) //other line is after end
-        assertEquals(listOf(3..9L), subtract(3..9L, 1..2L).first) //other line is before start
+        assertEquals(listOf(Range(1, 2L)), subtract(Range(1, 6L), Range(3, 7L)).first)  // other line overlaps end
+        assertEquals(listOf(Range(5, 6L)), subtract(Range(3, 6L), Range(1, 4L)).first)  // other line overlaps start
+        assertEquals(listOf(Range(1, 2L),Range(6, 6L)), subtract(Range(1, 6L), Range(3, 5L)).first) //other line is inside
+        assertEquals(listOf(Range(3, 6L)), subtract(Range(3, 6L), Range(1, 2L)).first) //other line is before start
+        assertEquals(listOf(Range(1, 2L)), subtract(Range(1, 2L), Range(3, 9L)).first) //other line is after end
+        assertEquals(listOf(Range(3, 9L)), subtract(Range(3, 9L), Range(1, 2L)).first) //other line is before start
     }
     @Test
     fun `subtractied part of a line`() {
-        assertEquals(listOf(3..6L), subtract(1..6L, 3..7L).second)  // other line overlaps end
-        assertEquals(listOf(3..4L), subtract(3..6L, 1..4L).second)  // other line overlaps start
-        assertEquals(listOf(3..5L), subtract(1..6L, 3..5L).second) //other line is inside
-        assertEquals(listOf<LongRange>(), subtract(3..6L, 1..2L).second) //other line is before start
-        assertEquals(listOf<LongRange>(), subtract(1..2L, 3..9L).second) //other line is after end
+        assertEquals(listOf(Range(3, 6L)), subtract(Range(1, 6L), Range(3, 7L)).second)  // other line overlaps end
+        assertEquals(listOf(Range(3, 4L)), subtract(Range(3, 6L), Range(1, 4L)).second)  // other line overlaps start
+        assertEquals(listOf(Range(3, 5L)), subtract(Range(1, 6L), Range(3, 5L)).second) //other line is inside
+        assertEquals(listOf<LongRange>(), subtract(Range(3, 6L), Range(1, 2L)).second) //other line is before start
+        assertEquals(listOf<LongRange>(), subtract(Range(1, 2L), Range(3, 9L)).second) //other line is after end
     }
+
+    fun Cuboid.toSet():Set<Position> = xRange.flatMap{x -> yRange.flatMap{y->  zRange.map{ z -> Position(x,y,z)  }  }  }.toSet()
 
     @Test
     fun `subtracting a cuboid to a list of one cuboids v2`() {
-        val cuboid1 = Cuboid(switch=true, xRange=10..12L, yRange=10..12L, zRange=10..12L)
-        val cuboid2 = Cuboid(switch=true, xRange=11..13L, yRange=11..13L, zRange=11L..13L)
+        val cuboid1 = Cuboid(switch=true, xRange=Range(10, 12L), yRange=Range(10, 12L), zRange=Range(10, 12L))
+        val cuboid2 = Cuboid(switch=true, xRange=Range(11, 13L), yRange=Range(11, 13L), zRange=Range(11L, 13L))
         val result = subtract(listOf(cuboid1),cuboid2)
         assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
     }
     @Test
     fun `subtracting a cuboid to a list of one cuboids2 v2`() {
-        val cuboid1 = Cuboid(switch=true, xRange=10..10L, yRange=11..12L, zRange=10..10L)
-        val cuboid2 = Cuboid(switch=true, xRange=9..11L, yRange=9..11L, zRange=9..11L)
+        val cuboid1 = Cuboid(switch=true, xRange=Range(10, 10L), yRange=Range(11, 12L), zRange=Range(10, 10L))
+        val cuboid2 = Cuboid(switch=true, xRange=Range(9, 11L), yRange=Range(9, 11L), zRange=Range(9, 11L))
         val result = subtract(listOf(cuboid1),cuboid2)
         assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
     }
     @Test
     fun `subtracting a cuboid to a list of one cuboids3 v2`() {
-        val cuboid1 = Cuboid(switch=true, xRange=5..10L, yRange=4..10L, zRange=5..8L)
-        val cuboid2 = Cuboid(switch=true, xRange=6..12L, yRange=6..12L, zRange=7..12L)
+        val cuboid1 = Cuboid(switch=true, xRange=Range(5, 10L), yRange=Range(4, 10L), zRange=Range(5, 8L))
+        val cuboid2 = Cuboid(switch=true, xRange=Range(6, 12L), yRange=Range(6, 12L), zRange=Range(7, 12L))
         val result = subtract(listOf(cuboid1),cuboid2)
         assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
     }
     @Test
     fun `subtracting a cuboid to a list of one cuboids4 v2`() {
-        val cuboid1 = Cuboid(switch=true, xRange=5..10L, yRange=4..10L, zRange=5..8L)
-        val cuboid2 = Cuboid(switch=true, xRange=11..12L, yRange=11..12L, zRange=9..12L)
+        val cuboid1 = Cuboid(switch=true, xRange=Range(5, 10L), yRange=Range(4, 10L), zRange=Range(5, 8L))
+        val cuboid2 = Cuboid(switch=true, xRange=Range(11, 12L), yRange=Range(11, 12L), zRange=Range(9, 12L))
         val result = subtract(listOf(cuboid1),cuboid2)
         assertEquals(cuboid1.toSet() - cuboid2.toSet(), result.map{it.toSet()}.reduce{a,v -> a + v}  )
     }
