@@ -51,6 +51,7 @@ class MainTest {
             Move(Position(3, 2), Position(10, 1),80),
             Move(Position(3, 2), Position(11, 1),90)
         )
+
         assertEquals(expectedResult,amphipodB.stepsAllowed(otherAmphipods))
     }
     @Test
@@ -81,8 +82,8 @@ class MainTest {
         val amphipods = sampleData.toAmphipods(3)
         val amphipodB = amphipods.first()
         val movedAmphipod = amphipodB.moveAmphipod(amphipodB.possibleSteps[2])
-        assertEquals(listOf(2), movedAmphipod.stepsTaken)
-        assertEquals(amphipodB.possibleSteps, movedAmphipod.possibleSteps)
+        assertEquals(listOf(Move(Position(3, 2), Position(4, 1), 20)), movedAmphipod.stepsTaken)
+        assertEquals(listOf(Move(Position(4, 1), Position(5, 2), cost=20), Move(Position(4,1), Position(5, 3), 30)), movedAmphipod.possibleSteps)
     }
     @Test
     fun `no second steps allowed if amphipod has moved out of a room but no others have`() {
@@ -118,7 +119,6 @@ class MainTest {
         val amphipodC = amphipods[1]
         val amphipodD = amphipods[4]
         val movedAmphipodC = amphipodC.moveAmphipod(amphipodC.possibleSteps[1]) //moves it somewhere to the left
-        println(movedAmphipodC.position)
         val movedAmphipodD = amphipodC.moveAmphipod(amphipodC.possibleSteps[5]) //moves it somewhere to the right
         val otherAmphipods = amphipods.filter{it != amphipodB}
             .map{if(it.position == amphipodC.position) movedAmphipodC else it  }
@@ -174,6 +174,10 @@ class MainTest {
     @Test
     fun `calculating moves with puzzle input`() {
         assertEquals(14348, calcCost(puzzleInput))
+    }
+    @Test
+    fun `calculating moves part 2 using sample data`() {
+        assertEquals(44169, calcCost(sampleDataP2, 5))
     }
     @Test
     fun `calculating moves part 2`() {
