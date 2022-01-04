@@ -22,7 +22,7 @@ fun Position.createAmphipod(destinationColumn: Int, depth: Int, energy:Int):Amph
     val firstSteps =  (1..11).mapNotNull { if (it !in destinationColumns.values)  Position(it,1) else null }
         .map{Move(this,it, energy * (abs(this.x - it.x) + abs(this.y - it.y)))}
     val secondSteps = (2..depth).flatMap{row -> firstSteps.map{firstStep ->  secondMove(firstStep.end, destinationColumn, row, energy) } }
-    return Amphipod(firstSteps + secondSteps, destinationColumn)
+    return Amphipod(firstSteps + secondSteps, destinationColumn, listOf(Move(Position(x,y),Position(x,y),0)))
 }
 
 private fun secondMove(firstStepEnd:Position, destinationColumn:Int, row:Int, energy:Int) =
@@ -45,7 +45,7 @@ data class Amphipod(val possibleSteps:List<Move>, val destinationColumn:Int, val
         return allStepsAllowed.filter{s1 ->  s1.end.x != destinationColumn || s1.end.x == destinationColumn && s1.end.y == allStepsAllowed.filter{s2 -> s2.end.x == destinationColumn}.maxOf { it.end.y }}
     }
 
-    val position = if (stepsTaken.isEmpty()) possibleSteps.first().start else stepsTaken.last().end
+    val position =  stepsTaken.last().end
     private val isInHallway = position.y == 1
     val isInCorrectRoom = position.x == destinationColumn
 
@@ -86,7 +86,7 @@ fun calcCost(data:List<String>, depth:Int = 3):Int {
         if (amphipods.allStuck())return
 
         amphipods
-            .filter{it.stepsTaken.size < 2 }
+            .filter{it.stepsTaken.size < 3 }
             .forEach{ amphipod ->
                 amphipod.stepsAllowed(amphipods)
                     .filter{it.cost + cost < minCost }
