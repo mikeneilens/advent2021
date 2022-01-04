@@ -13,7 +13,7 @@ fun List<String>.toAmphipods(depth: Int):List<Amphipod> =
                     val position = Position(x, y)
                     position.createAmphipod(destinationColumns.getValue(char), depth, energy.getValue(char))
                 } else //an amphipod already in the right place is given a dummy first move.
-                    Amphipod(listOf(Move(Position(x,y),Position(x,y),0)),destinationColumns.getValue(char))
+                    Amphipod(listOf(),destinationColumns.getValue(char),listOf(Move(Position(x,y),Position(x,y),0)))
             } else null
         }.filterNotNull()
     }
@@ -48,15 +48,8 @@ data class Amphipod(val possibleSteps:List<Move>, val destinationColumn:Int, val
     val position = if (stepsTaken.isEmpty()) possibleSteps.first().start else stepsTaken.last().end
     private val isInHallway = position.y == 1
     val isInCorrectRoom = position.x == destinationColumn
-    val isAtBackOfCorrectRoom = isInCorrectRoom && position.y == depth
 
     private fun endOfMoveIsUnoccupied(move: Move, otherAmphipods:List<Amphipod>) = otherAmphipods.all { other -> other.position != move.end }
-
-    fun atBackOfRoom(otherAmphipods: List<Amphipod>):Boolean {
-        val amphipodsInRoom = otherAmphipods.filter{it.position.x == this.position.x && it.position.y > this.position.y}
-        val backOfRoom = depth - amphipodsInRoom.size
-        return position.y == backOfRoom && amphipodsInRoom.all{it.destinationColumn == this.destinationColumn}
-    }
 
     private fun noOthersInTheWayInHallway(move: Move, otherAmphipods:List<Amphipod>) =
         (move.end.x < move.start.x && otherAmphipods.none{ other -> other.position.x < move.start.x && other.position.x >= move.end.x})
@@ -94,7 +87,7 @@ fun calcCost(data:List<String>, depth:Int = 3):Int {
         if (amphipods.allStuck())return
 
         amphipods
-            .filter{it.stepsTaken.size < 2 &&  !it.isAtBackOfCorrectRoom }
+            .filter{it.stepsTaken.size < 2 }
             .forEach{ amphipod ->
                 val otherAmphipods = amphipods.filter{it != amphipod}
                 amphipod.stepsAllowed(otherAmphipods)

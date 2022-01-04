@@ -54,17 +54,6 @@ class MainTest {
         assertEquals(expectedResult,amphipodB.stepsAllowed(otherAmphipods))
     }
     @Test
-    fun `is at back of room`() {
-        val amphipodAt1 = Amphipod(listOf(Move(Position(3,1), Position(1,1),0)), 3, listOf(), 3 )
-        val amphipodAt2 = Amphipod(listOf(Move(Position(3,2), Position(1,1),0)), 3, listOf(), 3 )
-        val amphipodAt3 = Amphipod(listOf(Move(Position(3,3), Position(1,1),0)), 3, listOf(), 3 )
-        val amphipodAt3WrongDestination = Amphipod(listOf(Move(Position(3,3), Position(1,1),0)), 5, listOf(), 3 )
-        assertTrue(amphipodAt2.atBackOfRoom( listOf(amphipodAt1,amphipodAt3)))
-        assertTrue(amphipodAt3.atBackOfRoom( listOf(amphipodAt1, amphipodAt2)))
-        assertFalse(amphipodAt2.atBackOfRoom( listOf()))
-        assertFalse(amphipodAt2.atBackOfRoom( listOf(amphipodAt3WrongDestination)))
-    }
-    @Test
     fun `cannot move into a room if other amphipods are in the way`() {
         val amphipodAtRow1 = Amphipod(listOf(Move(Position(1,1), Position(3,3),0)), 3, listOf(), 3 )
         val amphipodAtRow2 = Amphipod(listOf(Move(Position(3,2), Position(1,1),0)), 3, listOf(), 3 )
